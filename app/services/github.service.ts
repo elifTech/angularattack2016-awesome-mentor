@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HTTP_PROVIDERS, Http, Headers} from '@angular/http';
+import {HTTP_PROVIDERS, Http, Headers, URLSearchParams} from '@angular/http';
 import {Base64Service} from './base64.service';
 import {ConfigService} from './config.service';
 import 'rxjs/add/operator/map';
@@ -57,6 +57,23 @@ export class RepositoryItem {
 
         let opts = this.service.getHttpOptions();
         this.http.put(apiUrl, JSON.stringify(params), opts).subscribe(res => {
+            next(res.json());
+        });
+    }
+
+    deleteFile(message, next) {
+        let apiUrl = this.url + this.data.path;
+            /*params = {
+                message: message,
+                sha: this.sha
+            };*/
+
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('message', message);
+        params.set('sha',  this.sha);
+
+        let opts = this.service.getHttpOptions(params);
+        this.http.delete(apiUrl, params).subscribe(res => {
             next(res.json());
         });
     }
@@ -151,7 +168,7 @@ export class GithubService {
         return new Repository(this.http, owner, repos, this);
     }
 
-    getHttpOptions() {
+    getHttpOptions(search?: URLSearchParams) {
         let opts = {
             headers: new Headers({
                 'Accept': 'application/vnd.github.v3.raw'
@@ -159,6 +176,9 @@ export class GithubService {
         };
         if (this._token) {
             opts.headers.set('Authorization', 'Bearer ' + this._token);
+        }
+        if (search) {
+            opts['search'] = search;
         }
         return opts;
     }
