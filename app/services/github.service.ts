@@ -135,7 +135,6 @@ export class GithubService {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
         }
-        console.info(this.auth.isAuthenticated(), this._token);
         return new Repository(this.http, owner, repos, this);
     }
 
@@ -145,7 +144,6 @@ export class GithubService {
                 'Accept': 'application/vnd.github.v3.raw'
             })
         };
-        console.info(this._token)
         if (this._token) {
             opts.headers.set('Authorization', 'Bearer ' + this._token);
         }

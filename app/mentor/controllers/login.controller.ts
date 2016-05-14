@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {Auth} from 'ng2-ui-auth';
-import {Router, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import {Router} from '@angular/router-deprecated';
 import {GithubService, Repository} from '../../services/github.service';
 
 @Component({
@@ -12,19 +12,18 @@ export class MentorLoginController {
     public repos: Repository;
 
     constructor(private auth: Auth, private router: Router, private github: GithubService){
+        if (this.auth.isAuthenticated()) {
+            this.goToMain();
+        }
     }
 
     authenticate(provider: string) {
         this.auth.authenticate(provider)
-            .subscribe((res) => {
-
-                console.info(res)
-
-            }, () => {});
+            .subscribe((res) => this.goToMain());
     }
 
     goToMain() {
-        this.router.navigate(['Professions']);
+        this.router.navigate(['MentorProfessions']);
     }
 
     save() {
