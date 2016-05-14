@@ -4,8 +4,8 @@ export class Profession {
     public rating: number;
     public done: boolean;
 
-    public levels: string[];
-    public tags: string[];
+    public levels: string[] = [];
+    public tags: string[] = [];
     public repo: string;
 
     constructor(raw: any, repo?: string) {
