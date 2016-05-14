@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
+import {Base64Service} from './base64.service';
 
 export class RepositoryItem {
     constructor(private http:Http, private repos: Repository, private data) {
-        console.info(data)
     }
 
     get url() {
@@ -12,6 +12,19 @@ export class RepositoryItem {
 
     get isDir() {
         return this.data.type == 'dir';
+    }
+
+    get isFile() {
+        return this.data.type == 'file';
+    }
+
+    getContent(next) {
+        let apiUrl = this.url + this.data.path;
+        this.http.get(apiUrl).subscribe(res => {
+            let content = res.json().content;
+            content = Base64Service.decode(content);
+            next(content);
+        });
     }
 
     setContent() {
@@ -40,6 +53,12 @@ export class Repository {
     readFolders(next, path = '') {
         this.readDir(res => {
             next(res.filter(item => item.isDir));
+        }, path);
+    }
+
+    readFiles(next, path = '') {
+        this.readDir(res => {
+            next(res.filter(item => item.isFile));
         }, path);
     }
 }
