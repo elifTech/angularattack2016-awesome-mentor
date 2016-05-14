@@ -92,7 +92,7 @@ export class ProfessionService {
         return new Promise((resolve, reject) => {
             this.repos.getFileContent((content) => {
 
-                this.fromMarkdown(content, function(links) {
+                this.github.fromMarkdown(content, function(links) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(links, 'text/html');
                     var headings = [].slice.call(doc.body.querySelectorAll('h2')),
@@ -115,8 +115,6 @@ export class ProfessionService {
 
                     resolve(results);
                 });
-                
-                resolve(links);
             }, 'professions/' + profName, level + '.md');
         });
     }
