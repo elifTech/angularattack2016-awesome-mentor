@@ -1,5 +1,6 @@
 <form name="formEdit" #formEdit="ngForm" novalidate>
 
+    profession: {{profession|json}}
     <div class="row">
         <div class="col-lg-8">
             <div class="form-group" [class.has-error]="(title.dirty && !title.valid) || (errors && errors.title)">
@@ -19,7 +20,7 @@
         <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
     </button>
 
-    <!--<a class="btn btn-default btn-cancel" [routerLink]="['Professions']">-->
-        <!--Cancel-->
-    <!--</a>-->
+    <a class="btn btn-default btn-cancel" [routerLink]="['MentorProfessions']">
+        Cancel
+    </a>
 </form>
