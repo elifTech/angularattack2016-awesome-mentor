@@ -77,9 +77,12 @@ export class ProfessionService extends GithubService {
                 parts.splice(0, 2);
 
                 var links = parts.map(item => {
+                    var version = item.split("?v=");
+
                     return {
                         source: item,
-                        domain: item.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0]
+                        domain: item.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, ''),
+                        id: version = version ? version[1] : null
                     };
                 });
                 
