@@ -9,7 +9,7 @@ export var APP_ROUTES: RouteDefinition[] = [
     { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
     { path: '/mentor', name: 'MentorLogin', component: MentorLoginController },
     { path: '/mentor/professions', name: 'MentorProfessions', component: MentorProfessionsController },
-    { path: '/mentor/profession/:id/edit', name: 'MentorProfessionEdit', component: MentorProfessionEditController },
-    { path: '/mentor/profession/:id/content', name: 'MentorProfessionContent', component: MentorProfessionContentController },
+    { path: '/mentor/profession/:name/edit', name: 'MentorProfessionEdit', component: MentorProfessionEditController },
+    { path: '/mentor/profession/:name/content/:level', name: 'MentorProfessionContent', component: MentorProfessionContentController },
     { path: '/mentor/profession/create', name: 'MentorProfessionCreate', component: MentorProfessionEditController },
 ];

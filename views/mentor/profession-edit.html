@@ -3,12 +3,12 @@
     profession: {{profession|json}}
     <div class="row">
         <div class="col-lg-8">
-            <div class="form-group" [class.has-error]="(title.dirty && !title.valid) || (errors && errors.title)">
-                <label for="title">Title</label>
-                <input #title="ngForm" class="form-control" id="title" name="title" type="text" required [(ngModel)]="profession.title"/>
+            <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
+                <label for="name">Name</label>
+                <input #name="ngForm" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
 
                 <div class="help-block"
-                     *ngIf="(title.dirty && !title.valid) || (errors && errors.title)">
+                     *ngIf="(name.dirty && !name.valid) || (errors && errors.name)">
                     Required field
                 </div>
             </div>
@@ -22,6 +22,20 @@
                        (data)="setTags($event)" [initData]="profession.tags"
                        [items]="tags" class="custom-ui-select-table">
             </ng-select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="controls">
+            <label>Levels</label>
+            <a (click)="addLevel()">add</a>
+            <ul>
+                <li  *ngFor="let level of profession.levels; let i = index;">
+                    <input required [(ngModel)]="profession.levels[i].title" type="text" class="form-control" size="50">
+                    <a (click)="removeLevel(i)">x</a>
+                    <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.title}]" class="btn btn-primary">Content</a>
+                </li>
+            </ul>
         </div>
     </div>
 

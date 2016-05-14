@@ -10,6 +10,8 @@ import {AwesomeService} from '../../services/awesome.service';
 import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 
+import {ProfessionService} from '../../services/profession.service';
+
 @Component({
     templateUrl: 'views/mentor/profession-content.html',
     directives: [
@@ -20,13 +22,14 @@ import { Observable } from 'rxjs/Observable';
     ],
     providers: [
         FORM_PROVIDERS,
+        ProfessionService,
         CourseraService,
         YouTubeService,
         AwesomeService
     ]
 })
 export class MentorProfessionContentController {
-    public profession:any = {};
+    public level:any = {};
     public queryString:string = '';
 
     professionForm: any;
@@ -35,6 +38,10 @@ export class MentorProfessionContentController {
     awesomeResults$: Observable<any>;
 
 
+    constructor(protected router:Router, private _courseraService: CourseraService,
+                private _youTubeService: YouTubeService, private _formBuilder: FormBuilder,
+                private professionService: ProfessionService,
+                private params:RouteParams) {
     constructor(protected router:Router,
                 private _courseraService: CourseraService,
                 private _youTubeService: YouTubeService,
@@ -61,6 +68,17 @@ export class MentorProfessionContentController {
             .distinctUntilChanged()
             .switchMap(term => this._awesomeService.search(term));
 
+
+        this.level = {
+            title: params.get('name'),
+            items: []
+        };
+        
+        this.professionService
+            .getLevelItems(params.get('name'), params.get('level'))
+            .then((levelItems) => {
+                this.level.items = levelItems;
+            });
     }
     
     public saveItem()
