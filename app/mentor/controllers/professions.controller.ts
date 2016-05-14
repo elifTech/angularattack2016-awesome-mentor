@@ -4,6 +4,7 @@ import {
 import {CORE_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from '@angular/router-deprecated';
 import {Profession} from '../../models/profession.model';
+import {ProfessionService} from '../../services/profession.service';
 @Component({
     templateUrl: '/views/mentor/professions.html',
     directives: [
@@ -17,11 +18,13 @@ import {Profession} from '../../models/profession.model';
 export class MentorProfessionsController {
     public doc: Profession;
     public docs: Profession[];
+    public errorMessage: string;
 
-    constructor(){
-        this.doc = new Profession('default');
-        let doc2 = new Profession('second');
-        this.docs = [this.doc, doc2];
+    constructor(private professionService: ProfessionService){
+        this.professionService.list()
+            .subscribe(
+                docs => this.docs = docs,
+                error =>  this.errorMessage = <any>error);
     }
     
 }
