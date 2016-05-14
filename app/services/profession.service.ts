@@ -96,18 +96,21 @@ export class ProfessionService {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(links, 'text/html');
                     var headings = [].slice.call(doc.body.querySelectorAll('h2')),
-                        head, childs, source, results = [];
+                        head, link, source, img, desc, results = [];
 
                     headings.forEach(element => {
                         head = jQuery(element);
-                        childs = head.next().children();
-                        source = jQuery(childs[0]).attr('href');
+                        source = head.next();
+                        img = source.next();
+                        desc = img.next();
+                        link = source.find('a').attr('href');
+
                         let parsed = {
                             title: head.text(),
-                            source: source,
-                            img: jQuery(childs[1]).attr('href'),
-                            desc: jQuery(childs[2]).text(),
-                            domain: source.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '')
+                            source: link,
+                            img: img.find('a').attr('href'),
+                            description: desc.find('strong').text(),
+                            domain: link.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '')
                         };
                         
                         results.push(parsed);
