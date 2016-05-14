@@ -1,5 +1,13 @@
 <form name="formEdit" [ngFormModel]="professionForm" #formEdit="ngForm" novalidate>
 
+    <h1>{{professionName}}</h1>
+    <h2>{{level.name}}</h2>
+
+    <button (click)="saveItem()" class="btn btn-primary">
+        <span *ngIf="!saveLoading">Save</span>
+        <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
+    </button>
+
 
     queryString: {{queryString}}
 
@@ -22,8 +30,8 @@
                 </a>
                 <p>{{result.snippet.description}}</p>
                 <img [src]="result.snippet.thumbnails.default.url" style="width: 100%; max-width: 90px" />
-                <a (click)="addToProfession(result, 'youtube')">+</a> /
-                <a (click)="removeFromProfession(result)">-</a>
+                <a (click)="addToLevel(result, 'youtube')">+</a> /
+                <a (click)="removeFromLevel(result)">-</a>
             </li>
         </ul>
     </div>
@@ -33,8 +41,8 @@
         <ul>
             <li *ngFor="let result of courseraResults$ | async">
                 {{result.name}}
-                <a (click)="addToProfession(result, 'coursera')">+</a> /
-                <a (click)="removeFromProfession(result)">-</a>
+                <a (click)="addToLevel(result, 'coursera')">+</a> /
+                <a (click)="removeFromLevel(result)">-</a>
             </li>
         </ul>
     </div>
@@ -44,8 +52,8 @@
         <ul>
             <li *ngFor="let result of awesomeResults$ | async">
                 [{{result.category }}] <a href="{{result.href}}" target="_blank">{{result.name}}</a>
-                <a (click)="addToProfession(result, 'awesome')">+</a> /
-                <a (click)="removeFromProfession(result)">-</a>
+                <a (click)="addToLevel(result, 'awesome')">+</a> /
+                <a (click)="removeFromLevel(result)">-</a>
             </li>
         </ul>
     </div>
