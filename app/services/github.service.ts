@@ -65,7 +65,7 @@ export class Repository {
     private _url: string;
 
     constructor(private http:Http, private owner: string, private repos: string) {
-        this._url = 'https://api.github.com/repos/' + owner + '/' + repos;
+        this._url = GithubService.url + '/repos/' + owner + '/' + repos;
     }
 
     get url() {
@@ -109,8 +109,22 @@ export class Repository {
 export class GithubService {
     constructor(public http:Http) {
     }
+
+    static get url() {
+        return 'https://api.github.com';
+    }
     
     getRepository(owner: string, repos: string) {
         return new Repository(this.http, owner, repos);
+    }
+
+    fromMarkdown(text: string, next) {
+        let params = {
+            "text": text,
+            "mode": "markdown"
+        };
+        this.http.post(GithubService.url + '/markdown', JSON.stringify(params)).subscribe(res => {
+            next(res.text());
+        });
     }
 }
