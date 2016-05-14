@@ -16,7 +16,8 @@
         'test': 'test',
         'rxjs': 'n:rxjs',
         '@angular': 'n:@angular',
-        'lodash': 'n:lodash'
+        'lodash': 'n:lodash',
+        'ng2-ui-auth': 'n:ng2-ui-auth'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -49,6 +50,8 @@
     packageNames.forEach(function(pkgName) {
         packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
     });
+
+    packages['ng2-ui-auth'] = { main: 'dist/ng2-ui-auth.js', defaultExtension: 'js' };
 
     var config = {
         map: map,
