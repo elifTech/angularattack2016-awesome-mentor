@@ -18,7 +18,7 @@ bootstrap(AppComponent, [
         },
         providers: {
             google: {clientId: GOOGLE_CLIENT_ID, scope: ['https://www.googleapis.com/auth/drive.file'] },
-            github: {clientId: GITHUB_CLIENT_ID, url: 'http://localhost:8080/auth/github'}
+            github: {clientId: GITHUB_CLIENT_ID, url: 'http://52.26.114.209:8080/auth/github'}
         }
     })
 ]);
