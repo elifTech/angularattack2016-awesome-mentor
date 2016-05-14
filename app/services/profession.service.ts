@@ -4,10 +4,11 @@ import {HTTP_PROVIDERS, Http, Response}    from '@angular/http';
 import {Observable, Observer} from 'rxjs/Rx';
 import {GithubService, Repository, RepositoryItem} from "./github.service";
 import {ConfigService} from "./config.service";
-import {Level} from "../models/level.model";
-import 'rxjs/add/operator/share';
 
-declare var jQuery:any;
+import {Level} from "../models/level.model";
+import {LevelItem} from "../models/level-item.model";
+
+import 'rxjs/add/operator/share';
 
 const GITHUB_README_REGEX = /readme\.md/i;
 
@@ -85,12 +86,10 @@ export class ProfessionService {
                 //console.log('res', res);
                 var profession = new Profession(res[1], ConfigService.repOwner + '/' + ConfigService.repName)
 
-                profession.levels = [].slice.call(res[0]).map(file => {
-                    return {
-                        title: file.name.replace('.md', '')
-                    };
-                }).filter(file => {
-                    return file.title.indexOf('README') == -1;
+                profession.levels = [].slice.call(res[0]).filter(file => {
+                    return file.data.name.indexOf('README.md') == -1;
+                }).map(file => {
+                    return new Level({title: file.data.name.replace('.md', '')});
                 });
 
                 resolve(profession);
@@ -101,29 +100,16 @@ export class ProfessionService {
     getLevelItems(profName:string, level:string):Promise<Object[]> {
         return new Promise((resolve, reject) => {
             this.repos.getFileContent((content) => {
-
-                this.github.fromMarkdown(content, function (links) {
+                this.github.fromMarkdown(content, function(links) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(links, 'text/html');
                     var headings = [].slice.call(doc.body.querySelectorAll('h2')),
-                        head, link, source, img, desc, results = [];
+                    results: LevelItem[] = [], item;
 
                     headings.forEach(element => {
-                        head = jQuery(element);
-                        source = head.next();
-                        img = source.next();
-                        desc = img.next();
-                        link = source.find('a').attr('href');
-
-                        let parsed = {
-                            title: head.text(),
-                            source: link,
-                            img: img.find('a').attr('href'),
-                            description: desc.find('strong').text(),
-                            domain: link.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '')
-                        };
-
-                        results.push(parsed);
+                        item = new LevelItem();
+                        item._parse();
+                        results.push(item);
                     });
 
                     resolve(results);

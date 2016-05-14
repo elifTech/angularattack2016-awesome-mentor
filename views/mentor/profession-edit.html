@@ -33,7 +33,7 @@
                 <li  *ngFor="let level of profession.levels; let i = index;">
                     <input required [(ngModel)]="profession.levels[i].name" type="text" class="form-control" size="50">
                     <a (click)="removeLevel(i)">x</a>
-                    <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.title}]" class="btn btn-primary">Content</a>
+                    <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
                 </li>
             </ul>
         </div>
