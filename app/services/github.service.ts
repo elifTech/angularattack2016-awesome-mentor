@@ -22,6 +22,19 @@ export class RepositoryItem {
         return this.data.path;
     }
 
+    get isFile() {
+        return this.data.type == 'file';
+    }
+
+    getContent(next) {
+        let apiUrl = this.url + this.data.path;
+        this.http.get(apiUrl).subscribe(res => {
+            let content = res.json().content;
+            content = Base64Service.decode(content);
+            next(content);
+        });
+    }
+
     setContent() {
         let apiUrl = this.url + this.data.path;
         console.info(apiUrl)
@@ -54,7 +67,7 @@ export class Repository {
 
 @Injectable()
 export class GithubService {
-    constructor(public http:Http) {
+    constructor(private http:Http) {
     }
     
     getRepository(owner: string, repos: string) {

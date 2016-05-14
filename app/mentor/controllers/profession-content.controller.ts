@@ -55,4 +55,14 @@ export class MentorProfessionContentController {
     {
 
     }
+
+    public addToProfession(result:any, type:string)
+    {
+        console.log(' addToProfession',  result, type);
+    }
+
+    public removeFromProfession(result:any)
+    {
+console.log(' removeFromProfession(result:any)',  result);
+    }
 }

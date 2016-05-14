@@ -15,8 +15,11 @@ export class MentorLoginController {
     constructor(private auth: Auth, private router: Router, private github: GithubService){
         this.repos = github.getRepository('esvit', 'test-repos');
         
-        this.repos.readFolders((res) => {
-            console.info(res)
+        this.repos.readFiles((res) => {
+            res[0].getContent(res => {
+                console.info(res);
+                
+            })
         });
     }
 
