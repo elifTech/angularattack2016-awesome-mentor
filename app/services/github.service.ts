@@ -4,7 +4,7 @@ import {Base64Service} from './base64.service';
 import 'rxjs/add/operator/map';
 import {Auth} from 'ng2-ui-auth';
 
-const GITHUB_README_REGEX = /readme\.md/i;
+export const GITHUB_README_REGEX = /readme\.md/i;
 
 export class RepositoryItem {
     constructor(private http:Http, private repos:Repository, private data, private service:GithubService) {

@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Profession} from '../models/profession.model';
 import {HTTP_PROVIDERS, Http, Response}    from '@angular/http';
 import {Observable, Observer} from 'rxjs/Rx';
-import {GithubService, Repository} from "./github.service";
+import {GithubService, Repository, RepositoryItem} from "./github.service";
+import {ConfigService} from "./config.service";
 import 'rxjs/add/operator/share';
 
 declare var jQuery:any;
@@ -19,30 +20,33 @@ export class ProfessionService {
         files:Profession[]
     }
 
-    constructor(private github: GithubService) {
+    constructor(private github:GithubService) {
         this.config = {
             github: {
-                list: 'https://api.github.com/repos/polluxx/awesomementor/contents/professions',
-                readme: 'https://raw.githubusercontent.com/polluxx/awesomementor/master'
+                list: 'https://api.github.com/repos/' + ConfigService.repOwner + '/' + ConfigService.repName + '/contents/professions',
+                readme: 'https://raw.githubusercontent.com/' + ConfigService.repOwner + '/' + ConfigService.repName + '/master'
             }
         };
-        this.repos = github.getRepository('polluxx', 'awesomementor');
+        this.repos = github.getRepository(ConfigService.repOwner, ConfigService.repName);
     }
 
     list():Promise<Profession[]> {
         return new Promise((resolve, reject) => {
             this.repos.readFolders((res) => {
                 resolve(res.map(file => {
-                    return new Profession(file, 'polluxx/awesomementor');
+                    return new Profession(file, ConfigService.repOwner + '/' + ConfigService.repName);
                 }));
             }, 'professions');
         });
     }
 
     public save(item:Profession) {
-        this.repos = this.github.getRepository('esvit', 'test-repos');
+        this.repos = this.github.getRepository(ConfigService.repOwner, ConfigService.repName);
         this.repos.readFiles((res) => {
-            let file = res.find(item => item.name.match(GITHUB_README_REGEX));
+            let file = res.find(item => item.name == item);
+            if(!file) {
+                //file = new RepositoryItem();
+            }
             file.setContent(item.toMd(), (new Date()).toString(), res => {
                 console.info(res);
             });
@@ -73,7 +77,7 @@ export class ProfessionService {
         return new Promise((resolve, reject) => {
             Promise.all([p1, p2]).then((res) => {
                 //console.log('res', res);
-                var profession = new Profession(res[1], 'polluxx/awesomementor')
+                var profession = new Profession(res[1], ConfigService.repOwner + '/' + ConfigService.repName)
 
                 profession.levels = [].slice.call(res[0]).map(file => {
                     return {
