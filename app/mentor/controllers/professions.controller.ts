@@ -2,7 +2,7 @@ import {
     Component
 } from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
-import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 import {Profession} from '../../models/profession.model';
 import {ProfessionService} from '../../services/profession.service';
 import 'rxjs/Rx';
@@ -13,7 +13,6 @@ import 'rxjs/Rx';
         ROUTER_DIRECTIVES
     ],
     providers: [
-        ROUTER_PROVIDERS,
         ProfessionService
     ]
 })
