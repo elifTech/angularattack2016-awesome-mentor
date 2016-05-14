@@ -4,7 +4,8 @@
     "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
     "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#bc92442c075929849ec41d28ab618892ba493504",
     "selenium-webdriver": "github:DefinitelyTyped/DefinitelyTyped/selenium-webdriver/selenium-webdriver.d.ts#a83677ed13add14c2ab06c7325d182d0ba2784ea",
-    "google-drive-realtime-api": "github:DefinitelyTyped/DefinitelyTyped/google-drive-realtime-api/google-drive-realtime-api.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd"
+    "google-drive-realtime-api": "github:DefinitelyTyped/DefinitelyTyped/google-drive-realtime-api/google-drive-realtime-api.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
+    "js-git": "github:DefinitelyTyped/DefinitelyTyped/js-git/js-git.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd"
   },
   "dependencies": {
     "lodash": "registry:npm/lodash#4.0.0+20160416211519"

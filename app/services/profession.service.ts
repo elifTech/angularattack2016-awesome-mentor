@@ -39,7 +39,7 @@ export class ProfessionService extends GithubService {
     getByName(name:string):Promise<Profession> {
         var p1 = new Promise((resolve, reject) => {
             this.repos.readFiles((files) => {
-                console.log('files', files);
+                //console.log('files', files);
                 resolve(files);
             }, 'professions/' + name);
         });
