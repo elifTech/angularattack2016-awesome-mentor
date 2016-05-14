@@ -55,12 +55,13 @@ export class ProfessionService extends GithubService {
             Promise.all([p1, p2]).then((res) => {
                 //console.log('res', res);
                 var profession = new Profession(res[1], 'polluxx/awesomementor')
-                profession.levels = res[0].filter(file => {
-                    return file.name.indexOf('README.md') == -1;
-                }).map(file => {
+
+                profession.levels = [].slice.call(res[0]).map(file => {
                     return {
                         title: file.name.replace('.md', '')
                     };
+                }).filter(file => {
+                    return file.title.indexOf('README') == -1;
                 });
 
                 resolve(profession);
