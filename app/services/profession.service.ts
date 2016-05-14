@@ -4,11 +4,11 @@ import {HTTP_PROVIDERS, Http, Response}    from '@angular/http';
 import {Observable, Observer} from 'rxjs/Rx';
 import {GithubService, Repository, RepositoryItem} from "./github.service";
 import {ConfigService} from "./config.service";
-
 import {Level} from "../models/level.model";
 import {LevelItem} from "../models/level-item.model";
-
 import 'rxjs/add/operator/share';
+
+declare var jQuery:any;
 
 const GITHUB_README_REGEX = /readme\.md/i;
 
@@ -48,7 +48,14 @@ export class ProfessionService {
         }, 'professions/' + item.name);
 
         item.levels.forEach((level) => {
-            this.saveLevel(item, level);
+            if(level.isDeleted) {
+                this.removeLevel(item, level.name);
+            } else if(level.isRenamed) {
+                this.saveLevel(item, level);
+                this.removeLevel(item, level.oldName);
+            } else {
+                this.saveLevel(item, level);
+            }
         });
     }
 
@@ -60,9 +67,22 @@ export class ProfessionService {
             if (!file) {
                 file = this.repos.newFile('professions/' + item.name + '/' + level.name + '.md');
             }
+            console.log('level.toMd()', level.toMd());
             file.setContent(level.toMd(), (new Date()).toString(), res => {
                 console.info(res);
             });
+        }, 'professions/' + item.name);
+    }
+
+    public removeLevel(item:Profession, levelName:string) {
+        this.repos = this.github.getCurrentRepository();
+        this.repos.readFiles(res => {
+            let file = res.find(item => item.name == levelName + '.md');
+            if (file) {
+                file.deleteFile((new Date()).toString(), res => {
+                    console.info(res);
+                });
+            }
         }, 'professions/' + item.name);
     }
 
@@ -87,9 +107,10 @@ export class ProfessionService {
                 var profession = new Profession(res[1], ConfigService.repOwner + '/' + ConfigService.repName)
 
                 profession.levels = [].slice.call(res[0]).filter(file => {
+                    //console.log('file.data', file.data);
                     return file.data.name.indexOf('README.md') == -1;
                 }).map(file => {
-                    return new Level({title: file.data.name.replace('.md', '')});
+                    return new Level({name: file.data.name.replace('.md', '')});
                 });
 
                 resolve(profession);

@@ -45,14 +45,22 @@ export class MentorProfessionEditController implements OnInit {
         this.professionService.save(this.profession);
     }
 
+    public onLevelNameChanged(index:number, name:string) {
+        if(!this.profession.levels[index].isNew) {
+            this.profession.levels[index].isRenamed = true;
+        }
+        this.profession.levels[index].name = name;
+    }
+
     public addLevel() {
         var newLvl = new Level({});
+        newLvl.isNew = true;
         newLvl.name = 'Level ' + this.profession.levels.length;
         this.profession.levels.push(newLvl);
     }
 
     public removeLevel(index:number) {
-        this.profession.levels.splice(index, 1);
+        this.profession.levels[index].isDeleted = true;
     }
 
     public setTags($event) {

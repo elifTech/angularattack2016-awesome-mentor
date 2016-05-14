@@ -43,7 +43,7 @@
 
         <ul>
             <li *ngFor="let result of awesomeResults$ | async">
-                [{{result.title }}] <a href="{{result.href}}" target="_blank">{{result.text}}</a>
+                [{{result.category }}] <a href="{{result.href}}" target="_blank">{{result.name}}</a>
                 <a (click)="addToProfession(result, 'awesome')">+</a> /
                 <a (click)="removeFromProfession(result)">-</a>
             </li>

@@ -1068,32 +1068,22 @@ To the extent possible under law, [Sindre Sorhus](http://sindresorhus.com) has w
                 $head, children, source, results = [], i = 10;
 
             headings.forEach(element => {
-                if(!i)
-                    return;
-
                 $head = jQuery(element);
                 children = [].slice.call($head.next().find('a'));
 
-                var $child, data = [];
+                var $child;
                 children.forEach(child => {
                     $child = jQuery(child);
-
-                    if($child.attr('href').indexOf('#') != 0){
-                        if(!i)
-                            return;
-
-                        results.push({
-                            title: $head.text(),
-                            text: $child.text(),
-                            href: $child.attr('href')
-                        });
-
-                        i--;
-                    }
+                    
+                    results.push({
+                        category: $head.text(),
+                        name: $child.text(),
+                        href: $child.attr('href')
+                    });
                 });
             });
 
-            results = results.filter(item => {return item.text.toLowerCase().indexOf(query) >= 0 || item.title.toLowerCase().indexOf(query) >= 0});
+            results = results.filter(item => (item.category.toLowerCase().indexOf(query) >= 0 || item.name.toLowerCase().indexOf(query) >= 0) && (i--) > 0);
             
             observer.next(results);
         });
