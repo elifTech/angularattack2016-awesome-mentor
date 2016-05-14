@@ -23,7 +23,7 @@ export class Profession {
     {
         var parts = str.split("\n");
 
-        this.name = parts[0];
+        this.name = parts[0].replace('#', '').trim();
         this.tags = parts[2].split(',');
     }
 
