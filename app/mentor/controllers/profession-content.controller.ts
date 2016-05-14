@@ -35,6 +35,7 @@ import {LevelItem} from "../../models/level-item.model";
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
     public level:Level;
+    public professionName:string = '';
     public queryString:string = '';
 
     professionForm: any;
@@ -70,10 +71,13 @@ export class MentorProfessionContentController {
             .switchMap(term => this._awesomeService.search(term));
 
 
-        this.level = new Level({title: params.get('name')});
+        this.professionName = decodeURIComponent(params.get('name'));
+        this.level = new Level({
+            name: decodeURIComponent(params.get('level'))
+        });
 
         this.professionService
-            .getLevelItems(params.get('name'), params.get('level'))
+            .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
                 console.log(levelItems);
                 this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});
@@ -82,16 +86,20 @@ export class MentorProfessionContentController {
     
     public saveItem()
     {
-
+        this.professionService.saveLevel(this.professionName, this.level);
     }
 
-    public addToProfession(result:any, type:string)
+    public addToLevel(item:any, type:string)
     {
-        console.log(' addToProfession',  result, type);
+        var levelItem = new LevelItem();
+        levelItem.parseFrom(item, type);
+        this.level.items.push(levelItem);
+        console.log(' addToProfession',  item, type);
     }
 
-    public removeFromProfession(result:any)
+    public removeFromLevel(index:number)
     {
-console.log(' removeFromProfession(result:any)',  result);
+        console.log(' removeFromProfession(result:any)',  index);
+        this.level.items.splice(index, 1);
     }
 }
