@@ -8,6 +8,14 @@
     <div>
         <div>Youtube</div>
         <ul>
+            <li *ngFor="let result of level.items['youtube.com']">
+
+                <a href="https://www.youtube.com/watch?v={{result.id}}" target="_blank">
+                    <h3>{{result.source}}</h3>
+                </a>
+
+            </li>
+
             <li *ngFor="let result of youTubeResults$ | async">
                 <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
                     <h3>{{result.snippet.title}}</h3>
@@ -19,6 +27,14 @@
     </div>
     <div>
         <div>CoursEra</div>
+        <li *ngFor="let result of level.items['coursera.org']">
+
+            <a href="result.source" target="_blank">
+                <h3>{{result.source}}</h3>
+            </a>
+
+        </li>
+
         <ul>
             <li *ngFor="let result of courseraResults$ | async">
                 {{result.name}}
@@ -29,6 +45,14 @@
     </div>
     <div>
         <div>Awesome</div>
+        <li *ngFor="let result of level.items['github.com']">
+
+            <a href="result.source" target="_blank">
+                <h3>{{result.source}}</h3>
+            </a>
+
+        </li>
+
         <ul>
             <li *ngFor="let result of awesomeResults$ | async">
                 <pre>{{result}}</pre>

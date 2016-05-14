@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteConfig, RouteParams} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {CourseraService} from '../../services/coursera.service';
@@ -9,8 +9,9 @@ import {AwesomeService} from '../../services/awesome.service';
 
 import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
-
 import {ProfessionService} from '../../services/profession.service';
+
+import {groupBy} from 'lodash';
 
 @Component({
     templateUrl: 'views/mentor/profession-content.html',
@@ -74,9 +75,8 @@ export class MentorProfessionContentController {
         this.professionService
             .getLevelItems(params.get('name'), params.get('level'))
             .then((levelItems) => {
-                this.level.items = levelItems;
+                this.level.items = groupBy(levelItems, function(item:any){return item.domain});
             });
-        
     }
     
     public saveItem()
