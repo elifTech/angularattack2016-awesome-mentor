@@ -49,7 +49,6 @@ export class MentorProfessionEditController implements OnInit {
         var newLvl = new Level({});
         newLvl.name = 'Level ' + this.profession.levels.length;
         this.profession.levels.push(newLvl);
-        this.professionService.addLevel(this.profession, newLvl);
     }
 
     public removeLevel(index:number) {

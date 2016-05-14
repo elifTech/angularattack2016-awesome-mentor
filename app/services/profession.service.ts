@@ -45,9 +45,13 @@ export class ProfessionService {
                 console.info(res);
             });
         }, 'professions/' + item.name);
+
+        item.levels.forEach((level) => {
+            this.saveLevel(item, level);
+        });
     }
 
-    public addLevel(item:Profession, level:Level) {
+    public saveLevel(item:Profession, level:Level) {
         this.repos = this.github.getCurrentRepository();
 
         this.repos.readFiles(res => {
@@ -55,7 +59,7 @@ export class ProfessionService {
             if (!file) {
                 file = this.repos.newFile('professions/' + item.name + '/' + level.name + '.md');
             }
-            file.setContent('', (new Date()).toString(), res => {
+            file.setContent('# test', (new Date()).toString(), res => {
                 console.info(res);
             });
         }, 'professions/' + item.name);
