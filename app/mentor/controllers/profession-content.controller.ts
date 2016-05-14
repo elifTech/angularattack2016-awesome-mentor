@@ -33,6 +33,7 @@ export class MentorProfessionContentController {
     professionForm: any;
     youTubeResults$: Observable<any>;
     courseraResults$: Observable<any>;
+    source$: Observable<Object[]>;
 
 
     constructor(protected router:Router, private _courseraService: CourseraService,
@@ -59,7 +60,7 @@ export class MentorProfessionContentController {
             title: params.get('name'),
             items: []
         };
-        
+
         this.professionService
             .getLevelItems(params.get('name'), params.get('level'))
             .then((levelItems) => {

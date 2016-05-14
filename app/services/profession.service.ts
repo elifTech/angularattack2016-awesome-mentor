@@ -69,13 +69,21 @@ export class ProfessionService extends GithubService {
         });
     }
 
-    getLevelItems(profName:string, level:string):Promise<string[]> {
+    getLevelItems(profName:string, level:string):Promise<Object[]> {
         return new Promise((resolve, reject) => {
             this.repos.getFileContent((content) => {
                 //console.log('content', content);
                 var parts = content.split("\n");
                 parts.splice(0, 2);
-                resolve(parts);
+
+                var links = parts.map(item => {
+                    return {
+                        source: item,
+                        domain: item.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0]
+                    };
+                });
+                
+                resolve(links);
             }, 'professions/' + profName, level + '.md');
         });
     }
