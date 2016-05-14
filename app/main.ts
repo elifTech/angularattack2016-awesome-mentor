@@ -3,6 +3,7 @@ import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 import {AppComponent} from './app.component';
 import {LoggerService} from './services/logger.service';
 import {GithubService} from './services/github.service';
+import {ConfigService} from './services/config.service';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {NG2_UI_AUTH_PROVIDERS} from 'ng2-ui-auth';
 
@@ -12,6 +13,7 @@ const GITHUB_CLIENT_ID = '54c368d51bca18a17397';
 bootstrap(AppComponent, [
     LoggerService,
     GithubService,
+    ConfigService,
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({
