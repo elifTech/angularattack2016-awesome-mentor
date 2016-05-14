@@ -19,7 +19,6 @@
     </div>
     <div>
         <div>CoursEra</div>
-
         <ul>
             <li *ngFor="let result of courseraResults$ | async">
                 {{result.name}}
@@ -31,8 +30,11 @@
     <div>
         <div>Awesome</div>
         <ul>
-            <li>item</li>
+            <li *ngFor="let result of awesomeResults$ | async">
+                <pre>{{result}}</pre>
+            </li>
         </ul>
     </div>
+
 
 </form>
