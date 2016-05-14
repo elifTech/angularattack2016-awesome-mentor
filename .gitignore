@@ -4,3 +4,4 @@ src/app/**/*.js
 src/app/**/*.js.map
 .idea
 typings
+build

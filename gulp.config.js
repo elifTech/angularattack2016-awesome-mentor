@@ -1,6 +1,7 @@
 var historyApiFallback = require('connect-history-api-fallback');
 
 module.exports = function () {
+    var domain = 'eliftech.2016.angularattack.io';
     var root = '';
     var app = root + 'app/';
     var assets = root + 'assets/';
@@ -62,6 +63,7 @@ module.exports = function () {
     };
 
     return {
+        domain: domain,
         root: root,
         app: app,
         assets: assets,
