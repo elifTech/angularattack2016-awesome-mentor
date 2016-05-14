@@ -22,8 +22,6 @@
     window.gapi.load('auth:client,drive-realtime,drive-share', start);
     window.rtclient = new utils.RealtimeUtils({ clientId: "asdasd" });
 
-    console.log(window.rtclient);
-
     function start() {
         var doc = gapi.drive.realtime.newInMemoryDocument();
         var model = doc.getModel();
