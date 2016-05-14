@@ -35,9 +35,9 @@ export class LevelItem {
 
     public toMd()
     {
-        return '## ' + this.name + '\n\n' +
-        '['+this.name+']'+'('+this.source+')' + '\n\n' +
-        '![Image]'+'('+this.img+')' + '\n\n' +
-        '**'+this.description+'**' + '\n\n';
+        return '## ' + this.name + "\n\n" +
+        '['+this.name+']'+'('+this.source+')' + "\n\n" +
+        '![Image]'+'('+this.img+')' + "\n\n" +
+        '**'+this.description+'**' + "\n\n";
     }
 }

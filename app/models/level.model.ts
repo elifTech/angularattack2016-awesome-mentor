@@ -20,10 +20,8 @@ export class Level {
 
     public toMd()
     {
-        var markdown = '# ' + this.name + '\n\n';
-        this.items.forEach((item:LevelItem) => {
-            markdown += item.toMd();
-        })
+        var markdown = '# ' + this.name + "\n\n";
+        markdown += this.items.map((item:LevelItem) => item.toMd).join('');
         return markdown;
     }
 }
