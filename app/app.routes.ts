@@ -10,7 +10,7 @@ export var APP_ROUTES: RouteDefinition[] = [
     { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
     { path: '/simplebind', name: 'Simplebind', component: SimplebindComponent },
     { path: '/todolist', name: 'Todolist', component: TodolistComponent },
-    { path: '/mentor/profession/:id/edit', name: 'ProfessionEdit', component: ProfessionEditController },
-    { path: '/mentor/professions', name: 'MentorProfessions', component: MentorProfessionsController }
     { path: '/mentor', name: 'MentorLogin', component: MentorLoginController },
+    { path: '/mentor/professions', name: 'MentorProfessions', component: MentorProfessionsController },
+    { path: '/mentor/profession/:id/edit', name: 'ProfessionEdit', component: ProfessionEditController },
 ];
