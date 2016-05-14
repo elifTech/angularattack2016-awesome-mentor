@@ -43,7 +43,7 @@ app.post('/auth/github', function (req, res) {
             return res.status(500).json({ error: err });
         }
 
-        body.token = body.access_token;
+        //body.token = body.access_token;
         return res.json(body);
     });
 });
