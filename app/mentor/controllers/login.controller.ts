@@ -15,14 +15,23 @@ export class MentorLoginController {
     constructor(private auth: Auth, private router: Router, private github: GithubService){
         this.repos = github.getRepository('esvit', 'test-repos');
         
-        this.repos.getReadmeContent((res) => {
-            console.info(res);
+        this.repos.readFiles((res) => { 
+            res[0].setContent('test', 'test message', res => {
+                console.info(res);
+            });
+            res[0].getContent(res => {
+                console.info(res);
+            })
         });
     }
 
     authenticate(provider: string) {
         this.auth.authenticate(provider)
-            .subscribe(() => this.goToMain(), () => {});
+            .subscribe((res) => {
+
+                console.info(res)
+
+            }, () => {});
     }
 
     goToMain() {

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HTTP_PROVIDERS, Http} from '@angular/http';
+import {HTTP_PROVIDERS, Http, Headers} from '@angular/http';
 import {Base64Service} from './base64.service';
+import 'rxjs/add/operator/map';
 
 const GITHUB_README_REGEX = /readme\.md/i;
 
@@ -24,18 +25,39 @@ export class RepositoryItem {
         return this.data.type == 'file';
     }
 
-    getContent(next) {
-        let apiUrl = this.url + this.data.path;
-        this.http.get(apiUrl).subscribe(res => {
-            let content = res.json().content;
-            content = Base64Service.decode(content);
-            next(content);
-        });
+    private get sha() {
+        return this.data.sha;
     }
 
-    setContent() {
+    getContent(next) {
         let apiUrl = this.url + this.data.path;
-        console.info(apiUrl)
+        this.http.get(apiUrl)
+            .map(res => Base64Service.decode(res.json().content))
+            .subscribe(next);
+    }
+
+    setContent(content, message, next) {
+        let apiUrl = this.url + 'test.md',
+            params = {
+                message: message,
+                content: Base64Service.encode(content),
+                committer: {
+                    name: 'esvit',
+                    email: 'esvit666@gmail.com'
+                },
+                sha: this.sha
+            };
+        let opts = {
+            headers: new Headers({
+                'Accept': 'application/vnd.github.v3.raw'
+            })
+        };
+
+        console.info(apiUrl,this.data);
+
+        this.http.post(apiUrl, JSON.stringify(params), opts).subscribe(res => {
+            next(res);
+        });
     }
 }
 

@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
-import {ROUTER_DIRECTIVES, RouteParams, Router} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router, RouteConfig, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {CourseraService} from '../../services/coursera.service';
-
 import {YouTubeService} from '../../services/youtube.service';
+import {AwesomeService} from '../../services/awesome.service';
+
 import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 
@@ -23,7 +24,8 @@ import {ProfessionService} from '../../services/profession.service';
         FORM_PROVIDERS,
         ProfessionService,
         CourseraService,
-        YouTubeService
+        YouTubeService,
+        AwesomeService
     ]
 })
 export class MentorProfessionContentController {
@@ -33,13 +35,15 @@ export class MentorProfessionContentController {
     professionForm: any;
     youTubeResults$: Observable<any>;
     courseraResults$: Observable<any>;
-    source$: Observable<Object[]>;
+    awesomeResults$: Observable<any>;
 
 
     constructor(protected router:Router, private _courseraService: CourseraService,
-                private _youTubeService: YouTubeService, private _formBuilder: FormBuilder,
+                private _youTubeService: YouTubeService, 
+                private _formBuilder: FormBuilder,
                 private professionService: ProfessionService,
-                private params:RouteParams) {
+                private params: RouteParams,
+                private _awesomeService: AwesomeService) {
         console.log('MentorProfessionContentController');
 
         this.professionForm = this._formBuilder.group({
@@ -55,6 +59,12 @@ export class MentorProfessionContentController {
             .debounceTime(400)
             .distinctUntilChanged()
             .switchMap(term => this._courseraService.search(term));
+
+        this.awesomeResults$ = this.professionForm.controls.queryStringInput.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .switchMap(term => this._awesomeService.search(term));
+
 
         this.level = {
             title: params.get('name'),

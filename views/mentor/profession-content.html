@@ -30,7 +30,9 @@
     <div>
         <div>Awesome</div>
         <ul>
-            <li>item</li>
+            <li *ngFor="let result of awesomeResults$ | async">
+                <pre>{{result}}</pre>
+            </li>
         </ul>
     </div>
 
