@@ -25,6 +25,20 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <div class="controls">
+            <label>Levels</label>
+            <a (click)="addLevel()">add</a>
+            <ul>
+                <li  *ngFor="let level of profession.levels; let i = index;">
+                    <input required [ngModel]="level" (ngModelChange)="profession.levels[i] = $event" type="text" class="form-control" size="50">
+                    <a (click)="removeLevel(i)">x</a>
+                    <a [routerLink]="['MentorProfessionContent', {name:1, level: level}]" class="btn btn-primary">Content</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <button ng-disabled="!profession.title" (click)="saveItem()" class="btn btn-primary">
         <span *ngIf="!saveLoading">Save</span>
         <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
