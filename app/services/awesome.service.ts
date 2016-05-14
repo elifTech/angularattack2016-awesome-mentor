@@ -1065,9 +1065,12 @@ To the extent possible under law, [Sindre Sorhus](http://sindresorhus.com) has w
             var doc = parser.parseFromString(r, 'text/html');
 
             var headings = [].slice.call(doc.body.querySelectorAll('h2')),
-                $head, children, source, results = [];
+                $head, children, source, results = [], i = 10;
 
             headings.forEach(element => {
+                if(!i)
+                    return;
+
                 $head = jQuery(element);
                 children = [].slice.call($head.next().find('a'));
 
@@ -1075,12 +1078,17 @@ To the extent possible under law, [Sindre Sorhus](http://sindresorhus.com) has w
                 children.forEach(child => {
                     $child = jQuery(child);
 
-                    if($child.attr('href') != '#'){
+                    if($child.attr('href').indexOf('#') != 0){
+                        if(!i)
+                            return;
+
                         results.push({
                             title: $head.text(),
                             text: $child.text(),
                             href: $child.attr('href')
                         });
+
+                        i--;
                     }
                 });
             });
