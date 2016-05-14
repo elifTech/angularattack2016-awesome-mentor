@@ -19,6 +19,7 @@
     "angular2-in-memory-web-api": "0.0.7",
     "bootstrap": "^3.3.6",
     "font-awesome": "^4.6.1",
+    "jquery": "^2.2.3",
     "lodash": "^4.11.0",
     "ng2-select": "git+https://github.com/aslubsky/ng2-select.git",
     "ng2-ui-auth": "^3.0.1",

@@ -1,6 +1,6 @@
 <form name="formEdit" [ngFormModel]="professionForm" #formEdit="ngForm" novalidate>
 
-    level: {{level|json}} /
+
     queryString: {{queryString}}
 
     <input class="form-control" type="text" ngControl="queryStringInput" required [(ngModel)]="queryString"/>
@@ -9,11 +9,11 @@
         <div>Youtube</div>
         <ul>
             <li *ngFor="let result of level.items['youtube.com']">
-
-                <a href="https://www.youtube.com/watch?v={{result.id}}" target="_blank">
-                    <h3>{{result.source}}</h3>
+                <a href="{{result.source}}" target="_blank">
+                    <h3>{{result.title}}</h3>
                 </a>
-
+                <p>{{result.description}}</p>
+                <img [src]="result.img" style="width: 100%; max-width: 90px" />
             </li>
 
             <li *ngFor="let result of youTubeResults$ | async">
@@ -28,11 +28,11 @@
     <div>
         <div>CoursEra</div>
         <li *ngFor="let result of level.items['coursera.org']">
-
-            <a href="result.source" target="_blank">
-                <h3>{{result.source}}</h3>
+            <a href="{{result.source}}" target="_blank">
+                <h3>{{result.title}}</h3>
             </a>
-
+            <p>{{result.description}}</p>
+            <img [src]="result.img" style="width: 100%; max-width: 90px" />
         </li>
 
         <ul>
@@ -46,11 +46,11 @@
     <div>
         <div>Awesome</div>
         <li *ngFor="let result of level.items['github.com']">
-
-            <a href="result.source" target="_blank">
-                <h3>{{result.source}}</h3>
+            <a href="{{result.source}}" target="_blank">
+                <h3>{{result.title}}</h3>
             </a>
-
+            <p>{{result.description}}</p>
+            <img [src]="result.img" style="width: 100%; max-width: 90px" />
         </li>
 
         <ul>

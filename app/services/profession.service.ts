@@ -5,6 +5,8 @@ import {Observable, Observer} from 'rxjs/Rx';
 import {GithubService, Repository} from "./github.service";
 import 'rxjs/add/operator/share';
 
+declare var jQuery:any;
+
 @Injectable()
 export class ProfessionService extends GithubService {
     public config:any;
@@ -72,21 +74,32 @@ export class ProfessionService extends GithubService {
     getLevelItems(profName:string, level:string):Promise<Object[]> {
         return new Promise((resolve, reject) => {
             this.repos.getFileContent((content) => {
-                //console.log('content', content);
-                var parts = content.split("\n");
-                parts.splice(0, 2);
 
-                var links = parts.map(item => {
-                    var version = item.split("?v=");
+                this.fromMarkdown(content, function(links) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(links, 'text/html');
+                    var headings = [].slice.call(doc.body.querySelectorAll('h2')),
+                        head, childs, source, results = [];
 
-                    return {
-                        source: item,
-                        domain: item.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, ''),
-                        id: version = version ? version[1] : null
-                    };
+                    headings.forEach(element => {
+                        head = jQuery(element);
+                        childs = head.next().children();
+                        source = jQuery(childs[0]).attr('href');
+                        let parsed = {
+                            title: head.text(),
+                            source: source,
+                            img: jQuery(childs[1]).attr('href'),
+                            desc: jQuery(childs[2]).text(),
+                            domain: source.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '')
+                        };
+                        
+                        results.push(parsed);
+                    });
+
+                    resolve(results);
                 });
                 
-                resolve(links);
+
             }, 'professions/' + profName, level + '.md');
         });
     }
