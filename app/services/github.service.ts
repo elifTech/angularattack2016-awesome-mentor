@@ -6,26 +6,41 @@ export class RepositoryItem {
         console.info(data)
     }
 
-    setContent() {
+    get url() {
+        return this.repos.url + '/contents/';
+    }
 
+    get isDir() {
+        return this.data.type == 'dir';
+    }
+
+    setContent() {
+        let apiUrl = this.url + this.data.path;
+        console.info(apiUrl)
     }
 }
 
 export class Repository {
-    private url: string;
+    private _url: string;
 
     constructor(private http:Http, private owner: string, private repos: string) {
-        this.url = 'https://api.github.com/repos/' + owner + '/' + repos;
+        this._url = 'https://api.github.com/repos/' + owner + '/' + repos;
     }
 
     get url() {
-        return this.url;
+        return this._url;
     }
 
     readDir(next, path = '') {
         this.http.get(this.url + '/contents/' + path).subscribe(res => {
             next(res.json().map((item) => new RepositoryItem(this.http, this, item)));
         });
+    }
+
+    readFolders(next, path = '') {
+        this.readDir(res => {
+            next(res.filter(item => item.isDir));
+        }, path);
     }
 }
 
