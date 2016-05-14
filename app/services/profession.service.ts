@@ -5,11 +5,10 @@ import {Observable} from 'rxjs/Rx';
 import {GithubService} from "./github.service";
 
 @Injectable()
-export class ProfessionService extends GithubService{
+export class ProfessionService {
     public config: any;
 
     constructor(private http: Http) {
-        super(http);
         this.config = {
             github: {
                 list: 'https://api.github.com/repos/polluxx/awesomementor/contents/professions',
