@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Profession } from '../models/profession.model';
 import { HTTP_PROVIDERS, Http, Response }    from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
+import {GithubService} from "./github.service";
 
 @Injectable()
-export class ProfessionService {
+export class ProfessionService extends GithubService{
     public config: any;
 
     constructor(private http: Http) {
+        super();
         this.config = {
             github: {
                 list: 'https://api.github.com/repos/polluxx/awesomementor/contents/professions',
@@ -38,10 +40,11 @@ export class ProfessionService {
 
         console.log(body.data);
 
-        return new Document();
+        return body.data || {};
     }
 
-    private handleError(error: any) {
+    private handleError (error: any) {
+        // In a real world app, we might use a remote logging infrastructure
         let errMsg = error.message || 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
