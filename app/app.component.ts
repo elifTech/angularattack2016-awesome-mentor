@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {RouterOutlet, ROUTER_DIRECTIVES, RouteConfig, RouteDefinition} from '@angular/router-deprecated';
+import {RouterOutlet, RouteConfig, RouteDefinition, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 import {APP_ROUTES} from './app.routes';
 import {NavbarComponent} from './navbar/navbar.component';
 import {LoggerService} from './services/logger.service';
