@@ -13,16 +13,26 @@ import {Select, SELECT_DIRECTIVES} from 'ng2-select';
     ]
 })
 export class MentorProfessionEditController {
-    public profession:any = {};
+    public profession:any = {
+        levels: []
+    };
     private tags:string[] = [''];
 
     constructor(protected router:Router) {
         console.log('MentorProfessionEditController')
     }
 
-    public saveItem()
-    {
+    public saveItem() {
 
+    }
+
+
+    public addLevel() {
+        this.profession.levels.push('Level #' + this.profession.levels.length);
+    }
+
+    public removeLevel(index:number) {
+        this.profession.levels.splice(index, 1);
     }
 
     public setTags($event) {
