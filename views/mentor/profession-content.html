@@ -23,6 +23,8 @@
         <ul>
             <li *ngFor="let result of courseraResults$ | async">
                 {{result.name}}
+                <a (click)="addToProfession(result, 'coursera')">+</a> /
+                <a (click)="removeFromProfession(result)">-</a>
             </li>
         </ul>
     </div>
