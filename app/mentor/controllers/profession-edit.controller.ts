@@ -28,6 +28,7 @@ export class MentorProfessionEditController implements OnInit {
     constructor(private params:RouteParams, private professionService: ProfessionService, protected router:Router) {
         console.log('MentorProfessionEditController');
         this.profession = new Profession({});
+        this.profession.isNew = true;
     }
 
     ngOnInit() {

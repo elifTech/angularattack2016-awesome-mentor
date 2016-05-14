@@ -5,7 +5,7 @@
         <div class="col-lg-8">
             <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
                 <label for="name">Name</label>
-                <input #name="ngForm" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
+                <input #name="ngForm" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
 
                 <div class="help-block"
                      *ngIf="(name.dirty && !name.valid) || (errors && errors.name)">
