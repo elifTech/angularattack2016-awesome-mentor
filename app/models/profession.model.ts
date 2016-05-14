@@ -4,7 +4,7 @@ export class Profession {
     public rating: number;
     public done: boolean;
 
-    public levels: string[] = [];
+    public levels: any[] = [];
     public tags: string[] = [];
     public repo: string;
 

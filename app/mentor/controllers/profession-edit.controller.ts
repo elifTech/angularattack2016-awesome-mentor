@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
+import {Profession} from '../../models/profession.model';
 import {ProfessionService} from '../../services/profession.service';
 
 @Component({
@@ -17,19 +18,23 @@ import {ProfessionService} from '../../services/profession.service';
         ProfessionService
     ]
 })
-export class MentorProfessionEditController {
-    public profession:any = {
-        levels: []
-    };
+export class MentorProfessionEditController implements OnInit {
+    public profession:Profession;
     private tags:string[] = [''];
 
     constructor(private params:RouteParams, private professionService: ProfessionService, protected router:Router) {
         console.log('MentorProfessionEditController');
-        this.professionService
-            .getByName(params.get('name'))
-            .then((profession) => {
-                this.profession = profession;
-            });
+        this.profession = new Profession({});
+    }
+
+    ngOnInit() {
+        if(this.params.get('name')) {
+            this.professionService
+                .getByName(this.params.get('name'))
+                .then((profession) => {
+                    this.profession = profession;
+                });
+        }
     }
 
     public saveItem() {
