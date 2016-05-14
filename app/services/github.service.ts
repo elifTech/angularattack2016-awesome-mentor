@@ -14,6 +14,14 @@ export class RepositoryItem {
         return this.data.type == 'dir';
     }
 
+    get name() {
+        return this.data.name;
+    }
+
+    get path() {
+        return this.data.path;
+    }
+
     setContent() {
         let apiUrl = this.url + this.data.path;
         console.info(apiUrl)
@@ -46,7 +54,7 @@ export class Repository {
 
 @Injectable()
 export class GithubService {
-    constructor(private http:Http) {
+    constructor(public http:Http) {
     }
     
     getRepository(owner: string, repos: string) {
