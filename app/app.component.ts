@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {RouterOutlet, RouteConfig, ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
 import {APP_ROUTES} from './app.routes';
 import {LoggerService} from './services/logger.service';
-import {AuthService} from './services/auth.service';
+import {UserModel, AuthService} from './services/auth.service';
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./services/github.service";
 
@@ -16,25 +16,23 @@ import {GithubService} from "./services/github.service";
 })
 @RouteConfig(APP_ROUTES)
 export class AppComponent {
-    private logger: LoggerService;
+    private user: UserModel;
 
-    private user: any;
+    private auth: Auth;
 
-    constructor(logger: LoggerService, private auth:Auth, private router: Router, private github: GithubService) {
-        this.logger = logger;
-        //console.log('AppComponent constructor', this.auth.isAuthenticated());
-        AuthService.$auth = this.auth;
+    constructor(private authService:AuthService, private router: Router) {
+        authService.init();
 
-        if (this.auth.isAuthenticated()) {
-            this.github.getUser(user => {
-                this.user = user;
-                console.info(user)
-            });
-        }
+        this.auth = AuthService.auth;
+        AuthService.user$.subscribe(user => {
+            this.user = user;
+        });
     }
 
     logout() {
-        this.auth.logout().subscribe(() => this.goToMain());
+        this.authService.logout().subscribe(() => {
+            this.goToMain();
+        });
     }
 
     goToMain() {
