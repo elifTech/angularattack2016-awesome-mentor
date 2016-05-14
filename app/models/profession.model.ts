@@ -5,6 +5,7 @@ export class Profession {
     public type: string;
     public rating: number;
     public done: boolean;
+    public isNew: boolean = false;
 
     public levels: Level[] = [];
     public tags: string[] = [];

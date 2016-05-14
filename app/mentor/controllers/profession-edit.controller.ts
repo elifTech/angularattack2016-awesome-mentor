@@ -28,6 +28,7 @@ export class MentorProfessionEditController implements OnInit {
     constructor(private params:RouteParams, private professionService: ProfessionService, protected router:Router) {
         console.log('MentorProfessionEditController');
         this.profession = new Profession({});
+        this.profession.isNew = true;
     }
 
     ngOnInit() {
@@ -48,7 +49,6 @@ export class MentorProfessionEditController implements OnInit {
         var newLvl = new Level({});
         newLvl.name = 'Level ' + this.profession.levels.length;
         this.profession.levels.push(newLvl);
-        this.professionService.addLevel(this.profession, newLvl);
     }
 
     public removeLevel(index:number) {

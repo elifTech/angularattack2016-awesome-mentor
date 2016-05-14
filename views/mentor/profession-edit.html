@@ -5,7 +5,7 @@
         <div class="col-lg-8">
             <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
                 <label for="name">Name</label>
-                <input #name="ngForm" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
+                <input #name="ngForm" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
 
                 <div class="help-block"
                      *ngIf="(name.dirty && !name.valid) || (errors && errors.name)">
@@ -31,7 +31,7 @@
             <a (click)="addLevel()">add</a>
             <ul>
                 <li  *ngFor="let level of profession.levels; let i = index;">
-                    <input required [(ngModel)]="profession.levels[i].title" type="text" class="form-control" size="50">
+                    <input required [(ngModel)]="profession.levels[i].name" type="text" class="form-control" size="50">
                     <a (click)="removeLevel(i)">x</a>
                     <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.title}]" class="btn btn-primary">Content</a>
                 </li>
