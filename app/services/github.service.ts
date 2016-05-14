@@ -121,6 +121,7 @@ export class Repository {
     }
 
     getFileContent(next, path = '', name = '') {
+        console.log(path, name);
         this.readFiles(res => {
             let file = res.find(item => item.name == name);
             file ? file.getContent(next) : next(null);

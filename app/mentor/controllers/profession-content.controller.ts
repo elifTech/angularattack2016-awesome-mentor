@@ -77,7 +77,7 @@ export class MentorProfessionContentController {
         });
 
         this.professionService
-            .getLevelItems(params.get('name'), params.get('level'))
+            .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
                 console.log(levelItems);
                 this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});

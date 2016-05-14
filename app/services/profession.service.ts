@@ -124,12 +124,13 @@ export class ProfessionService {
                 this.github.fromMarkdown(content, function (links) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(links, 'text/html');
+                    
                     var headings = [].slice.call(doc.body.querySelectorAll('h2')),
                         results:LevelItem[] = [], item;
 
                     headings.forEach(element => {
                         item = new LevelItem();
-                        item._parse();
+                        item._parse(element);
                         results.push(item);
                     });
 

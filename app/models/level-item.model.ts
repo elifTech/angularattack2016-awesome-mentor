@@ -30,7 +30,7 @@ export class LevelItem {
         this.source = link;
         this.img = img.find('a').attr('href');
         this.description = desc.find('strong').text();
-        this.domain = link.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '');
+        this.domain = (link) ? link.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '') : '';
     }
 
     public toMd()
