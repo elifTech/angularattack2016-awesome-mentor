@@ -4,10 +4,42 @@ import {MentorProfessionEditController} from './mentor/controllers/profession-ed
 import {MentorProfessionContentController} from './mentor/controllers/profession-content.controller';
 import {MentorLoginController} from "./mentor/controllers/login.controller";
 
-export var APP_ROUTES: RouteDefinition[] = [
-    { path: '/mentor', name: 'MentorLogin', component: MentorLoginController },
-    { path: '/mentor/professions', name: 'MentorProfessions', component: MentorProfessionsController },
-    { path: '/mentor/profession/:name/edit', name: 'MentorProfessionEdit', component: MentorProfessionEditController },
-    { path: '/mentor/profession/:name/content/:level', name: 'MentorProfessionContent', component: MentorProfessionContentController },
-    { path: '/mentor/profession/create', name: 'MentorProfessionCreate', component: MentorProfessionEditController },
+export var APP_ROUTES:RouteDefinition[] = [
+    {
+        path: '/mentor', 
+        name: 'MentorLogin', 
+        component: MentorLoginController
+    },
+    {
+        path: '/mentor/professions', 
+        name: 'MentorProfessions', 
+        component: MentorProfessionsController,
+        data: {
+            permissions: ["github"]
+        }
+    },
+    {
+        path: '/mentor/profession/:name/edit', 
+        name: 'MentorProfessionEdit', 
+        component: MentorProfessionEditController,
+        data: {
+            permissions: ["github"]
+        }
+    },
+    {
+        path: '/mentor/profession/:name/content/:level',
+        name: 'MentorProfessionContent',
+        component: MentorProfessionContentController,
+        data: {
+            permissions: ["github"]
+        }
+    },
+    {
+        path: '/mentor/profession/create', 
+        name: 'MentorProfessionCreate', 
+        component: MentorProfessionEditController,
+        data: {
+            permissions: ["github"]
+        }
+    },
 ];
