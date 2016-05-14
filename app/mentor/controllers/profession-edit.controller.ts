@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
+
+import {ProfessionService} from '../../services/profession.service';
 
 @Component({
     templateUrl: 'views/mentor/profession-edit.html',
@@ -10,6 +12,9 @@ import {Select, SELECT_DIRECTIVES} from 'ng2-select';
         ROUTER_DIRECTIVES,
         Select,
         SELECT_DIRECTIVES
+    ],
+    providers: [
+        ProfessionService
     ]
 })
 export class MentorProfessionEditController {
@@ -18,8 +23,13 @@ export class MentorProfessionEditController {
     };
     private tags:string[] = [''];
 
-    constructor(protected router:Router) {
-        console.log('MentorProfessionEditController')
+    constructor(private params:RouteParams, private professionService: ProfessionService, protected router:Router) {
+        console.log('MentorProfessionEditController');
+        this.professionService
+            .getByName(params.get('name'))
+            .then((profession) => {
+                this.profession = profession;
+            });
     }
 
     public saveItem() {
@@ -28,7 +38,7 @@ export class MentorProfessionEditController {
 
 
     public addLevel() {
-        this.profession.levels.push('Level #' + this.profession.levels.length);
+        this.profession.levels.push({title: 'Level #' + this.profession.levels.length});
     }
 
     public removeLevel(index:number) {

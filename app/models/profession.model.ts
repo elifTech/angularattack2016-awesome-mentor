@@ -1,18 +1,30 @@
 export class Profession {
-    public title: string;
+    public name: string;
     public type: string;
     public rating: number;
     public done: boolean;
 
     public levels: string[];
     public tags: string[];
-    public source: string;
     public repo: string;
 
-    constructor(title: string, source?: string, repo?: string) {
-        this.title = title;
-        if(source) this.source = source;
+    constructor(raw: any, repo?: string) {
+        if(typeof(raw) == "string") {
+            this._parse(raw);
+        } else {
+            this.name = raw.name;
+        }
+        //console.log('raw', raw);
+
         if(repo) this.repo = repo;
+    }
+
+    private _parse(str:string)
+    {
+        var parts = str.split("\n");
+
+        this.name = parts[0];
+        this.tags = parts[2].split(',');
     }
 
     setRepo(repo: string) {
