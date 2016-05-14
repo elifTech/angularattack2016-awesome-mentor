@@ -15,6 +15,16 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <div class="controls">
+            <label>Tags</label>
+            <ng-select [multiple]="true" [tagging]="true" [taggingTokens]="[',','SPACE','ENTER']"
+                       (data)="setTags($event)" [initData]="profession.tags"
+                       [items]="tags" class="custom-ui-select-table">
+            </ng-select>
+        </div>
+    </div>
+
     <button ng-disabled="!profession.title" (click)="saveItem()" class="btn btn-primary">
         <span *ngIf="!saveLoading">Save</span>
         <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
