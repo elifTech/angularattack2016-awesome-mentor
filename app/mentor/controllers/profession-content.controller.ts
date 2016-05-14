@@ -90,6 +90,7 @@ export class MentorProfessionContentController {
         var levelItem = new LevelItem();
         levelItem.parseFrom(result, type);
         this.level.items.push(levelItem);
+        
         console.log(' addToProfession',  result, type);
     }
 

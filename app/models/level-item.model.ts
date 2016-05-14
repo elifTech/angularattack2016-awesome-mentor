@@ -47,7 +47,7 @@ export class LevelItem {
             'coursera': this.parseCoursera,
             'awesome': this.parseGithub
         };
-        factory[resource].call(data);
+        factory[resource].call(this, data);
     }
     
     private parseYoutube(data: any) {
