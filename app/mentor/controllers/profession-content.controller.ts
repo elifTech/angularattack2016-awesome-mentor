@@ -76,6 +76,7 @@ export class MentorProfessionContentController {
             .then((levelItems) => {
                 this.level.items = levelItems;
             });
+        
     }
     
     public saveItem()
