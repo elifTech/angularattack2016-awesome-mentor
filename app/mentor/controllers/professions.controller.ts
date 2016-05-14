@@ -7,7 +7,7 @@ import {CORE_DIRECTIVES} from '@angular/common';
     templateUrl: '/views/mentor/professions.html',
     directives: [CORE_DIRECTIVES]
 })
-export class ProfessionsComponent {
+export class ProfessionsController {
     // public doc: Document;
     
     constructor(){
