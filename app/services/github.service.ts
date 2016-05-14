@@ -62,18 +62,14 @@ export class RepositoryItem {
     }
 
     deleteFile(message, next) {
-        let apiUrl = this.url + this.data.path;
-            /*params = {
+        let apiUrl = this.url + this.data.path,
+            params = {
                 message: message,
                 sha: this.sha
-            };*/
+            };
 
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('message', message);
-        params.set('sha',  this.sha);
-
-        let opts = this.service.getHttpOptions(params);
-        this.http.delete(apiUrl, params).subscribe(res => {
+        let opts = this.service.getHttpOptions(JSON.stringify(params));
+        this.http.delete(apiUrl, opts).subscribe(res => {
             next(res.json());
         });
     }
@@ -168,7 +164,7 @@ export class GithubService {
         return new Repository(this.http, owner, repos, this);
     }
 
-    getHttpOptions(search?: URLSearchParams) {
+    getHttpOptions(body?: string) {
         let opts = {
             headers: new Headers({
                 'Accept': 'application/vnd.github.v3.raw'
@@ -177,8 +173,8 @@ export class GithubService {
         if (this._token) {
             opts.headers.set('Authorization', 'Bearer ' + this._token);
         }
-        if (search) {
-            opts['search'] = search;
+        if (body) {
+            opts['body'] = body;
         }
         return opts;
     }
