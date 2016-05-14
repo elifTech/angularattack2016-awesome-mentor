@@ -9,26 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
 var router_deprecated_1 = require('@angular/router-deprecated');
-var app_routes_1 = require('./app.routes');
-var navbar_component_1 = require('./navbar/navbar.component');
-var logger_service_1 = require('./blocks/logger.service');
-var AppComponent = (function () {
-    function AppComponent(logger) {
-        this.logger = logger;
-        this.appRoutes = app_routes_1.APP_ROUTES;
+var NavbarComponent = (function () {
+    function NavbarComponent() {
     }
-    AppComponent = __decorate([
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], NavbarComponent.prototype, "brand", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Array)
+    ], NavbarComponent.prototype, "routes", void 0);
+    NavbarComponent = __decorate([
         core_1.Component({
-            selector: 'as-main-app',
-            templateUrl: 'app/app.html',
-            directives: [router_deprecated_1.RouterOutlet, navbar_component_1.NavbarComponent]
-        }),
-        router_deprecated_1.RouteConfig(app_routes_1.APP_ROUTES), 
-        __metadata('design:paramtypes', [logger_service_1.LoggerService])
-    ], AppComponent);
-    return AppComponent;
+            selector: 'as-navbar',
+            templateUrl: 'app/navbar/navbar.html',
+            changeDetection: core_1.ChangeDetectionStrategy.OnPush,
+            directives: [router_deprecated_1.RouterLink, common_1.CORE_DIRECTIVES]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], NavbarComponent);
+    return NavbarComponent;
 }());
-exports.AppComponent = AppComponent;
+exports.NavbarComponent = NavbarComponent;
 
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=navbar.component.js.map
