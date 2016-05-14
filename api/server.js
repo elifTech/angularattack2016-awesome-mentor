@@ -3,8 +3,9 @@ var express = require('express'),
     request = require('request');
 
 var config = {
-    clientId: '',
-    clientSecret: '',
+    gitHubClientId: '',
+    gitHubSecret: '',
+    googleSecret: '',
     scope: 'user'
 };
 
@@ -23,29 +24,51 @@ app.use(function(req, res, next) {
         res.writeHead(200, headers);
         return res.end();
     }
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
     next();
 });
 app.use(bodyParser.json());
 
 app.post('/auth/github', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
     var code = req.body.code;
 
     if (!code) return res.status(500).json({ error: 'missing oauth code' });
 
-    var u = 'https://github.com/login/oauth/access_token'
-            + '?client_id=' + config.clientId
-            + '&client_secret=' + config.clientSecret
-            + '&code=' + code
-        ;
-    request.get({url: u, json: true}, function (err, tokenResp, body) {
+    var url = 'https://github.com/login/oauth/access_token';
+
+    var params = {
+        code: code,
+        client_id: config.gitHubClientId,
+        client_secret: config.gitHubSecret
+    };
+    request.get(url, { json: true, form: params }, function (err, tokenResp, body) {
         if (err) {
             return res.status(500).json({ error: err });
         }
         body.token = body.access_token;
         return res.json(body);
+    });
+});
+
+app.post('/auth/google', function (req, res) {
+    var code = req.body.code;
+
+    if (!code) return res.status(500).json({ error: 'missing oauth code' });
+
+    var accessTokenUrl = 'https://accounts.google.com/o/oauth2/token';
+    var params = {
+        code: req.body.code,
+        client_id: req.body.clientId,
+        client_secret: config.googleSecret,
+        redirect_uri: req.body.redirectUri,
+        grant_type: 'authorization_code'
+    };
+
+    request.post(accessTokenUrl, { json: true, form: params }, function(err, response, token) {
+        token.token = token.access_token;
+        return res.json(token);
     });
 });
 
