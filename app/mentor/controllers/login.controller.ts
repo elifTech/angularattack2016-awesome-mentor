@@ -6,27 +6,12 @@ import {GithubService, Repository} from '../../services/github.service';
 
 @Component({
     templateUrl: '/views/mentor/login.html',
-    providers: [GithubService],
     directives: [CORE_DIRECTIVES]
 })
 export class MentorLoginController {
     public repos: Repository;
 
     constructor(private auth: Auth, private router: Router, private github: GithubService){
-        this.repos = github.getRepository('esvit', 'test-repos');
-
-        github.fromMarkdown('Hello world github/linguist#1 **cool**, and #1!', function(res) {
-            console.info(res);
-        });
-
-        /*this.repos.readFiles((res) => {
-            res[0].setContent('test', 'test message', res => {
-                console.info(res);
-            });
-            res[0].getContent(res => {
-                console.info(res);
-            })
-        });*/
     }
 
     authenticate(provider: string) {
@@ -40,5 +25,14 @@ export class MentorLoginController {
 
     goToMain() {
         this.router.navigate(['Professions']);
+    }
+
+    save() {
+        this.repos = this.github.getRepository('esvit', 'test-repos');
+        this.repos.readFiles((res) => {
+            res[0].setContent('test', 'test message', res => {
+                console.info(res);
+            });
+        });
     }
 }

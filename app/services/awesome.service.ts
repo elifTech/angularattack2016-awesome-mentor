@@ -7,9 +7,8 @@ import {GithubService, Repository} from "./github.service";
 import {Observable} from "rxjs/Observable";
 
 @Injectable()
-export class AwesomeService extends GithubService {
-    constructor (private _http: Http) {
-        super(_http);
+export class AwesomeService {
+    constructor (private http: Http) {
     }
 
     search(query: string): Observable<Object> {

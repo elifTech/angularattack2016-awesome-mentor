@@ -6,7 +6,7 @@ import {GithubService, Repository} from "./github.service";
 import 'rxjs/add/operator/share';
 
 @Injectable()
-export class ProfessionService extends GithubService {
+export class ProfessionService {
     public config:any;
     public repos:Repository;
     private _dataObserver:Observer<Profession[]>;
@@ -15,15 +15,14 @@ export class ProfessionService extends GithubService {
         files:Profession[]
     }
 
-    constructor(public http:Http) {
-        super(http);
+    constructor(private github: GithubService) {
         this.config = {
             github: {
                 list: 'https://api.github.com/repos/polluxx/awesomementor/contents/professions',
                 readme: 'https://raw.githubusercontent.com/polluxx/awesomementor/master'
             }
         };
-        this.repos = this.getRepository('polluxx', 'awesomementor');
+        this.repos = github.getRepository('polluxx', 'awesomementor');
     }
 
     list():Promise<Profession[]> {

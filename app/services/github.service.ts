@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {HTTP_PROVIDERS, Http, Headers} from '@angular/http';
 import {Base64Service} from './base64.service';
 import 'rxjs/add/operator/map';
+import {Auth} from 'ng2-ui-auth';
 
 const GITHUB_README_REGEX = /readme\.md/i;
 
 export class RepositoryItem {
-    constructor(private http:Http, private repos: Repository, private data) {
+    constructor(private http:Http, private repos:Repository, private data, private service:GithubService) {
     }
 
     get url() {
@@ -29,6 +30,15 @@ export class RepositoryItem {
         return this.data.sha;
     }
 
+    get treeNode() {
+        return {
+            path: this.data.path,
+            mode: "100644",
+            type: this.data.type,
+            sha: this.sha
+        }
+    }
+
     getContent(next) {
         let apiUrl = this.url + this.data.path;
         this.http.get(apiUrl)
@@ -37,34 +47,24 @@ export class RepositoryItem {
     }
 
     setContent(content, message, next) {
-        let apiUrl = this.url + 'test.md',
+        let apiUrl = this.url + this.data.path,
             params = {
                 message: message,
                 content: Base64Service.encode(content),
-                committer: {
-                    name: 'esvit',
-                    email: 'esvit666@gmail.com'
-                },
                 sha: this.sha
             };
-        let opts = {
-            headers: new Headers({
-                'Accept': 'application/vnd.github.v3.raw'
-            })
-        };
 
-        console.info(apiUrl,this.data);
-
-        this.http.post(apiUrl, JSON.stringify(params), opts).subscribe(res => {
-            next(res);
+        let opts = this.service.getHttpOptions();
+        this.http.put(apiUrl, JSON.stringify(params), opts).subscribe(res => {
+            next(res.json());
         });
     }
 }
 
 export class Repository {
-    private _url: string;
+    private _url:string;
 
-    constructor(private http:Http, private owner: string, private repos: string) {
+    constructor(private http:Http, private owner:string, private repos:string, private service:GithubService) {
         this._url = GithubService.url + '/repos/' + owner + '/' + repos;
     }
 
@@ -73,8 +73,9 @@ export class Repository {
     }
 
     readDir(next, path = '') {
-        this.http.get(this.url + '/contents/' + path).subscribe(res => {
-            next(res.json().map((item) => new RepositoryItem(this.http, this, item)));
+        let opts = this.service.getHttpOptions();
+        this.http.get(this.url + '/contents/' + path, opts).subscribe(res => {
+            next(res.json().map((item) => new RepositoryItem(this.http, this, item, this.service)));
         });
     }
 
@@ -103,22 +104,55 @@ export class Repository {
             file ? file.getContent(next) : next(null);
         }, path);
     }
+
+   /* createTree(sha:string, items:RepositoryItem[]) {
+        let opts = this.service.getHttpOptions(),
+            params = {
+                base_tree: sha,
+                tree: []
+            };
+
+        params.tree = items.map(item => item.treeNode);
+
+        this.http.post(this.url + '/git/trees', opts).subscribe(res => {
+            //next(res.json().map((item) => new RepositoryItem(this.http, this, item, this.service)));
+        });
+    }*/
 }
 
 @Injectable()
 export class GithubService {
-    constructor(public http:Http) {
+    private _token:string;
+
+    constructor(public http:Http, private auth:Auth) {
     }
 
     static get url() {
         return 'https://api.github.com';
     }
-    
-    getRepository(owner: string, repos: string) {
-        return new Repository(this.http, owner, repos);
+
+    getRepository(owner:string, repos:string) {
+        if (this.auth.isAuthenticated()) {
+            this._token = this.auth.getToken();
+        }
+        console.info(this.auth.isAuthenticated(), this._token);
+        return new Repository(this.http, owner, repos, this);
     }
 
-    fromMarkdown(text: string, next) {
+    getHttpOptions() {
+        let opts = {
+            headers: new Headers({
+                'Accept': 'application/vnd.github.v3.raw'
+            })
+        };
+        console.info(this._token)
+        if (this._token) {
+            opts.headers.set('Authorization', 'Bearer ' + this._token);
+        }
+        return opts;
+    }
+
+    fromMarkdown(text:string, next) {
         let params = {
             "text": text,
             "mode": "markdown"
