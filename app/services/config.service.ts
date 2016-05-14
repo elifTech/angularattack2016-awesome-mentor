@@ -2,11 +2,11 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class ConfigService {
-    get repOwner() {
+    static get repOwner() {
         return 'esvit';
     }
 
-    get repName() {
+    static get repName() {
         return 'test-repos';
     }
 }
