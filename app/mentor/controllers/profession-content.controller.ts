@@ -87,7 +87,6 @@ export class MentorProfessionContentController {
 
     public addToProfession(result:any, type:string)
     {
-        
         console.log(' addToProfession',  result, type);
     }
 
