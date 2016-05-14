@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HTTP_PROVIDERS, Http, Headers, URLSearchParams} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import {Base64Service} from './base64.service';
 import {ConfigService} from './config.service';
 import 'rxjs/add/operator/map';

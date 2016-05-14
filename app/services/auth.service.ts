@@ -4,14 +4,18 @@ import {Observable} from 'rxjs/Observable';
 import {ComponentInstruction} from '@angular/router-deprecated';
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./github.service";
+import {GoogleService} from "./google.service";
 
 export interface UserModel {
+    type: string,
     avatar_url: string,
     name: string
 }
 
 @Injectable()
 export class AuthService {
+    public static provider: string;
+
     public static auth: Auth;
 
     public static user$: Observable<UserModel>;
@@ -20,7 +24,7 @@ export class AuthService {
 
     private _user: UserModel;
 
-    constructor (private github: GithubService, private auth:Auth) {
+    constructor (private github: GithubService, private google: GoogleService, private auth:Auth) {
         AuthService.auth = auth;
         if (!AuthService.user$) {
             AuthService.user$ = new Observable<UserModel>(observer => {
@@ -30,13 +34,27 @@ export class AuthService {
     }
 
     public init() {
+        AuthService.provider = localStorage.getItem('provider') || null;
         if (this.auth.isAuthenticated()) {
             this.loadUserInfo();
         }
     }
 
+    public static setProvider(provider) {
+        AuthService.provider = provider;
+        localStorage.setItem('provider', provider);
+    }
+
     public loadUserInfo() {
-        this.github.getUser(user => {
+        if (AuthService.provider == 'github') {
+            return this.github.getUser(user => {
+                user.type = 'github';
+                this._user = user;
+                this._userObserver.next(this._user);
+            });
+        }
+        this.google.getUser(user => {
+            user.type = 'google';
             this._user = user;
             this._userObserver.next(this._user);
         });
@@ -55,10 +73,14 @@ export class AuthService {
         return new Promise((resolve, reject) => {
             //console.log('canComponentActivate', AuthService.$auth);
             if ((<any>next.routeData.data).permissions) {
-                if ((<any>next.routeData.data).permissions[0] == "github") {
-                    console.log(next.routeName, 'can activate -> ',  AuthService.auth && AuthService.auth.isAuthenticated());
-                    resolve(AuthService.auth && AuthService.auth.isAuthenticated());
+                if ((<any>next.routeData.data).permissions[0] == AuthService.provider) {
+                    console.log((<any>next.routeData.data).permissions[0],
+                        next.routeName, 'can activate -> ',  AuthService.auth && AuthService.auth.isAuthenticated(),
+                        'permission', AuthService.provider
+                    );
+                    return resolve(AuthService.auth && AuthService.auth.isAuthenticated());
                 }
+                resolve(false);
             } else {
                 resolve(true);
             }

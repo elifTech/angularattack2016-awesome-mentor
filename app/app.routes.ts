@@ -6,7 +6,7 @@ import {MentorLoginController} from "./mentor/controllers/login.controller";
 
 export var APP_ROUTES:RouteDefinition[] = [
     {
-        path: '/mentor', 
+        path: '/',
         name: 'MentorLogin', 
         component: MentorLoginController
     },
@@ -40,6 +40,14 @@ export var APP_ROUTES:RouteDefinition[] = [
         component: MentorProfessionEditController,
         data: {
             permissions: ["github"]
+        }
+    },
+    {
+        path: '/public',
+        name: 'Public',
+        component: MentorProfessionsController,
+        data: {
+            permissions: ["google"]
         }
     },
 ];

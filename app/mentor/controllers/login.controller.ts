@@ -18,12 +18,13 @@ export class MentorLoginController {
     authenticate(provider: string) {
         this.auth.authenticate(provider)
             .subscribe((res) => {
+                AuthService.setProvider(provider);
                 this.authService.loadUserInfo();
-                this.goToMain()
+                this.goToMain();
             });
     }
 
     goToMain() {
-        this.router.navigate(['MentorProfessions']);
+        this.router.navigate([AuthService.provider == 'github' ? 'MentorProfessions' : 'Public']);
     }
 }
