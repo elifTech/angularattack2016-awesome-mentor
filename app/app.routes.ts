@@ -13,4 +13,5 @@ export var APP_ROUTES: RouteDefinition[] = [
     { path: '/mentor', name: 'MentorLogin', component: MentorLoginController },
     { path: '/mentor/professions', name: 'MentorProfessions', component: MentorProfessionsController },
     { path: '/mentor/profession/:id/edit', name: 'MentorProfessionEdit', component: MentorProfessionEditController },
+    { path: '/mentor/profession/create', name: 'MentorProfessionCreate', component: MentorProfessionEditController },
 ];
