@@ -1,6 +1,6 @@
 export class Level {
     public name: string;
-    public items: any[];
+    public items: any;
 
     constructor(raw: any) {
         // if(typeof(raw) == "string") {

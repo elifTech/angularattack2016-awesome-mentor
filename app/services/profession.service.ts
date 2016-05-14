@@ -37,7 +37,7 @@ export class ProfessionService {
     public save(item:Profession) {
         this.repos = this.github.getCurrentRepository();
         this.repos.readFiles((res) => {
-            let file = res.find(item => item.name == item);
+            let file = res.find(item => item.name == 'README.md');
             if(!file) {
                 file = this.repos.newFile('professions/' + item.name + '/README.md');
             }
@@ -48,14 +48,14 @@ export class ProfessionService {
     }
 
     public addLevel(item:Profession, level:Level) {
-        this.repos = this.github.getRepository(ConfigService.repOwner, ConfigService.repName);
+        this.repos = this.github.getCurrentRepository();
 
         this.repos.readFiles(res => {
             let file = res.find(item => item.name == level.name + '.md');
             if (!file) {
                 file = this.repos.newFile('professions/' + item.name + '/' + level.name + '.md');
             }
-            file.setContent(item.toMd(), (new Date()).toString(), res => {
+            file.setContent('', (new Date()).toString(), res => {
                 console.info(res);
             });
         }, 'professions/' + item.name);
