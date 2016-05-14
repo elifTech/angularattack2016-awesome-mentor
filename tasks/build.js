@@ -7,11 +7,19 @@ var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
-var Builder = require('systemjs-builder');
+var Builder = require('systemjs-builder'),
+    surge = require('gulp-surge');
 
 /* Prepare build using SystemJS Builder */
 gulp.task('build', function (done) {
-    runSequence('test', 'build-sjs', done);
+    runSequence('build-sjs', done);
+});
+
+gulp.task('deploy', ['build'], function () {
+    return surge({
+        project: './build',
+        domain: config.domain
+    })
 });
 
 gulp.task('build-sjs', function (done) {
@@ -38,7 +46,7 @@ gulp.task('build-sjs', function (done) {
 
 /* Concat and minify/uglify all css, js, and copy fonts */
 gulp.task('build-assets', function (done) {
-    runSequence('clean-build', ['sass', 'fonts'], function () {
+    runSequence('clean-build', ['sass', 'fonts', 'cname'], function () {
         done();
 
         gulp.src(config.app + '**/*.html', {
@@ -78,4 +86,11 @@ gulp.task('fonts', function () {
         'node_modules/font-awesome/fonts/*.*'
     ])
     .pipe(gulp.dest(config.build.fonts));
+});
+
+gulp.task('cname', function () {
+    return gulp.src(config.root + 'CNAME', {
+        base: config.root
+    })
+    .pipe(gulp.dest(config.build.path));
 });
