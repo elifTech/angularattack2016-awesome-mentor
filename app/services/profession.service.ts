@@ -35,7 +35,10 @@ export class ProfessionService {
             throw new Error('Response status: ' + res.status);
         }
         let body = res.json();
-        return body.data || { };
+
+        console.log(body.data);
+
+        return new Document();
     }
 
     private handleError(error: any) {
