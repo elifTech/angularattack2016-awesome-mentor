@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
+import {Base64Service} from './base64.service';
 
 export class RepositoryItem {
     constructor(private http:Http, private repos: Repository, private data) {
@@ -16,10 +17,6 @@ export class RepositoryItem {
 
     get name() {
         return this.data.name;
-    }
-
-    get path() {
-        return this.data.path;
     }
 
     get isFile() {
