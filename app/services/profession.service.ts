@@ -5,11 +5,10 @@ import {Observable} from 'rxjs/Rx';
 import {GithubService} from "./github.service";
 
 @Injectable()
-export class ProfessionService extends GithubService{
+export class ProfessionService {
     public config: any;
 
     constructor(private http: Http) {
-        super(http);
         this.config = {
             github: {
                 list: 'https://api.github.com/repos/polluxx/awesomementor/contents/professions',
@@ -37,10 +36,9 @@ export class ProfessionService extends GithubService{
             throw new Error('Response status: ' + res.status);
         }
         let body = res.json();
-
-        console.log(body.data);
-
-        return body.data || {};
+        return body.map(file => {
+            return new Profession(file.name, file.path, 'polluxx/awesomementor');
+        });
     }
 
     private handleError (error: any) {
