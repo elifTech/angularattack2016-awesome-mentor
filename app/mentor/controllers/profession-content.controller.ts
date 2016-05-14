@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, RouteParams, Router} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {CourseraService} from '../../services/coursera.service';
@@ -8,6 +8,8 @@ import {CourseraService} from '../../services/coursera.service';
 import {YouTubeService} from '../../services/youtube.service';
 import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
+
+import {ProfessionService} from '../../services/profession.service';
 
 @Component({
     templateUrl: 'views/mentor/profession-content.html',
@@ -19,12 +21,13 @@ import { Observable } from 'rxjs/Observable';
     ],
     providers: [
         FORM_PROVIDERS,
+        ProfessionService,
         CourseraService,
         YouTubeService
     ]
 })
 export class MentorProfessionContentController {
-    public profession:any = {};
+    public level:any = {};
     public queryString:string = '';
 
     professionForm: any;
@@ -33,7 +36,9 @@ export class MentorProfessionContentController {
 
 
     constructor(protected router:Router, private _courseraService: CourseraService,
-                private _youTubeService: YouTubeService, private _formBuilder: FormBuilder) {
+                private _youTubeService: YouTubeService, private _formBuilder: FormBuilder,
+                private professionService: ProfessionService,
+                private params:RouteParams) {
         console.log('MentorProfessionContentController');
 
         this.professionForm = this._formBuilder.group({
@@ -49,6 +54,17 @@ export class MentorProfessionContentController {
             .debounceTime(400)
             .distinctUntilChanged()
             .switchMap(term => this._courseraService.search(term));
+
+        this.level = {
+            title: params.get('name'),
+            items: []
+        };
+        
+        this.professionService
+            .getLevelItems(params.get('name'), params.get('level'))
+            .then((levelItems) => {
+                this.level.items = levelItems;
+            });
     }
     
     public saveItem()

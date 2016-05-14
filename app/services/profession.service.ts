@@ -47,14 +47,15 @@ export class ProfessionService extends GithubService {
         var p2 = new Promise((resolve, reject) => {
             this.repos.getReadmeContent((file) => {
                 //console.log('file',file);
-                resolve(new Profession(file, 'polluxx/awesomementor'));
+                resolve(file);
             }, 'professions/' + name);
         });
 
         return new Promise((resolve, reject) => {
             Promise.all([p1, p2]).then((res) => {
                 //console.log('res', res);
-                res[1].levels = res[0].filter(file => {
+                var profession = new Profession(res[1], 'polluxx/awesomementor')
+                profession.levels = res[0].filter(file => {
                     return file.name.indexOf('README.md') == -1;
                 }).map(file => {
                     return {
@@ -62,8 +63,19 @@ export class ProfessionService extends GithubService {
                     };
                 });
 
-                resolve(res[1]);
+                resolve(profession);
             });
+        });
+    }
+
+    getLevelItems(profName:string, level:string):Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            this.repos.getFileContent((content) => {
+                //console.log('content', content);
+                var parts = content.split("\n");
+                parts.splice(0, 2);
+                resolve(parts);
+            }, 'professions/' + profName, level + '.md');
         });
     }
 }
