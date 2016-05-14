@@ -12,7 +12,6 @@ const GITHUB_README_REGEX = /readme\.md/i;
 
 @Injectable()
 export class ProfessionService {
-    public config:any;
     public repos:Repository;
     private _dataObserver:Observer<Profession[]>;
     files$:Observable<Profession[]>;
@@ -20,13 +19,7 @@ export class ProfessionService {
         files:Profession[]
     }
 
-    constructor(private github:GithubService) {
-        this.config = {
-            github: {
-                list: 'https://api.github.com/repos/' + ConfigService.repOwner + '/' + ConfigService.repName + '/contents/professions',
-                readme: 'https://raw.githubusercontent.com/' + ConfigService.repOwner + '/' + ConfigService.repName + '/master'
-            }
-        };
+    constructor(private github: GithubService) {
         this.repos = github.getRepository(ConfigService.repOwner, ConfigService.repName);
     }
 
@@ -45,7 +38,7 @@ export class ProfessionService {
         this.repos.readFiles((res) => {
             let file = res.find(item => item.name == item);
             if(!file) {
-                //file = new RepositoryItem();
+                file = this.repos.newFile('professions/' + item.name + '/README.md');
             }
             file.setContent(item.toMd(), (new Date()).toString(), res => {
                 console.info(res);

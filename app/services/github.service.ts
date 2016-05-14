@@ -72,6 +72,14 @@ export class Repository {
         return this._url;
     }
 
+    newFile(path: string) {
+        return new RepositoryItem(this.http, this, {
+            path: path,
+            mode: "100644",
+            type: 'file'
+        }, this.service);
+    }
+
     readDir(next, path = '') {
         let opts = this.service.getHttpOptions();
         this.http.get(this.url + '/contents/' + path, opts).subscribe(res => {
