@@ -55,7 +55,7 @@
 
         <ul>
             <li *ngFor="let result of awesomeResults$ | async">
-                <pre>{{result}}</pre>
+                [{{result.title }}] <a href="{{result.href}}" target="_blank">{{result.text}}</a>
             </li>
         </ul>
     </div>
