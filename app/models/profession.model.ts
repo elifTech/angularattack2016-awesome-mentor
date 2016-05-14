@@ -2,13 +2,19 @@ export class Profession {
     public title: string;
     public type: string;
     public rating: number;
-    public source: string;
     public done: boolean;
 
-    constructor(title: string) {
+    public source: string;
+    public repo: string;
+
+    constructor(title: string, source?: string, repo?: string) {
         this.title = title;
-        // this.type = type;
-        // this.source = source;
+        if(source) this.source = source;
+        if(repo) this.repo = repo;
+    }
+
+    setRepo(repo: string) {
+        this.repo = repo;
     }
 
     rate(rating: number) {

@@ -36,10 +36,9 @@ export class ProfessionService {
             throw new Error('Response status: ' + res.status);
         }
         let body = res.json();
-
-        console.log(body.data);
-
-        return body.data || {};
+        return body.map(file => {
+            return new Profession(file.name, file.path, 'polluxx/awesomementor');
+        });
     }
 
     private handleError (error: any) {

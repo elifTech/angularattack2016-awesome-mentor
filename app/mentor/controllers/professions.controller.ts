@@ -5,6 +5,7 @@ import {CORE_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig} from '@angular/router-deprecated';
 import {Profession} from '../../models/profession.model';
 import {ProfessionService} from '../../services/profession.service';
+import 'rxjs/Rx';
 @Component({
     templateUrl: '/views/mentor/professions.html',
     directives: [
@@ -12,7 +13,8 @@ import {ProfessionService} from '../../services/profession.service';
         ROUTER_DIRECTIVES
     ],
     providers: [
-        ROUTER_PROVIDERS
+        ROUTER_PROVIDERS,
+        ProfessionService
     ]
 })
 export class MentorProfessionsController {
