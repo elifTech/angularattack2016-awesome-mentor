@@ -4,6 +4,7 @@ module.exports = function () {
     var domain = 'eliftech.2016.angularattack.io';
     var root = '';
     var app = root + 'app/';
+    var viewsFiles = root + 'views/**/*.html';
     var assets = root + 'assets/';
     var assetsPath = {
         styles: assets + 'styles/',
@@ -41,7 +42,7 @@ module.exports = function () {
                 "systemjs.conf.js",
                 "assets/styles/main.css",
                 "app/**/*.js",
-                "app/**/*.html"
+                "views/**/*.html"
             ]
         },
         prod: {
@@ -66,6 +67,7 @@ module.exports = function () {
         domain: domain,
         root: root,
         app: app,
+        viewsFiles: viewsFiles,
         assets: assets,
         index: index,
         build: build,
