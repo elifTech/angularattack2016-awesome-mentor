@@ -3,10 +3,8 @@ var express = require('express'),
     request = require('request');
 
 var config = {
-    clientId: '54c368d51bca18a17397',
-    clientSecret: '54f4a73d35b7274819add275902ee515dc715bb1',
-
-    callbackURI: 'http://localhost:3000/callback',
+    clientId: '',
+    clientSecret: '',
     scope: 'user'
 };
 
@@ -34,7 +32,7 @@ app.post('/auth/github', function (req, res) {
     var code = req.body.code;
 
     if (!code) return res.status(500).json({ error: 'missing oauth code' });
-    
+
     var u = 'https://github.com/login/oauth/access_token'
             + '?client_id=' + config.clientId
             + '&client_secret=' + config.clientSecret
