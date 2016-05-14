@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HTTP_PROVIDERS, Http, Headers} from '@angular/http';
 import {Base64Service} from './base64.service';
+import {ConfigService} from './config.service';
 import 'rxjs/add/operator/map';
 import {Auth} from 'ng2-ui-auth';
 
@@ -139,6 +140,10 @@ export class GithubService {
         return 'https://api.github.com';
     }
 
+    getCurrentRepository() {
+        return this.getRepository(ConfigService.repOwner, ConfigService.repName);
+    }
+
     getRepository(owner:string, repos:string) {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
@@ -163,8 +168,19 @@ export class GithubService {
             "text": text,
             "mode": "markdown"
         };
-        this.http.post(GithubService.url + '/markdown', JSON.stringify(params)).subscribe(res => {
+        let opts = this.getHttpOptions();
+        this.http.post(GithubService.url + '/markdown', JSON.stringify(params), opts).subscribe(res => {
             next(res.text());
+        });
+    }
+
+    getUser(next) {
+        if (this.auth.isAuthenticated()) {
+            this._token = this.auth.getToken();
+        }
+        let opts = this.getHttpOptions();
+        this.http.get(GithubService.url + '/user', opts).subscribe(res => {
+            next(res.json());
         });
     }
 }

@@ -20,7 +20,7 @@ export class ProfessionService {
     }
 
     constructor(private github: GithubService) {
-        this.repos = github.getRepository(ConfigService.repOwner, ConfigService.repName);
+        this.repos = github.getCurrentRepository();
     }
 
     list():Promise<Profession[]> {
@@ -34,7 +34,7 @@ export class ProfessionService {
     }
 
     public save(item:Profession) {
-        this.repos = this.github.getRepository(ConfigService.repOwner, ConfigService.repName);
+        this.repos = this.github.getCurrentRepository();
         this.repos.readFiles((res) => {
             let file = res.find(item => item.name == item);
             if(!file) {
