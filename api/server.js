@@ -14,7 +14,7 @@ app.use(function(req, res, next) {
     if (req.method === 'OPTIONS') {
         var headers = {};
         // IE8 does not allow domains to be specified, just the *
-        // headers["Access-Control-Allow-Origin"] = req.headers.origin;
+        //headers["Access-Control-Allow-Origin"] = req.headers.origin;
         headers["Access-Control-Allow-Origin"] = "*";
         headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
         headers["Access-Control-Allow-Credentials"] = false;
@@ -28,7 +28,9 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 
 app.post('/auth/github', function (req, res) {
-    console.info(req.body)
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
     var code = req.body.code;
 
     if (!code) return res.status(500).json({ error: 'missing oauth code' });
@@ -42,8 +44,7 @@ app.post('/auth/github', function (req, res) {
         if (err) {
             return res.status(500).json({ error: err });
         }
-
-        //body.token = body.access_token;
+        body.token = body.access_token;
         return res.json(body);
     });
 });
