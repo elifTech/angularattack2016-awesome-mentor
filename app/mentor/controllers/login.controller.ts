@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {Auth} from 'ng2-ui-auth';
 import {Router, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import {GithubService} from '../../services/github.service';
 
 @Component({
     templateUrl: '/views/mentor/login.html',
@@ -10,7 +11,7 @@ import {Router, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 export class MentorLoginController {
     // public doc: Document;
 
-    constructor(private auth: Auth, private router: Router){
+    constructor(private auth: Auth, private router: Router, private github: GithubService){
         // this.doc = new Document();
     }
 

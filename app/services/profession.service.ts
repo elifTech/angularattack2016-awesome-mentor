@@ -9,7 +9,7 @@ export class ProfessionService extends GithubService{
     public config: any;
 
     constructor(private http: Http) {
-        super();
+        super(http);
         this.config = {
             github: {
                 list: 'https://api.github.com/repos/polluxx/awesomementor/contents/professions',
