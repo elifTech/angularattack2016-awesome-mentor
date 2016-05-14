@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {RouterOutlet, RouteConfig, RouteDefinition} from '@angular/router-deprecated';
 import {APP_ROUTES} from './app.routes';
 import {NavbarComponent} from './navbar/navbar.component';
-import {LoggerService} from './blocks/logger.service';
+import {LoggerService} from './services/logger.service';
 
 @Component({
     selector: 'as-main-app',
