@@ -14,6 +14,7 @@ import {AuthService} from '../../services/auth.service';
 import {Level} from '../../models/level.model';
 
 import {groupBy} from 'lodash';
+import {LevelItem} from "../../models/level-item.model";
 
 @Component({
     templateUrl: 'views/mentor/profession-content.html',
@@ -48,7 +49,6 @@ export class MentorProfessionContentController {
                 private professionService: ProfessionService,
                 private params: RouteParams,
                 private _awesomeService: AwesomeService) {
-        console.log('MentorProfessionContentController');
 
         this.professionForm = this._formBuilder.group({
             'queryStringInput': ['', Validators.required]
@@ -70,13 +70,13 @@ export class MentorProfessionContentController {
             .switchMap(term => this._awesomeService.search(term));
 
 
-        this.level = new Level({});
-        this.level.name = params.get('name');
+        this.level = new Level({title: params.get('name')});
 
         this.professionService
             .getLevelItems(params.get('name'), params.get('level'))
             .then((levelItems) => {
-                this.level.items = groupBy(levelItems, function(item:any){return item.domain});
+                console.log(levelItems);
+                this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});
             });
     }
     
