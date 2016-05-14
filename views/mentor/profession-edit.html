@@ -30,10 +30,12 @@
             <label>Levels</label>
             <a (click)="addLevel()">add</a>
             <ul>
-                <li  *ngFor="let level of profession.levels; let i = index;">
-                    <input required [(ngModel)]="profession.levels[i].name" type="text" class="form-control" size="50">
-                    <a (click)="removeLevel(i)">x</a>
-                    <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
+                <li *ngFor="let level of profession.levels; let i = index;">
+                    <div *ngIf="!level.isDeleted">
+                        <input required  (ngModelChange)="onLevelNameChanged(i, $event)" [ngModel]="profession.levels[i].name" type="text" class="form-control" size="50">
+                        <a (click)="removeLevel(i)">x</a>
+                        <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
+                    </div>
                 </li>
             </ul>
         </div>
