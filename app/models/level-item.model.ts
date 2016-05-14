@@ -40,4 +40,31 @@ export class LevelItem {
         '![Image]'+'('+this.img+')' + "\n\n" +
         '**'+this.description+'**' + "\n\n";
     }
+    
+    public parseFrom(data: any, resource: string) {
+        let factory = {
+            'youtube': this.parseYoutube,
+            'coursera': this.parseCoursera,
+            'awesome': this.parseGithub
+        };
+        factory[resource].call(data);
+    }
+    
+    private parseYoutube(data: any) {
+        this.name = data.snippet.title;
+        this.source = "https://www.youtube.com/watch?v=" + data.id.videoId;
+        this.img = data.snippet.thumbnails.default.url;
+        this.description = data.snippet.description;
+    }
+    
+    private parseCoursera(data: any) {
+        this.name = data.name;
+        this.source = 'https://www.coursera.org/course/' + data.slug;
+    }
+
+    private parseGithub(data: any) {
+        this.name = data.name;
+        this.source = data.href;
+        this.description = data.description || 'Category: ' + data.category;
+    }
 }
