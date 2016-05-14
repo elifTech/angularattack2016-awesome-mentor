@@ -4,6 +4,7 @@ import {AppComponent} from './app.component';
 import {LoggerService} from './services/logger.service';
 import {GithubService} from './services/github.service';
 import {ConfigService} from './services/config.service';
+import {AuthService} from './services/auth.service';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {NG2_UI_AUTH_PROVIDERS} from 'ng2-ui-auth';
 
@@ -14,6 +15,7 @@ bootstrap(AppComponent, [
     LoggerService,
     GithubService,
     ConfigService,
+    AuthService,
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({

@@ -60,7 +60,7 @@ export class ProfessionService {
             if (!file) {
                 file = this.repos.newFile('professions/' + item.name + '/' + level.name + '.md');
             }
-            file.setContent('# test', (new Date()).toString(), res => {
+            file.setContent(level.toMd(), (new Date()).toString(), res => {
                 console.info(res);
             });
         }, 'professions/' + item.name);
