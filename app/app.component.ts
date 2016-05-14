@@ -6,7 +6,7 @@ import {LoggerService} from './services/logger.service';
 
 @Component({
     selector: 'as-main-app',
-    templateUrl: 'app/app.html',
+    templateUrl: '/views/app.html',
     directives: [RouterOutlet, ROUTER_DIRECTIVES, NavbarComponent]
 })
 @RouteConfig(APP_ROUTES)
