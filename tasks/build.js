@@ -8,18 +8,27 @@ var revReplace = require('gulp-rev-replace');
 var uglify = require('gulp-uglify');
 var cssnano = require('gulp-cssnano');
 var Builder = require('systemjs-builder'),
-    surge = require('gulp-surge');
+    surge = require('gulp-surge'),
+    embedTemplates = require('gulp-angular-embed-templates'),
+    rename = require("gulp-rename");
 
 /* Prepare build using SystemJS Builder */
 gulp.task('build', function (done) {
-    runSequence('build-sjs', done);
+    runSequence('compile-templates', done);
 });
 
-gulp.task('deploy', ['build'], function () {
+gulp.task('deploy', ['build', 'rename-index'], function () {
     return surge({
         project: './build',
         domain: config.domain
     })
+});
+
+// https://surge.sh/help/adding-a-200-page-for-client-side-routing
+gulp.task('rename-index', ['build'], function () {
+    return gulp.src(config.build.path + 'index.html')
+        .pipe(rename(config.build.path + '200.html'))
+        .pipe(gulp.dest(config.root));
 });
 
 gulp.task('build-sjs', function (done) {
@@ -46,13 +55,8 @@ gulp.task('build-sjs', function (done) {
 
 /* Concat and minify/uglify all css, js, and copy fonts */
 gulp.task('build-assets', function (done) {
-    runSequence('clean-build', ['sass', 'fonts', 'cname'], function () {
+    runSequence('clean-build', ['sass', 'fonts'], function () {
         done();
-
-        gulp.src(config.app + '**/*.html', {
-            base: config.app
-        })
-        .pipe(gulp.dest(config.build.app));
 
         gulp.src(config.app + '**/*.css', {
             base: config.app
@@ -75,6 +79,18 @@ gulp.task('build-assets', function (done) {
     });
 });
 
+gulp.task('compile-templates', ['build-sjs'], function () {
+    return gulp.src(config.build.app + 'main.js')
+        .pipe(embedTemplates({
+            basePath: './',
+            sourceType: 'ts',
+            minimize: {
+                quotes: true
+            }
+        }))
+        .pipe(gulp.dest(config.build.app));
+});
+
 /* Copy fonts in packages */
 gulp.task('fonts', function () {
     gulp.src(config.assetsPath.fonts + '**/*.*', {
@@ -86,11 +102,4 @@ gulp.task('fonts', function () {
         'node_modules/font-awesome/fonts/*.*'
     ])
     .pipe(gulp.dest(config.build.fonts));
-});
-
-gulp.task('cname', function () {
-    return gulp.src(config.root + 'CNAME', {
-        base: config.root
-    })
-    .pipe(gulp.dest(config.build.path));
 });
