@@ -1,1 +1,25 @@
-EDIT HERE
+<form name="formEdit" #formEdit="ngForm" novalidate>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-group" [class.has-error]="(title.dirty && !title.valid) || (errors && errors.title)">
+                <label for="title">Title</label>
+                <input #title="ngForm" class="form-control" id="title" name="title" type="text" required [(ngModel)]="profession.title"/>
+
+                <div class="help-block"
+                     *ngIf="(title.dirty && !title.valid) || (errors && errors.title)">
+                    Required field
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button ng-disabled="!profession.title" (click)="saveItem()" class="btn btn-primary">
+        <span *ngIf="!saveLoading">Save</span>
+        <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
+    </button>
+
+    <!--<a class="btn btn-default btn-cancel" [routerLink]="['Professions']">-->
+        <!--Cancel-->
+    <!--</a>-->
+</form>
