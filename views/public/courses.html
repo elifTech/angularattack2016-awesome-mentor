@@ -1,0 +1,70 @@
+<style>
+    .badge:hover {
+        background-color: orangered;
+    }
+    .list-options {
+        vertical-align: middle;
+        display: inline-block;
+    }
+    [hidden] {
+        display: none;
+    }
+    .ng-valid[required] {
+        border-left: 5px solid #42A948; /* green */
+    }
+    .ng-invalid {
+        border-left: 5px solid orange; /* orange */
+    }
+</style>
+
+<script>
+    // Load the Realtime API, no auth needed.
+    window.gapi.load('auth:client,drive-realtime,drive-share', start);
+    window.rtclient = new utils.RealtimeUtils({ clientId: "asdasd" });
+
+    function start() {
+        var doc = gapi.drive.realtime.newInMemoryDocument();
+        var model = doc.getModel();
+        var collaborativeString = model.createString();
+        collaborativeString.setText('Welcome to the Quickstart App!');
+        model.getRoot().set('demo_string', collaborativeString);
+        //wireTextBoxes(collaborativeString);
+        document.getElementById('json_button').addEventListener('click', function(){
+            document.getElementById('json_textarea').value = model.toJson();
+        });
+    }
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i>Drive Files</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <form (ngSubmit)="addNew(doc)" #todoForm="ngForm">
+
+                        <input required [(ngModel)]="doc.title" ngControl="title" #name="ngForm" id="doc" type="text" class="form-control" size="50">
+                        <input required [(ngModel)]="doc.type" ngControl="type" #name="ngForm" id="doc" type="text" class="form-control" size="50">
+                        <input required [(ngModel)]="doc.source" ngControl="source" #name="ngForm" id="doc" type="text" class="form-control" size="50">
+                        <div class="form-inline">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+
+                    </form>
+
+
+                    <h1>Realtime Collaboration Quickstart</h1>
+                    <p>Welcome to the quickstart in-memory app!</p>
+                    <textarea id="text_area_1"></textarea>
+                    <textarea id="text_area_2"></textarea>
+                    <p>This document only exists in memory, so it doesn't have real-time collaboration enabled. However, you can persist it to your own disk using the model.toJson() function and load it using the model.loadFromJson() function. This enables your users without Google accounts to use your application.</p>
+                    <textarea id="json_textarea"></textarea>
+                    <button id="json_button" class="visible">GetJson</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

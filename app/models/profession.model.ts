@@ -1,4 +1,4 @@
-export class Document {
+export class Profession {
     public title: string;
     public type: string;
     public rating: number;
