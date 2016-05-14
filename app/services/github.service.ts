@@ -64,7 +64,7 @@ export class Repository {
 
 @Injectable()
 export class GithubService {
-    constructor(private http:Http) {
+    constructor(public http:Http) {
     }
     
     getRepository(owner: string, repos: string) {

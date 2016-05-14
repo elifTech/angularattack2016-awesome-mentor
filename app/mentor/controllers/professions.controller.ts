@@ -23,10 +23,11 @@ export class MentorProfessionsController {
     public errorMessage: string;
 
     constructor(private professionService: ProfessionService){
-        this.professionService.list()
-            .subscribe(
-                docs => this.docs = docs,
-                error =>  this.errorMessage = <any>error);
+        this.professionService
+            .list()
+            .then((docs) => {
+                this.docs = docs;
+            });
     }
     
 }
