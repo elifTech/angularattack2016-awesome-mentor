@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
 import {Base64Service} from './base64.service';
 
+const GITHUB_README_REGEX = /readme\.md/i;
+
 export class RepositoryItem {
     constructor(private http:Http, private repos: Repository, private data) {
     }
@@ -12,6 +14,10 @@ export class RepositoryItem {
 
     get isDir() {
         return this.data.type == 'dir';
+    }
+
+    get name() {
+        return this.data.name;
     }
 
     get isFile() {
@@ -59,6 +65,13 @@ export class Repository {
     readFiles(next, path = '') {
         this.readDir(res => {
             next(res.filter(item => item.isFile));
+        }, path);
+    }
+
+    getReadmeContent(next, path = '') {
+        this.readFiles(res => {
+            let file = res.find(item => item.name.match(GITHUB_README_REGEX));
+            file ? file.getContent(next) : next(null);
         }, path);
     }
 }
