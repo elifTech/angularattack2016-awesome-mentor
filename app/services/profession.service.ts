@@ -4,6 +4,7 @@ import {HTTP_PROVIDERS, Http, Response}    from '@angular/http';
 import {Observable, Observer} from 'rxjs/Rx';
 import {GithubService, Repository, RepositoryItem} from "./github.service";
 import {ConfigService} from "./config.service";
+import {Level} from "../models/level.model";
 import 'rxjs/add/operator/share';
 
 declare var jQuery:any;
@@ -43,13 +44,21 @@ export class ProfessionService {
             file.setContent(item.toMd(), (new Date()).toString(), res => {
                 console.info(res);
             });
-        });
+        }, 'professions/' + item.name);
+    }
 
+    public addLevel(item:Profession, level:Level) {
+        this.repos = this.github.getRepository(ConfigService.repOwner, ConfigService.repName);
 
-        // this.repos.readFiles((files) => {
-        //     //console.log('files', files);
-        //     resolve(files);
-        // }, 'professions/' + name);
+        this.repos.readFiles(res => {
+            let file = res.find(item => item.name == level.name + '.md');
+            if (!file) {
+                file = this.repos.newFile('professions/' + item.name + '/' + level.name + '.md');
+            }
+            file.setContent(item.toMd(), (new Date()).toString(), res => {
+                console.info(res);
+            });
+        }, 'professions/' + item.name);
     }
 
     getByName(name:string):Promise<Profession> {
@@ -89,7 +98,7 @@ export class ProfessionService {
         return new Promise((resolve, reject) => {
             this.repos.getFileContent((content) => {
 
-                this.github.fromMarkdown(content, function(links) {
+                this.github.fromMarkdown(content, function (links) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(links, 'text/html');
                     var headings = [].slice.call(doc.body.querySelectorAll('h2')),
@@ -109,7 +118,7 @@ export class ProfessionService {
                             description: desc.find('strong').text(),
                             domain: link.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '')
                         };
-                        
+
                         results.push(parsed);
                     });
 

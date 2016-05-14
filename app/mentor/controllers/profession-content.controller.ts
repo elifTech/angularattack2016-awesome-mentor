@@ -11,6 +11,7 @@ import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
+import {Level} from '../../models/level.model';
 
 import {groupBy} from 'lodash';
 
@@ -32,7 +33,7 @@ import {groupBy} from 'lodash';
 })
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
-    public level:any = {};
+    public level:Level;
     public queryString:string = '';
 
     professionForm: any;
@@ -69,10 +70,8 @@ export class MentorProfessionContentController {
             .switchMap(term => this._awesomeService.search(term));
 
 
-        this.level = {
-            title: params.get('name'),
-            items: []
-        };
+        this.level = new Level({});
+        this.level.name = params.get('name');
 
         this.professionService
             .getLevelItems(params.get('name'), params.get('level'))

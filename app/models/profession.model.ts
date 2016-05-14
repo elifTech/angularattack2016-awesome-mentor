@@ -1,10 +1,12 @@
+import {Level} from './level.model';
+
 export class Profession {
     public name: string;
     public type: string;
     public rating: number;
     public done: boolean;
 
-    public levels: any[] = [];
+    public levels: Level[] = [];
     public tags: string[] = [];
     public repo: string;
 

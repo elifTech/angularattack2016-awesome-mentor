@@ -4,6 +4,7 @@ import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams, RouteConfig} from '
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {Profession} from '../../models/profession.model';
+import {Level} from '../../models/level.model';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
 
@@ -44,7 +45,10 @@ export class MentorProfessionEditController implements OnInit {
     }
 
     public addLevel() {
-        this.profession.levels.push({title: 'Level #' + this.profession.levels.length});
+        var newLvl = new Level({});
+        newLvl.name = 'Level ' + this.profession.levels.length;
+        this.profession.levels.push(newLvl);
+        this.professionService.addLevel(this.profession, newLvl);
     }
 
     public removeLevel(index:number) {
@@ -54,7 +58,9 @@ export class MentorProfessionEditController implements OnInit {
     public setTags($event) {
         this.profession.tags = [];
         $event.forEach(tagObj => {
-            this.profession.tags.push(tagObj.id);
+            if(tagObj.id.length > 0) {
+                this.profession.tags.push(tagObj.id);
+            }
         });
     }
 }
