@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
 import {Base64Service} from './base64.service';
 
-const GITHUB_README = 'README.md';
+const GITHUB_README_REGEX = /readme\.md/i;
 
 export class RepositoryItem {
     constructor(private http:Http, private repos: Repository, private data) {
@@ -70,7 +70,7 @@ export class Repository {
 
     getReadmeContent(next, path = '') {
         this.readFiles(res => {
-            let file = res.find(item => item.name == GITHUB_README);
+            let file = res.find(item => item.name.match(GITHUB_README_REGEX));
             file ? file.getContent(next) : next(null);
         }, path);
     }
