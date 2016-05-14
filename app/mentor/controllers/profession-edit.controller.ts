@@ -40,9 +40,8 @@ export class MentorProfessionEditController implements OnInit {
     }
 
     public saveItem() {
-
+        this.professionService.save(this.profession);
     }
-
 
     public addLevel() {
         this.profession.levels.push({title: 'Level #' + this.profession.levels.length});

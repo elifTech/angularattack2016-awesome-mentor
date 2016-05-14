@@ -5,6 +5,8 @@ import {Observable, Observer} from 'rxjs/Rx';
 import {GithubService, Repository} from "./github.service";
 import 'rxjs/add/operator/share';
 
+const GITHUB_README_REGEX = /readme\.md/i;
+
 @Injectable()
 export class ProfessionService {
     public config:any;
@@ -33,6 +35,22 @@ export class ProfessionService {
                 }));
             }, 'professions');
         });
+    }
+
+    public save(item:Profession) {
+        this.repos = this.github.getRepository('esvit', 'test-repos');
+        this.repos.readFiles((res) => {
+            let file = res.find(item => item.name.match(GITHUB_README_REGEX));
+            file.setContent(item.toMd(), (new Date()).toString(), res => {
+                console.info(res);
+            });
+        });
+
+
+        // this.repos.readFiles((files) => {
+        //     //console.log('files', files);
+        //     resolve(files);
+        // }, 'professions/' + name);
     }
 
     getByName(name:string):Promise<Profession> {
