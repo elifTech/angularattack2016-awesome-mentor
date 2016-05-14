@@ -38,7 +38,7 @@ export class ProfessionService extends GithubService{
         }
         let body = res.json();
         return body.map(file => {
-            return new Profession(file.name);
+            return new Profession(file.name, file.path, 'polluxx/awesomementor');
         });
     }
 
