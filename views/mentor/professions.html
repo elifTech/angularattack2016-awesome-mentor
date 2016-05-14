@@ -31,7 +31,7 @@
                     <form #todoForm="ngForm">
                         <input required [(ngModel)]="doc.title" ngControl="title" #name="ngForm" id="doc" type="text" class="form-control" size="50">
                         <div class="form-inline">
-                            <a [routerLink]="['MentorProfessionEdit', {name:1}]" class="btn btn-primary">Edit</a>
+                            <a [routerLink]="['MentorProfessionEdit', {name:doc.title}]" class="btn btn-primary">Edit</a>
                         </div>
                     </form>
                 </div>
