@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {Profession} from '../../models/profession.model';
 import {ProfessionService} from '../../services/profession.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
     templateUrl: 'views/mentor/profession-edit.html',
@@ -18,6 +19,7 @@ import {ProfessionService} from '../../services/profession.service';
         ProfessionService
     ]
 })
+@CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionEditController implements OnInit {
     public profession:Profession;
     private tags:string[] = [''];
@@ -38,9 +40,8 @@ export class MentorProfessionEditController implements OnInit {
     }
 
     public saveItem() {
-
+        this.professionService.save(this.profession);
     }
-
 
     public addLevel() {
         this.profession.levels.push({title: 'Level #' + this.profession.levels.length});

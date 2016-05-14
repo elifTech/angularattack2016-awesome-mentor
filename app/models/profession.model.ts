@@ -27,6 +27,16 @@ export class Profession {
         this.tags = parts[2].split(',');
     }
 
+    public toMd()
+    {
+        var parts = [];
+
+        parts.push("#"+this.name+"\n");
+        parts.push(this.tags.join(','));
+
+        return parts.join("\n")
+    }
+
     setRepo(repo: string) {
         this.repo = repo;
     }

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {CourseraService} from '../../services/coursera.service';
@@ -10,6 +10,7 @@ import {AwesomeService} from '../../services/awesome.service';
 import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import {ProfessionService} from '../../services/profession.service';
+import {AuthService} from '../../services/auth.service';
 
 import {groupBy} from 'lodash';
 
@@ -29,6 +30,7 @@ import {groupBy} from 'lodash';
         AwesomeService
     ]
 })
+@CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
     public level:any = {};
     public queryString:string = '';
