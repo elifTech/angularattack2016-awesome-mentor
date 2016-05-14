@@ -29,10 +29,9 @@
                 </div>
                 <div class="form-group" *ngFor="let doc of docs">
                     <form #todoForm="ngForm">
-                        <input required [(ngModel)]="doc.title" ngControl="title" #name="ngForm" id="doc" type="text" class="form-control" size="50">
+                        <input required [(ngModel)]="doc.name" ngControl="name" #name="ngForm" id="doc" type="text" class="form-control" size="50">
                         <div class="form-inline">
-                            <a [routerLink]="['MentorProfessionEdit', {id:1}]" class="btn btn-primary">Edit</a>
-                            <a [routerLink]="['MentorProfessionContent', {id:1}]" class="btn btn-primary">Content</a>
+                            <a [routerLink]="['MentorProfessionEdit', {name:doc.name}]" class="btn btn-primary">Edit</a>
                         </div>
                     </form>
                 </div>
