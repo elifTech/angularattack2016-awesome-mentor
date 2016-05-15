@@ -3,13 +3,13 @@
 	<nav class="navbar navbar-light">
 		<a class="navbar-brand" [routerLink]="['PublicSpecializations']">AwesomeMentor</a>
 		<ul class="nav navbar-nav">
-			<li class="nav-item active">
+			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['PublicSpecializations']))">
 				<a class="nav-link" [routerLink]="['PublicSpecializations']">Specializations</a>
 			</li>
-			<li class="nav-item active">
+			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['MentorProfessions']))">
 				<a class="nav-link" [routerLink]="['MentorProfessions']">Manage</a>
 			</li>
-			<li class="nav-item">
+			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['About']))">
 				<a class="nav-link" [routerLink]="['About']">About</a>
 			</li>
 		</ul>
