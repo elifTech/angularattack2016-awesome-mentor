@@ -12,7 +12,7 @@ import {toArray} from 'lodash';
 import {TetherService} from "../../services/tether.service";
 
 @Component({
-    templateUrl: '/views/specializations.html',
+    templateUrl: '/views/public/specializations.html',
     directives: [
         LoadingContainerComponent,
         CORE_DIRECTIVES
