@@ -4,9 +4,9 @@ import {GithubService} from '../../services/github.service'
 import {toArray} from 'lodash';
 
 @Component({
-    templateUrl: '/views/about.html',
+    templateUrl: '/views/spe.html',
     directives: [CORE_DIRECTIVES],
-    providers: [
+    providers: [                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         GithubService
     ]
 })
@@ -18,7 +18,7 @@ export class PublicSpecializationsController {
         github.getCurrentRepository().getTree(res => {
             // console.info(res);
 
-            var nodes = {};
+            var nodes = {};                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 
             res = res.map(item => {
                 item.data.pathParts = item.data.path.replace(/\.md/g, '').split('/');
