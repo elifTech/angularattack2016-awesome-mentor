@@ -97,7 +97,7 @@
                                 </span>
                             </p>
 
-                            <span>
+                            <span *ngIf="user && user.type == 'google'">
                                 <a (click)="markAsDone(i)">{{result.checked ? '-' : '+'}}</a>
                                 <a (click)="markAsLater(i)">{{result.starred ? '-' : '*'}}</a>
                                 <a (click)="markAsHidden(i)">x</a>
