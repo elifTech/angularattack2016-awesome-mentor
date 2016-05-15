@@ -16,7 +16,7 @@
 		<div class="navbar-actions pull-xs-right">
 			<span *ngIf="user">
 				<img *ngIf="user.avatar_url" [src]="user.avatar_url" width="32" height="32" />
-				{{user.name}} i:{{user.is_owner}}
+				{{user.name}}
 			</span>
 
 			<a [routerLink]="['MentorLogin']" *ngIf="!auth.isAuthenticated()" class="btn btn-success-outline">Become a Mentor</a>
@@ -24,6 +24,8 @@
 			<a (click)="logout()" *ngIf="auth.isAuthenticated()" class="btn btn-secondary-outline">Logout</a>
 		</div>
 	</nav>
+
+	<div *ngIf="githubService.getRateLimitRemaining() < 10">Overflow Github rate limit</div>
 
 	<div class="wrapper" *ngIf="router && router.navigating"></div>
 	<router-outlet></router-outlet>

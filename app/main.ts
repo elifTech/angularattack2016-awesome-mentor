@@ -7,6 +7,7 @@ import {ConfigService} from './services/config.service';
 import {AuthService} from './services/auth.service';
 import {GoogleService} from './services/google.service';
 import {ToastrService} from './services/toastr.service';
+import {TetherService} from "./services/tether.service";
 import {HTTP_PROVIDERS} from '@angular/http';
 import {NG2_UI_AUTH_PROVIDERS} from 'ng2-ui-auth';
 
@@ -21,6 +22,7 @@ bootstrap(AppComponent, [
     AuthService,
     GoogleService,
     ToastrService,
+    TetherService,
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({

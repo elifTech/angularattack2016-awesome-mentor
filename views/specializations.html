@@ -52,6 +52,12 @@
             <div class="card card-block">
 
             <div *ngIf="selectedLevel">
+
+                <ul *ngIf="profession">
+                    <li><a (click)="filterByTag('')">All</a></li>
+                    <li [class.active]="tag == currTag" *ngFor="let tag of profession.tags"><a (click)="filterByTag(tag)">{{tag}}</a></li>
+                </ul>
+
                 <h4 class="card-title">Resources</h4>
 
                 <div class="media" *ngFor="let result of selectedLevel.items; let i = index">
@@ -69,7 +75,7 @@
 
                         <p>
                             <span *ngFor="let tag of result.tags">
-                                <a class="label label-default">{{tag}}</a>
+                                <a (click)="filterByTag(tag)" class="label label-default">{{tag}}</a>
                             </span>
                         </p>
 
