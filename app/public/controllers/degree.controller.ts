@@ -107,6 +107,15 @@ export class PublicDegreeController {
             .findDocument(this.level.name)
             .then((response:any) => {
                 if(!response) return;
+
+                this.googleService
+                    .getDocument(response.id)
+                    .then((response:any) => {
+                        if(!response) return;
+                        console.log(response);
+                        }
+                    );
+
                 this.document.id = response.id;
                 this.document.resource = response.downloadUrl;
                 console.log(this.document);
