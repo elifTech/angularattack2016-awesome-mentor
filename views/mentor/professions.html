@@ -27,7 +27,7 @@
                 <div class="actions">
                     <a [routerLink]="['MentorProfessionCreate']" class="btn btn-primary">Add new</a>
                 </div>
-                <div class="form-group" *ngFor="let doc of docs">
+                <div loading-container [loading]="loading" class="form-group" *ngFor="let doc of docs">
                     <form #todoForm="ngForm">
                         <input required [(ngModel)]="doc.name" ngControl="name" #name="ngForm" id="doc" type="text" class="form-control" size="50">
                         <div class="form-inline">
