@@ -95,7 +95,8 @@ export class ProfessionService {
                 let file = res.find(item => item.name == levelName + '.md');
                 if (file) {
                     file.deleteFile((new Date()).toString(), res => {
-                        console.info(res);
+                        // console.info(res);
+                        resolve(res);
                     });
                 }
             }, 'professions/' + professionName);

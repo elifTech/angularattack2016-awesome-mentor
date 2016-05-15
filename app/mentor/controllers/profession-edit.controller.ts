@@ -76,6 +76,7 @@ export class MentorProfessionEditController implements OnInit {
         this.professionService.removeLevel(this.profession.name, this.profession.levels[index].name).then(() => {
             this.loading = false;
             console.log('removed Level');
+            this.profession.levels.splice(index, 1);
         });
     }
 
