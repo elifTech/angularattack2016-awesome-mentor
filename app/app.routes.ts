@@ -3,6 +3,7 @@ import {MentorProfessionsController} from "./mentor/controllers/professions.cont
 import {MentorProfessionEditController} from './mentor/controllers/profession-edit.controller';
 import {MentorProfessionContentController} from './mentor/controllers/profession-content.controller';
 import {MentorLoginController} from "./mentor/controllers/login.controller";
+import {AboutController} from "./controllers/about.controller";
 
 export var APP_ROUTES:RouteDefinition[] = [
     {
@@ -43,11 +44,8 @@ export var APP_ROUTES:RouteDefinition[] = [
         }
     },
     {
-        path: '/public',
-        name: 'Public',
-        component: MentorProfessionsController,
-        data: {
-            permissions: ["google"]
-        }
+        path: '/about',
+        name: 'About',
+        component: AboutController
     },
 ];

@@ -36,6 +36,10 @@
   .navbar-actions {
     margin-top: .6rem;
   }
+
+  .navbar-nav .nav-item.active:after {
+    border-color: #fa63a8;
+  }
 }
 
 .navbar-nav {

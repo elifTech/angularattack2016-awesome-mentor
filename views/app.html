@@ -4,16 +4,10 @@
 		<a class="navbar-brand" href="#">AwesomeMentor</a>
 		<ul class="nav navbar-nav">
 			<li class="nav-item active">
-				<a class="nav-link" [routerLink]="['MentorProfessions']">Professions</a>
+				<a class="nav-link" [routerLink]="['MentorProfessions']">Specializations</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Features</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Pricing</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">About</a>
+				<a class="nav-link" [routerLink]="['About']">About</a>
 			</li>
 		</ul>
 		<div class="navbar-actions pull-xs-right">
@@ -27,13 +21,6 @@
 			<a (click)="logout()" *ngIf="auth.isAuthenticated()" class="btn btn-secondary-outline">Logout</a>
 		</div>
 	</nav>
-
-
-	<div>
-
-		<img src="/assets/img/logo.png" />
-
-	</div>
 
 
 	<router-outlet></router-outlet>
