@@ -60,40 +60,32 @@ export class ProfessionService {
         });
     }
 
-    // public save(item:Profession) {
-    //     var promises = [];
-    //
-    //     promises.push(this._saveProf(item));
-    //
-    //     item.levels.forEach((level) => {
-    //         if (level.isDeleted) {
-    //             promises.push(this.removeLevel(item.name, level.name));
-    //         } else if (level.isRenamed) {
-    //             promises.push(this.saveLevel(item.name, level));
-    //             promises.push(this.removeLevel(item.name, level.oldName));
-    //         } else {
-    //             promises.push(this.saveLevel(item.name, level));
-    //         }
-    //     });
-    //     console.log('promises', promises);
-    //
-    //     return Promise.all(promises);
-    // }
-
     public saveLevel(professionName:string, level:Level) {
         this.repos = this.github.getCurrentRepository();
-        return new Promise((resolve, reject) => {
-            this.repos.readFiles(res => {
-                let file = res.find(item => item.name == level.name + '.md');
-                if (!file) {
-                    file = this.repos.newFile('professions/' + professionName + '/' + level.name + '.md');
-                }
+        if(level.isNew) {
+            return new Promise((resolve, reject) => {
+                let file = this.repos.newFile('professions/' + professionName + '/' + level.name + '.md');
                 console.log('level.toMd()', level.toMd());
                 file.setContent(level.toMd(), (new Date()).toString(), res => {
-                    console.info(res);
+                    // console.info(res);
+                    resolve(res);
                 });
-            }, 'professions/' + professionName);
-        });
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                this.repos.readFiles(res => {
+                    let file = res.find(item => item.name == level.name + '.md');
+                    if (!file) {
+                        file = this.repos.newFile('professions/' + professionName + '/' + level.name + '.md');
+                    }
+                    console.log('level.toMd()', level.toMd());
+                    file.setContent(level.toMd(), (new Date()).toString(), res => {
+                        // console.info(res);
+                        resolve(res);
+                    });
+                }, 'professions/' + professionName);
+            });
+        }
     }
 
     public removeLevel(professionName:string, levelName:string) {
