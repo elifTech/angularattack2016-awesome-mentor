@@ -229,18 +229,23 @@ export class PublicSpecializationsController {
     }
 
     public startSync() {
-        this.google
-            .findDocument(this.professionName + '-' + this.levelName)
-            .then((response:any) => {
-                if(!response) return;
-                this.document.id = response.documentId;
-                this.document.courses = response.courses;
+        this.document.name = this.professionName + '-' + this.levelName;
 
-                this.syncUserProgress();
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        var document = window.localStorage.getItem(this.document.name);
+        if(document) this.document = JSON.parse(document);
+        this.syncUserProgress();
+        // this.google
+        //     .findDocument(this.professionName + '-' + this.levelName)
+        //     .then((response:any) => {
+        //         if(!response) return;
+        //         this.document.id = response.documentId;
+        //         this.document.courses = response.courses;
+        //
+        //         this.syncUserProgress();
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
     }
 
     public syncUserProgress() {
@@ -270,23 +275,26 @@ export class PublicSpecializationsController {
     public saveDoc() {
         this.syncUserProgress();
         this.document.name = this.professionName + '-' + this.levelName;
-        var service;
-        if(this.document.id) {
-            console.info('update')
-            service = this.google
-                .updateDocument(this.document);
-        } else {
-            console.info('create')
-            service = this.google
-                .createDocument(this.document);
-        }
+        //var service;
 
-        service
-            .then((response) => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        window.localStorage.setItem(this.document.name, JSON.stringify(this.document));
+        //
+        //
+        // if(this.document.id) {
+        //     console.log(this.document);
+        //     service = this.google
+        //         .updateDocument(this.document);
+        // } else {
+        //     service = this.google
+        //         .createDocument(this.document);
+        // }
+        //
+        // service
+        //     .then((response) => {
+        //         console.log(response);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
     }
 }
