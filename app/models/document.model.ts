@@ -6,4 +6,5 @@ export class DocumentModel {
     public courses: PublicLevelItem[];
     public name: string;
     public modified: string;
+    public resource: any;
 }

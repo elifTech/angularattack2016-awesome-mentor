@@ -45,7 +45,8 @@ export class PublicDegreeController {
                 private professionService:ProfessionService,
                 private google: GoogleService){
 
-        // this.document = new DocumentModel();
+        this.document.id = "";
+
         this.googleService = google;
         var self = this;
         gapi.load('auth:client,drive-realtime,drive-share', function() {
@@ -70,6 +71,7 @@ export class PublicDegreeController {
         this.level = new Level({
             name: levelName
         });
+        this.document.name = this.level.name;
 
         this.loading = true;
         this.professionService
@@ -101,40 +103,46 @@ export class PublicDegreeController {
     }
 
     public start() {
-
         this.googleService
             .findDocument(this.level.name)
-            .then((response) => {
-                //this.document.id = response.id;
-                console.log(response);
+            .then((response:any) => {
+                if(!response) return;
+                this.document.id = response.id;
+                this.document.resource = response.downloadUrl;
+                console.log(this.document);
             })
             .catch(error => {
                 console.log(error);
             });
     }
 
-    public markAsDone(item:PublicLevelItem) {
-        item.checked != item.checked;
-        this.saveDoc(item);
-    }
-    
-    public markAsLater(item:PublicLevelItem) {
-        item.starred != item.starred;
-        this.saveDoc(item);
-        console.log('markAsLater', item);
+    public markAsDone(item:any) {
+        this.document.courses[item].checked = !this.document.courses[item].checked;
+        this.saveDoc();
     }
 
-    public markAsHidden(item:PublicLevelItem) {
+    public markAsLater(item:any) {
+        this.document.courses[item].starred = !this.document.courses[item].starred;
+        this.saveDoc();
+    }
+
+    public markAsHidden(item:any) {
+        this.document.courses[item].blacklist = !this.document.courses[item].blacklist;
         item.blacklist != item.blacklist;
-        this.saveDoc(item);
-        console.log('markAsHidden', item);
+        this.saveDoc();
     }
 
-    public saveDoc(item:PublicLevelItem) {
-        var documentBody = this.document.courses.map(course => {return course.toJson();}).join(',');
-        console.log(documentBody);
-        this.googleService
-            .createDocument(this.level.name, documentBody)
+    public saveDoc() {
+        var service;
+        if(this.document.id) {
+            service = this.googleService
+                .updateDocument(this.document);
+        } else {
+            service = this.googleService
+                .createDocument(this.document);
+        }
+
+        service
             .then((response) => {
                 console.log(response);
             })
