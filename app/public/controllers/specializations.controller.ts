@@ -77,11 +77,11 @@ export class PublicSpecializationsController {
         var self = this;
         gapi.load('auth:client,drive-realtime,drive-share', function() {
             google.driveAuth()
-                .then(function(response) {
+                .then((response) => {
                     self.startSync();
                     console.log(response);
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     console.log(error);
                 });
 
