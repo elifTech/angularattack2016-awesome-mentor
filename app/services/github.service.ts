@@ -23,6 +23,10 @@ export class RepositoryItem {
         return this.data.name;
     }
 
+    get htmlUrl() {
+        return this.data.html_url;
+    }
+
     get isFile() {
         return this.data.type == 'file';
     }

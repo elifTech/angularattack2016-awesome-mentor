@@ -10,12 +10,15 @@ export class Profession {
     public levels: Level[] = [];
     public tags: string[] = [];
     public repo: string;
+    public htmlUrl: string;
 
     constructor(raw: any, repo?: string) {
         if(typeof(raw) == "string") {
             this._parse(raw);
         } else {
             this.name = raw.name;
+            console.info(raw)
+            this.htmlUrl = raw.htmlUrl;
         }
         //console.log('raw', raw);
 
