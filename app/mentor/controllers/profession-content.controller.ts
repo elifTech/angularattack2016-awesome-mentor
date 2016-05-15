@@ -240,6 +240,10 @@ export class MentorProfessionContentController implements OnInit {
 
         this.currItemIndex = this.level.items.length - 1;
     }
+    
+    public showResourceInfo(index: number) {
+        this.currItemIndex = index;
+    }
 
     public removeFromLevel(item:any) {
         var removed = remove(this.level.items, (levelItem) => {
