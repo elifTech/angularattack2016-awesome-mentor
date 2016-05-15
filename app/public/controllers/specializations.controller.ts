@@ -69,7 +69,7 @@ export class PublicSpecializationsController {
 
     public startTour(){
         this.tether.addStep('navbar', {
-            text: ['In this block you can see information about owner of current mentor repository'],
+            text: ['In this block you can see information about mentor (owner of current repository)'],
             attachTo: '.mentor-block left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
@@ -86,8 +86,8 @@ export class PublicSpecializationsController {
         });
 
         this.tether.addStep('g', {
-            text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.specialization-list>li left',
+            text: ['Table of contents contains learning materials for specialization<br/>categorized by specialist level. Just click it to list materials'],
+            attachTo: '.general-information-block left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
@@ -108,7 +108,7 @@ export class PublicSpecializationsController {
         });
 
         this.tether.addStep('h', {
-            text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
+            text: ['In this list you can see materials which<br/>mentor recommended for<br/>learning specialization'],
             attachTo: '.main-block left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [

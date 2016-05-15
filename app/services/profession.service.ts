@@ -166,58 +166,55 @@ export class ProfessionService {
                 return item;
             });
 
-            console.log(res);
+            var createTree = function(array, rootNodes) {
+                var tree = [];
 
-            let plain = {};
+                for (var rootNode in rootNodes) {
+                    var node = rootNodes[rootNode];
+                    var childNode = array[node['id']];
 
-            res
-                .map(item => {
+                    if (!node && !rootNodes.hasOwnProperty(rootNode)) {
+                        continue ;
+                    }
+
+                    if (childNode) {
+                        node.children = createTree(array, childNode);
+                    }
+
+                    tree.push(node);
+                }
+
+                return tree;
+            };
+            var groupByParents = function(array) {
+                return array.reduce(function(prev, item) {
+                    var parentID = item['parent'];
+                    parentID = (parentID == '') ? null : parentID;
+
+                    if (parentID && prev.hasOwnProperty(parentID)) {
+                        prev[parentID].push(item);
+                        return prev;
+                    }
+
+                    prev[parentID] = [item];
+                    return prev;
+                }, {});
+            };
+
+            let plain = res
+                .map((item: any) => {
                     let lvl = item.data.pathParts.length;
     
                     item.parent = lvl - 2 >= 0 ? item.data.pathParts[lvl - 2] : '';
                     item.id = item.data.pathParts[lvl - 1];
                     
                     return item;
-                }).filter((item: any) => item.id !== "README")
-                    .map(item => {
-                    let lvl = item.data.pathParts.length;
-    
-                    plain[item.data.pathParts[lvl - 1]] = item;
-                });
+                }).filter((item: any) => item.id !== "README");
 
-            var plainToTree = (dic, node) => {
-                let children = [];
+            var grouped = groupByParents(plain);
+            nodes = createTree(grouped, grouped['professions']);
 
-                if (dic) {
-                    var k;
-                    for (k in dic) {
-                        let v = plain[k];
-
-                        if (v['parent'] === node['id']) {
-                            let child = plainToTree(dic, v);
-
-                            if (child)
-                                children.push(child);
-                        }
-                    }
-                }
-
-                if (children)
-                    node['children'] = children;
-
-                return node;
-            };
-
-            var k;
-            for (k in plain) {
-                let node = plain[k];
-
-                if (!node['parent'])
-                    nodes[node['id']] = plainToTree(plain, node);
-            }
-
-            next(toArray(nodes['professions']['children']));
-            // console.log(this.items);
+            return next(nodes);
         });
     }
 }
