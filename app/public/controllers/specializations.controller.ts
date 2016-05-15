@@ -30,7 +30,7 @@ export class PublicSpecializationsController {
     public professionName:string = '';
     public levelName:string = '';
     public currTag:string = '';
-    public currLevelIems:LevelItem[];
+    public currLevelIems:any[];
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
@@ -149,7 +149,7 @@ export class PublicSpecializationsController {
         }
         // this.loadLevelItems();
 
-        this.selectedLevel.items = this.currLevelIems.filter((item) => {
+        this.selectedLevel.items = this.currLevelIems.filter((item:any) => {
             if (this.currTag.length > 0) {
                 item.tags = item.tags || [];
                 return item.tags.indexOf(this.currTag) != -1;
@@ -191,7 +191,7 @@ export class PublicSpecializationsController {
                 .then((levelItems) => {
                     console.log('levelItems', levelItems);
                     this.currLevelIems = levelItems;
-                    this.selectedLevel.items = levelItems.filter((item) => {
+                    this.selectedLevel.items = levelItems.filter((item:any) => {
                         if (this.currTag.length > 0) {
                             item.tags = item.tags || [];
                             return item.tags.indexOf(this.currTag) != -1;

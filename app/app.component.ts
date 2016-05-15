@@ -3,7 +3,6 @@ import {RouterOutlet, RouteConfig, ROUTER_DIRECTIVES, Router} from '@angular/rou
 import {APP_ROUTES} from './app.routes';
 import {LoggerService} from './services/logger.service';
 import {AuthService} from './services/auth.service';
-import {GithubService} from './services/github.service';
 import {UserModel} from "./models/user.model";
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./services/github.service";

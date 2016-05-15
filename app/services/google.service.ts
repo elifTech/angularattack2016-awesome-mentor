@@ -136,6 +136,7 @@ export class GoogleService {
         });
     }
 
+    
     public getDocument = function(id) {
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
@@ -146,7 +147,7 @@ export class GoogleService {
                 }
             };
             gapi.client.request({
-                'path': '/upload/drive/v2/files/'+id,
+                'path': '/drive/v2/files/'+id,
                 'method': 'GET'
             }).execute(onComplete);
         });
@@ -154,9 +155,17 @@ export class GoogleService {
 
     public findDocument = function(name: string, prefix?: string) {
         if(!prefix) prefix = "AwesomeMentor: ";
+        var self = this;
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
                 if (result && !result.error) {
+                    if(result.items && result.items[0]) {
+                        self.getDocumentContent(result.items[0].webContentLink)
+                            .then(resolve)
+                            .catch(reject);
+                        return;
+                    }
+                    console.log('-----');
                     resolve(result.items[0]);
                 } else {
                     reject(result);
@@ -169,6 +178,16 @@ export class GoogleService {
                     'q': "title = '" + prefix+name + "'"
                 }
             }).execute(onComplete);
+        });
+    }
+
+    public getDocumentContent(fileUrl: string) {
+        return new Promise((resolve, reject) => {
+            let opts = this.getHttpOptions();
+            this.http.get(fileUrl, opts).subscribe(res => {
+                let result = res.json();
+                resolve(result);
+            });
         });
     }
 
