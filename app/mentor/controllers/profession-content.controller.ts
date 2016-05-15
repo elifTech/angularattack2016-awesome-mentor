@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
-//import {MODAL_DIRECTIVES} from 'ng2-bs3-modal';
+import {MODAL_DIRECTIVES} from 'ng2-bs3-modal/ng2-bs3-modal';
 
 
 import {CourseraService} from '../../services/coursera.service';
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
 import {Level} from '../../models/level.model';
+import {Profession} from '../../models/profession.model';
 
 import {groupBy} from 'lodash';
 import {LevelItem} from "../../models/level-item.model";
@@ -21,7 +22,7 @@ import {LevelItem} from "../../models/level-item.model";
 @Component({
     templateUrl: 'views/mentor/profession-content.html',
     directives: [
-        //MODAL_DIRECTIVES,
+        MODAL_DIRECTIVES,
         FORM_DIRECTIVES,
         ROUTER_DIRECTIVES,
         Select,
@@ -40,6 +41,7 @@ export class MentorProfessionContentController {
     public level:Level;
     public currItem:LevelItem;
     public professionName:string = '';
+    public profession:Profession;
     public queryString:string = '';
 
     professionForm: any;
@@ -86,6 +88,13 @@ export class MentorProfessionContentController {
                 console.log(levelItems);
                 this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});
             });
+
+        this.professionService
+            .getByName(this.professionName)
+            .then((profession) => {
+                this.profession = profession;
+                console.log('this.profession', this.profession);
+            });
     }
     
     public saveItem()
@@ -93,6 +102,11 @@ export class MentorProfessionContentController {
         this.professionService.saveLevel(this.professionName, this.level);
     }
 
+    public onSelectTag(tag:string)
+    {
+        
+
+    }
     public addToLevel(item:any, type:string)
     {
         var levelItem = new LevelItem();

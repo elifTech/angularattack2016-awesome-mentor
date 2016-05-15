@@ -1,7 +1,8 @@
 declare var jQuery:any;
 
 export class LevelItem {
-    public name: string;
+    public name: string[] = [];
+    public tags: string[] ;
     public source: string;
     public img: string;
     public description: string;
