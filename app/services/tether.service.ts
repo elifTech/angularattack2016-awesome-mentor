@@ -18,7 +18,7 @@ export class TetherService {
 
         this.next = this.shepherd.next;
         this.back = this.shepherd.back;
-        this.cancel = this.shepherd.cencel;
+        this.cancel = this.shepherd.cancel;
     }
 
     public addStep(title: string, params: Object){
