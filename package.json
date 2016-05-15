@@ -17,7 +17,7 @@
     "@angular/router-deprecated": "2.0.0-rc.1",
     "@angular/upgrade": "2.0.0-rc.1",
     "angular2-in-memory-web-api": "0.0.7",
-    "bootstrap": "^3.3.6",
+    "bootstrap": "^4.0.0-alpha.2",
     "font-awesome": "^4.6.1",
     "jquery": "^2.2.3",
     "lodash": "^4.11.0",

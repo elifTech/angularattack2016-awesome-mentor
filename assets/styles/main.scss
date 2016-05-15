@@ -1,8 +1,20 @@
-@import 'bootswatch';
-@import 'variables';
-@import 'mixins';
-@import 'functions';
-@import 'fonts';
-@import 'overrides';
-@import 'module';
+@import "variables";
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import '../../node_modules/bootstrap/scss/bootstrap-grid';
+
+@import "mixins";
+@import "theme";
+@import "footer";
+@import "lists";
+@import "tooltips";
+
+@import "navbar";
+@import "buttons";
+@import "modal";
+@import "toaster";
+
+@import "forms/base";
+
+@import "extra/preloader";
+@import "extra/datepicker";
 

@@ -1,0 +1,84 @@
+.extra-preloader {
+  $width: 50px;
+
+  width: $width;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -($width / 2);
+  margin-left: -($width / 2);
+
+  .layer {
+    fill: #4b4b4b;
+    -webkit-transition: all 21s ease-out;
+    transition: all 21s ease-out;
+  }
+
+  &.loading .layer1 {
+    -webkit-animation: 4s linear infinite;
+    animation: 4s linear infinite;
+    -webkit-animation-name: cycle1;
+    animation-name: cycle1;
+  }
+
+  &.loading .layer2 {
+    -webkit-animation: 4s linear infinite;
+    animation: 4s linear infinite;
+    -webkit-animation-name: cycle2;
+    animation-name: cycle2;
+  }
+
+  &.loading .layer3 {
+    -webkit-animation: 4s linear infinite;
+    animation: 4s linear infinite;
+    -webkit-animation-name: cycle3;
+    animation-name: cycle3;
+  }
+}
+@-webkit-keyframes cycle1 {
+  0%, 65% {
+    fill: #b2b2b2; }
+  75%, 82% {
+    fill: #4b4b4b; }
+  92%, 100% {
+    fill: #b2b2b2; } }
+
+@keyframes cycle1 {
+  0%, 65% {
+    fill: #b2b2b2; }
+  75%, 82% {
+    fill: #4b4b4b; }
+  92%, 100% {
+    fill: #b2b2b2; } }
+
+@-webkit-keyframes cycle2 {
+  0%, 40% {
+    fill: #b2b2b2; }
+  50%, 86% {
+    fill: #4b4b4b; }
+  96%, 100% {
+    fill: #b2b2b2; } }
+
+@keyframes cycle2 {
+  0%, 40% {
+    fill: #b2b2b2; }
+  50%, 86% {
+    fill: #4b4b4b; }
+  96%, 100% {
+    fill: #b2b2b2; } }
+
+@-webkit-keyframes cycle3 {
+  0%, 15% {
+    fill: #b2b2b2; }
+  25%, 90% {
+    fill: #4b4b4b; }
+  100% {
+    fill: #b2b2b2; } }
+
+@keyframes cycle3 {
+  0%, 15% {
+    fill: #b2b2b2; }
+  25%, 90% {
+    fill: #4b4b4b; }
+  100% {
+    fill: #b2b2b2; } }

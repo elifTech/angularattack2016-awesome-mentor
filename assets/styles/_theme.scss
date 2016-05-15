@@ -1,0 +1,96 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  vertical-align: baseline;
+  overflow: hidden;
+}
+.body-scroll {
+  overflow-x: auto;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+strong, .strong {
+  font-weight: 600;
+}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+    font-weight: 600;
+}
+h1, .h1 {
+    letter-spacing: -.1rem;
+    text-transform: capitalize;
+
+  &.navbar-brand {
+    margin-bottom: 0;
+  }
+}
+h3, .h3 {
+  font-style: italic;
+}
+.small-meta {
+  font-size: 13px;
+  line-height: inherit;
+  font-weight: 600;
+}
+.text-center {
+  text-align: center;
+}
+
+.pr {
+  position: relative;
+}
+.page-header {
+  overflow: visible;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 5;
+
+  h1 {
+    display: inline-block !important;
+    vertical-align: bottom;
+    line-height: 1.6em;
+    letter-spacing: -0.03em;
+    margin-bottom: 0;
+  }
+  .page-actions {
+    float: right;
+    display: inline-block;
+    margin: 6px 0 0 15px;
+  }
+}
+
+// Section
+.sub-section {
+  margin-bottom: 60px;
+}
+
+
+// inputs
+.c-input {
+  .c-indicator {
+    top: 3px;
+    left: 2px;
+  }
+  > input {
+    &:checked ~ .c-indicator {
+      background-color: $link-color;
+    }
+    &:focus ~ .c-indicator {
+      // the mixin is not used here to make sure there is feedback
+      box-shadow: 0 0 0 .075rem #fff, 0 0 0 .2rem $link-color;
+    }
+  }
+}
+
+.form-control-label {
+  padding-left: 0;
+  padding-right: 0;
+}

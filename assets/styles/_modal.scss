@@ -1,0 +1,69 @@
+/**
+    -webkit-filter: blur(2px);
+    filter: blur(2px);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+*/
+
+body.modal-open {
+  overflow: hidden;
+}
+.modal-backdrop {
+}
+
+.modal.modal-right {
+  .modal-dialog {
+    position: fixed;
+    left: initial;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    min-width: 470px;
+    background-color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 2000;
+    -moz-box-shadow: 0 0 5px #000;
+    -webkit-box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 5px #000;
+  }
+  .modal-content {
+    border: 0 none;
+    position: initial;
+  }
+
+  .modal-header {
+    z-index: 1;
+  }
+  .modal-body {
+    position: absolute;
+    top: 65px;
+    bottom: 63px;
+    left: 0;
+    right: 0;
+    overflow: auto;
+  }
+  .modal-footer {
+    text-align: left;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  &.fade {
+    .modal-dialog {
+      transform: translate(100%, 0);
+    }
+
+    &.in {
+      .modal-dialog {
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+}

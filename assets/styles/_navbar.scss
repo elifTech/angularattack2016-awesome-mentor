@@ -1,0 +1,59 @@
+.navbar-brand {
+  background-image: url('../img/logo_small.png');
+  background-size: 126px 39px;
+  background-repeat: no-repeat;
+  width: 8.4rem;
+  height: 2.6rem;
+  margin-top: .5rem;
+  text-indent: -100%;
+  overflow: hidden;
+}
+
+.nav-pills {
+  .nav-link.active,
+  .nav-item.open .nav-link {
+    @include plain-hover-focus {
+      color: $nav-pills-color;
+      background-color: $nav-pills-background;
+    }
+  }
+}
+
+.navbar.navbar-light {
+  padding: 0;
+
+  .navbar-brand {
+    padding: 0.75rem;
+  }
+  .nav-link {
+    font-weight: 600;
+  }
+
+  .navbar-actions {
+    margin-top: .6rem;
+  }
+}
+
+.navbar-nav {
+  .nav-item {
+    font-weight: 600;
+    position: relative;
+    -ms-transition: all 0.29s ease-in-out 0s;
+    transition: all 0.29s ease-in-out 0s;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: #e5e5e5;
+    }
+    &.active {
+      &:after {
+        position: absolute;
+        content: "";
+        bottom: 0;
+        right: 0px;
+        left: 0px;
+        border-bottom: 3px solid #d0d0d0;
+      }
+    }
+  }
+}
