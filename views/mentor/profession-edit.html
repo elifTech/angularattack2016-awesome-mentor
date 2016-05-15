@@ -17,48 +17,69 @@
 
                 <div class="card card-block">
 
+                    <div class="pull-right" *ngIf="!enableEdit">
+                        <a (click)="toggleEdit()" class="btn btn-secondary-outline tooltipped tooltipped-nw" aria-label="Edit General Information">
+                            <span class="fa fa-pencil fa-2x"></span>
+                        </a>
+                    </div>
                     <h4 class="card-title">General Information</h4>
 
-                    <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
-                        <label for="name">Name</label>
-                        <input #name="ngForm"  ngControl="name" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
-                        <div class="help-block"
-                             *ngIf="name.dirty && name.errors && name.errors.required">
-                            Required field
-                        </div>
-                        <div class="help-block"
-                             *ngIf="name.dirty && name.errors && name.errors.pattern">
-                            Invalid field value
-                        </div>
+                    <div *ngIf="!enableEdit">
 
-                        <div class="help-block text-muted">
-                            Example: Javascript developer
-                        </div>
+                        <p>
+                            <strong>Name:</strong> {{profession.name}}
+                        </p>
+                        <p>
+                            <strong>Skills:</strong>
+                            <span *ngFor="let tag of profession.tags; let i = index;">
+                                {{tag}}<span *ngIf="i != profession.tags.length - 1">,</span>
+                            </span>
+                        </p>
+
                     </div>
-
-                    <div class="form-group">
-                        <div class="controls">
-                            <label>Skills</label>
-                            <ng-select [multiple]="true" [tagging]="true" [taggingTokens]="[',','SPACE','ENTER']"
-                                       (data)="setTags($event)" [initData]="profession.tags"
-                                       [items]="tags" class="custom-ui-select-table">
-                            </ng-select>
+                    <div *ngIf="enableEdit">
+                        <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
+                            <label for="name">Name</label>
+                            <input #name="ngForm"  ngControl="name" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
+                            <div class="help-block"
+                                 *ngIf="name.dirty && name.errors && name.errors.required">
+                                Required field
+                            </div>
+                            <div class="help-block"
+                                 *ngIf="name.dirty && name.errors && name.errors.pattern">
+                                Invalid field value
+                            </div>
 
                             <div class="help-block text-muted">
-                                Write skills that people gain in this specialization. Example: angular2, lodash, momentjs
+                                Example: Javascript developer
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label>Skills</label>
+                                <ng-select [multiple]="true" [tagging]="true" [taggingTokens]="[',','SPACE','ENTER']"
+                                           (data)="setTags($event)" [initData]="profession.tags"
+                                           [items]="tags" class="custom-ui-select-table">
+                                </ng-select>
+
+                                <div class="help-block text-muted">
+                                    Write skills that people gain in this specialization. Example: angular2, lodash, momentjs
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="btn btn-default btn-cancel pull-right" [routerLink]="['MentorProfessions']" *ngIf="profession.isNew">
+                            Cancel
+                        </a>
+                        <a class="btn btn-default btn-cancel pull-right" (click)="toggleEdit()" *ngIf="!profession.isNew">
+                            Cancel
+                        </a>
+                        <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
+                            <span *ngIf="!loading">Save</span>
+                            <span *ngIf="loading">Saving <span class="spinner"></span></span>
+                        </button>
                     </div>
-
-
-                    <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
-                        <span *ngIf="!loading">Save</span>
-                        <span *ngIf="loading">Saving <span class="spinner"></span></span>
-                    </button>
-
-                    <a class="btn btn-default btn-cancel pull-right" [routerLink]="['MentorProfessions']">
-                        Cancel
-                    </a>
 
                     <div class="clearfix"></div>
                 </div>
