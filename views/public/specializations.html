@@ -80,7 +80,7 @@
                             <img class="media-object" [src]="result.img">
                         </a>
                         <div class="media-body">
-                            <div class="pull-right">
+                            <div class="pull-right" *ngIf="user && user.type == 'google'">
                                 <a (click)="markAsDone(i)"><span class="fa fa-check text-success" *ngIf="result.checked"></span><span class="fa fa-check text-muted" *ngIf="!result.checked"></span></a>
                                 <a (click)="markAsLater(i)"><span class="fa fa-star text-warning" *ngIf="result.starred"></span><span class="fa fa-star-o text-muted" *ngIf="!result.starred"></span></a>
                                 <a (click)="markAsHidden(i)" class="text-danger"><span class="fa fa-times"></span></a>
