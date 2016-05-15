@@ -140,11 +140,9 @@ export class MentorProfessionContentController {
     }
 
     protected courseraFilter(items) {
-        return items.filter((result:any) => {
-            return this.savedCourses.indexOf('https://www.coursera.org/course/' + result.slug) === -1;
-        });
-    }
-
+        return items.filter((result:any) => {return this.savedCourses.indexOf('https://www.coursera.org/learn/' + result.slug) === -1;});
+    }    
+    
     protected awesomeFilter(items) {
         return items.filter((result:any) => {
             return this.savedCourses.indexOf(result.href) === -1;

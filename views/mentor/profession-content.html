@@ -50,17 +50,6 @@
                     <div>
                         <div>Youtube</div>
                         <ul>
-
-                            <li *ngFor="let result of level.items">
-                                <a href="{{result.source}}" target="_blank">
-                                    <h3>{{result.name}}</h3>
-                                </a>
-                                <p>{{result.description}}</p>
-                                <img *ngIf="result.img" [src]="result.img" style="width: 100%; max-width: 90px" />
-
-                                <a (click)="removeFromLevel(result)">-</a>
-                            </li>
-
                             <li *ngFor="let result of youTubeResults">
                                 <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
                                     <h3>{{result.snippet.title}}</h3>
@@ -124,6 +113,25 @@
 
                     <div class="clearfix"></div>
                 </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card card-block">
+                    <div>Saved resources</div>
+                    <ul>
+                        <li *ngFor="let result of level.items">
+                            <a href="{{result.source}}" target="_blank">
+                                <h3>{{result.name}}</h3>
+                            </a>
+                            <p>{{result.description}}</p>
+                            <img *ngIf="result.img" [src]="result.img" style="width: 100%; max-width: 90px" />
+
+                            <a (click)="removeFromLevel(result)">-</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
 
             </div>
 
