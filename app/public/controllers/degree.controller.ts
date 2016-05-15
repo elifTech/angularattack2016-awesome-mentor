@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 
+import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {ProfessionService} from '../../services/profession.service';
 import {Level} from '../../models/level.model';
 import {LevelItem} from '../../models/level-item.model';
@@ -12,6 +13,7 @@ import 'gapi.load';
 @Component({
     templateUrl: '/views/public/degree.html',
     directives: [
+        LoadingContainerComponent,
         CORE_DIRECTIVES
     ],
     providers: [
@@ -55,7 +57,7 @@ export class PublicDegreeController {
             .then((profession) => {
                 this.profession = profession;
                 // console.log('this.profession', this.profession);
-                this.loading = false;
+                // this.loading = false;
             });
 
 
@@ -82,5 +84,17 @@ export class PublicDegreeController {
         var textArea2: any = document.getElementsByTagName('input')[1];
         gapi.drive.realtime.databinding.bindString(collaborativeString, textArea1);
         gapi.drive.realtime.databinding.bindString(collaborativeString, textArea2);
+    }
+
+    public markAsDone(item:LevelItem) {
+        console.log('markAsDone', item);
+    }
+
+    public markAsLater(item:LevelItem) {
+        console.log('markAsLater', item);
+    }
+
+    public markAsHidden(item:LevelItem) {
+        console.log('markAsHidden', item);
     }
 }

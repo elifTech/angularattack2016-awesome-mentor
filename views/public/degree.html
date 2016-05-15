@@ -26,3 +26,17 @@
         </div>
     </div>
 </div>
+
+
+
+<div loading-container [loading]="loading">
+    <ul>
+        <li *ngFor="let item of level.items">
+            {{item|json}}
+
+            <a (click)="markAsDone(item)">+</a>
+            <a (click)="markAsLater(item)">*</a>
+            <a (click)="markAsHidden(item)">x</a>
+        </li>
+    </ul>
+</div>
