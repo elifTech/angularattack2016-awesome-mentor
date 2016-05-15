@@ -79,6 +79,13 @@ export class MentorProfessionEditController implements OnInit {
             this.loading = false;
             // console.log('SAVED');
             this.toastr.success('Specialization saved');
+            if(this.profession.isNew) {
+                this.router.navigate(['MentorProfessionEdit', {
+                    name: this.profession.name
+                }]);
+            } else {
+                this.ngOnInit();
+            }
         });
     }
 
