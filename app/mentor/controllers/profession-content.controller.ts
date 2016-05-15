@@ -3,7 +3,6 @@ import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 import {MODAL_DIRECTIVES} from 'ng2-bs3-modal/ng2-bs3-modal';
-import {FormBuilder, Control, ControlGroup, Validators} from '@angular/common';
 
 import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {CourseraService} from '../../services/coursera.service';
@@ -172,9 +171,7 @@ export class MentorProfessionContentController {
             return levelItem.source === item.source;
         });
         this.makeAllRequests();
-
-        console.log(this.level.items);
-
+        this.currItemIndex = this.level.items.length - 1;
         console.log(' removeFromProfession(result:any)',  removed);
 
     }
