@@ -88,8 +88,10 @@ export class GoogleService {
         }
     }
 
-    public createDocument = function (title, body) {
-        console.log(title, body);
+    public createDocument = function (document: any) {
+        var multipartRequestBody = this.buildMetaData(document);
+        const boundary = '-------314159265358979323846';
+
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
                 if (result && !result.error) {
@@ -101,16 +103,19 @@ export class GoogleService {
             gapi.client.request({
                 'path': '/upload/drive/v2/files',
                 'method': 'POST',
-                'body': JSON.stringify({
-                    title: title,
-                    body: body,
-                    mimeType: 'application/json'
-                })
+                'params': {'uploadType': 'multipart', 'alt': 'json'},
+                'headers': {
+                    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+                },
+                'body': multipartRequestBody
             }).execute(onComplete);
         });
     }
 
-    public updateDocument = function(id, title, body) {
+    public updateDocument = function(document) {
+        var multipartRequestBody = this.buildMetaData(document);
+        const boundary = '-------314159265358979323846';
+
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
                 if (result && !result.error) {
@@ -120,15 +125,13 @@ export class GoogleService {
                 }
             };
             gapi.client.request({
-                'path': '/upload/drive/v2/files/'+id,
+                'path': '/upload/drive/v2/files/'+document.id,
                 'method': 'PUT',
-                //'params': {'uploadType': 'multipart', 'alt': 'json'},
-                'body': JSON.stringify({
-                    title: title,
-                    description: 'AwesomeMentor configuration',
-                    body: body,
-                    mimeType: 'application/json'
-                })
+                'params': {'uploadType': 'multipart', 'alt': 'json'},
+                'headers': {
+                    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+                },
+                'body': multipartRequestBody
             }).execute(onComplete);
         });
     }
@@ -166,5 +169,34 @@ export class GoogleService {
                 }
             }).execute(onComplete);
         });
+    }
+
+    public buildMetaData(document: any, prefix?:string) {
+        var jsonData = document.courses.map(course => {return course.toJson();}).join(',');
+        if(!prefix) prefix = "AwesomeMentor: ";
+        const boundary = '-------314159265358979323846';
+        const delimiter = "\r\n--" + boundary + "\r\n";
+        const close_delim = "\r\n--" + boundary + "--";
+
+        var fileMetadata = {
+            title: prefix + document.name,
+            name: prefix + document.name,
+            mimeType: 'application/json'
+        };
+
+        var contentType = 'application/json';
+        // Updating the metadata is optional and you can instead use the value from drive.files.get.
+        var base64Data = Base64Service.encode(jsonData);
+        var multipartRequestBody =
+            delimiter +
+            'Content-Type: application/json\r\n\r\n' +
+            JSON.stringify(fileMetadata) +
+            delimiter +
+            'Content-Type: ' + contentType + '\r\n' +
+            'Content-Transfer-Encoding: base64\r\n' +
+            '\r\n' +
+            base64Data +
+            close_delim;
+        return multipartRequestBody;
     }
 }

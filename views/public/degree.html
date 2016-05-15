@@ -2,13 +2,13 @@
 
 <div loading-container [loading]="loading">
     <ul>
-        <li *ngFor="let item of document.courses">
+        <li *ngFor="let item of document.courses; let $index = index">
             {{item|json}}
 
             <span *ngIf="user && user.type == 'google'">
-                <a (click)="markAsDone(item)">+</a>
-                <a (click)="markAsLater(item)">*</a>
-                <a (click)="markAsHidden(item)">x</a>
+                <a (click)="markAsDone($index)">+</a>
+                <a (click)="markAsLater($index)">*</a>
+                <a (click)="markAsHidden($index)">x</a>
             </span>
         </li>
     </ul>
