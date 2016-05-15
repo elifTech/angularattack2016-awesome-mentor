@@ -1,0 +1,13 @@
+<div class="container">
+   <ul *ngIf="items && items[0].children">
+       <li *ngFor="let result2 of items[0].children">
+           {{result2.id}}
+
+           <ul *ngIf="result2.children">
+               <li *ngFor="let result3 of result2.children">
+                   {{result3.id}}
+               </li>
+           </ul>
+       </li>
+   </ul>
+</div>

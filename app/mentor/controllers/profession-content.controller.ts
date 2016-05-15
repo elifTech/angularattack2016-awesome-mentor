@@ -13,7 +13,10 @@ import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
+import {GithubService} from '../../services/github.service';
+import {ToastrService} from '../../services/toastr.service';
 import {Level} from '../../models/level.model';
+import {UserModel} from '../../models/user.model';
 import {Profession} from '../../models/profession.model';
 
 import {groupBy, find, filter, remove} from 'lodash';
@@ -59,11 +62,14 @@ export class MentorProfessionContentController {
     public form:any;
     public loading:boolean;
 
+    private user: UserModel;
 
     constructor(protected router:Router, private _courseraService:CourseraService,
                 private _youTubeService:YouTubeService,
+                private githubService:GithubService,
                 private professionService:ProfessionService,
-                private params:RouteParams, private location:Location,
+                private toastr: ToastrService,
+                private params:RouteParams, private location:Location, private authService:AuthService,
                 private _awesomeService:AwesomeService, private fb:FormBuilder) {
 
 
@@ -110,6 +116,10 @@ export class MentorProfessionContentController {
                 console.log('this.profession', this.profession);
             });
 
+        this.user = this.authService.getUser();
+        AuthService.user$.subscribe(user => {
+            this.user = user;
+        });
     }
 
     public setTab(index) {
@@ -173,14 +183,33 @@ export class MentorProfessionContentController {
                 return this.professionService.removeLevel(this.professionName, this.level.oldName);
             }).then(() => {
                 this.loading = false;
-                console.log('SAVED2222');
+                // console.log('SAVED2222');
+                this.toastr.success('Degree saved');
             });
         } else {
             this.professionService.saveLevel(this.professionName, this.level).then(() => {
                 this.loading = false;
-                console.log('SAVED');
+                // console.log('SAVED');
+                this.toastr.success('Degree saved');
             });
         }
+    }
+
+    public saveItemAsGist() {
+        this.loading = true;
+        let params = {
+            files: {}
+        };
+        let fileName = this.professionName + ' - ' + this.level.name + '.md';
+        params.files[fileName] = {
+            content: this.level.toMd()
+        };
+
+        this.githubService.makeGist(params, () => {
+            this.loading = false;
+            // console.log('Gist SAVED');
+            this.toastr.success('Gist saved in Your profile');
+        });
     }
 
     public onSelectTag($event:any) {

@@ -1,19 +1,5 @@
 <div class="container">
-    <!--<ul *ngIf="items">-->
-        <!--<li *ngFor="let result1 of items">-->
-            <!--{{result1.id}}-->
 
-            <ul *ngIf="items && items[0].children">
-                <li *ngFor="let result2 of items[0].children">
-                    {{result2.id}}
+    <img src="/assets/img/logo.png" />
 
-                    <ul *ngIf="result2.children">
-                        <li *ngFor="let result3 of result2.children">
-                            {{result3.id}}
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        <!--</li>-->
-    <!--</ul>-->
 </div>

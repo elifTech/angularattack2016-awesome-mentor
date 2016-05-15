@@ -8,6 +8,7 @@ import {Profession} from '../../models/profession.model';
 import {Level} from '../../models/level.model';
 import {UserModel} from '../../models/user.model';
 import {ProfessionService} from '../../services/profession.service';
+import {ToastrService} from '../../services/toastr.service';
 import {AuthService} from '../../services/auth.service';
 import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {ConfirmComponent} from '../../components/confirm.component';
@@ -41,7 +42,8 @@ export class MentorProfessionEditController implements OnInit {
     private user: UserModel;
 
     constructor(private params:RouteParams, private professionService: ProfessionService,
-                protected router:Router, private fb: FormBuilder, private authService:AuthService) {
+                protected router:Router, private fb: FormBuilder, private toastr: ToastrService,
+                private authService:AuthService) {
 
         this.profession = new Profession({});
 
@@ -51,6 +53,7 @@ export class MentorProfessionEditController implements OnInit {
             name: ['', Validators.pattern('[A-Za-z0-9\-\_\\s]+')]
         });
 
+        this.user = this.authService.getUser();
         AuthService.user$.subscribe(user => {
             this.user = user;
         });
@@ -74,7 +77,8 @@ export class MentorProfessionEditController implements OnInit {
         this.loading = true;
         this.professionService.save(this.profession).then(() => {
             this.loading = false;
-            console.log('SAVED');
+            // console.log('SAVED');
+            this.toastr.success('Specialization saved');
         });
     }
 
@@ -82,7 +86,8 @@ export class MentorProfessionEditController implements OnInit {
         this.loading = true;
         this.professionService.removeLevel(this.profession.name, this.profession.levels[index].name).then(() => {
             this.loading = false;
-            console.log('removed Level');
+            // console.log('removed Level');
+            this.toastr.success('Degree removed');
             this.profession.levels.splice(index, 1);
         });
     }

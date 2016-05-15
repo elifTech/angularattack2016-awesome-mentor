@@ -4,7 +4,11 @@
 <div>
 
 
-    <button (click)="saveItem()" class="btn btn-primary pull-right">
+    <button *ngIf="user && !user.is_owner" (click)="saveItemAsGist()" class="btn btn-primary pull-right">
+        <span *ngIf="!loading">Save as Gist</span>
+        <span *ngIf="loading">Saving <span class="spinner"></span></span>
+    </button>
+    <button *ngIf="user && user.is_owner" (click)="saveItem()" class="btn btn-primary pull-right">
         <span *ngIf="!loading">Save</span>
         <span *ngIf="loading">Saving <span class="spinner"></span></span>
     </button>
@@ -31,7 +35,7 @@
 
                 <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
                     <label for="name">Name</label>
-                    <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
+                    <input [disabled]="user && !user.is_owner" #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
                            (ngModelChange)="onLevelNameChanged($event)"
                            [ngModel]="level.name"/>
                     <div class="help-block"
