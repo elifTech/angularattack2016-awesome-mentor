@@ -2,6 +2,7 @@
   "ambientDependencies": {
     "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
     "google-drive-realtime-api": "github:DefinitelyTyped/DefinitelyTyped/google-drive-realtime-api/google-drive-realtime-api.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
+    "gapi": "github:DefinitelyTyped/DefinitelyTyped/gapi/gapi.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
     "JQuery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts"
   },
   "dependencies": {
