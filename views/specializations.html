@@ -1,6 +1,6 @@
 <div class="container">
-   <ul *ngIf="items && items[0].children">
-       <li *ngFor="let result2 of items[0].children">
+   <ul *ngIf="items">
+       <li *ngFor="let result2 of items">
            {{result2.id}}
 
            <ul *ngIf="result2.children">

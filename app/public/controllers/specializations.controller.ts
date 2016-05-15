@@ -68,7 +68,9 @@ export class PublicSpecializationsController {
                     nodes[node['id']] = plainToTree(plain, node);
             }
 
-            this.items = toArray(nodes);
+            this.items = toArray(nodes['professions']['children']);
+
+            console.log(this.items);
         });
         
     }
