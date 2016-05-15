@@ -25,8 +25,6 @@ export class AppComponent {
     constructor(private authService:AuthService, public router: Router, private toastr: ToastrService) {
         authService.init();
 
-        this.toastr.success('123123123123');
-
         this.auth = AuthService.auth;
         AuthService.user$.subscribe(user => {
             this.user = user;

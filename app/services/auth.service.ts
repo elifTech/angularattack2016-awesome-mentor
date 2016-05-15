@@ -34,6 +34,10 @@ export class AuthService {
             this.loadUserInfo();
         }
     }
+    
+    public getUser() {
+        return this._user;
+    }
 
     public static setProvider(provider) {
         AuthService.provider = provider;
