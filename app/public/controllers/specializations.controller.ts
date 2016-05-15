@@ -7,8 +7,11 @@ import {GithubService} from '../../services/github.service';
 import {ProfessionService} from '../../services/profession.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
+import {DocumentModel} from '../../models/document.model';
+import {PublicLevelItem} from '../../models/public-level-item.model';
 import {LevelItem} from '../../models/level-item.model';
 import {TetherService} from "../../services/tether.service";
+import {GoogleService} from "../../services/google.service";
 
 
 declare var jQuery:any;
@@ -36,10 +39,14 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
+    private tether: TetherService;
+    public document: DocumentModel = new DocumentModel();
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
+                private google: GoogleService,
+                tether: TetherService
                 private tether: TetherService
     ) {
         this.loading = true;
@@ -65,6 +72,34 @@ export class PublicSpecializationsController {
         github.getRepositoryUser(user => {
             this.mentorUser = user;
         });
+
+        var self = this;
+        gapi.load('auth:client,drive-realtime,drive-share', function() {
+            google.driveAuth()
+                .then(function(response) {
+                    self.start();
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        });
+    }
+
+    public start() {
+        this.google
+            .findDocument(this.levelName)
+            .then((response:any) => {
+                console.log('response', response);
+                if(!response) return;
+
+                // this.document.resource = response.downloadUrl;
+                // console.log(this.document);
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
     }
 
     public startTour(){
@@ -189,8 +224,38 @@ export class PublicSpecializationsController {
                     }).map((item:any) => {
                         return new LevelItem(item);
                     });
+
+                    this.document.courses = levelItems.map(function (item:any) {
+                        return new PublicLevelItem(item);
+                    });
+
                     this.loading = false;
                 });
         }
+    }
+
+    public markAsDone(item:any) {
+        this.document.name = this.levelName;
+        this.document.courses[item].checked = !this.document.courses[item].checked;
+        this.saveDoc();
+    }
+
+    public saveDoc() {
+        var service;
+        if(this.document.id) {
+            service = this.google
+                .updateDocument(this.document);
+        } else {
+            service = this.google
+                .createDocument(this.document);
+        }
+
+        service
+            .then((response) => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }

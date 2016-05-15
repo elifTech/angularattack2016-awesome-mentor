@@ -16,10 +16,9 @@ export class GoogleService {
         return 'https://www.googleapis.com';
     }
 
-    getHttpOptions(body?: string) {
+    getHttpOptions(body?:string) {
         let opts = {
-            headers: new Headers({
-            })
+            headers: new Headers({})
         };
         if (this._token) {
             opts.headers.set('Authorization', 'Bearer ' + this._token);
@@ -40,31 +39,33 @@ export class GoogleService {
             user.name = user.displayName;
             if (user.image && user.image.url) {
                 user.avatar_url = user.image.url;
-            } else  if (user.cover && user.cover.coverPhoto) {
+            } else if (user.cover && user.cover.coverPhoto) {
                 user.avatar_url = user.cover.coverPhoto.url;
             }
             next(user);
         });
     }
-    
-    driveAuth(): Promise<any> {
+
+    driveAuth():Promise<any> {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
         }
 
-        if(!this._token) {
+        if (!this._token) {
             gapi.auth.init(function ():any {
 
             });
             gapi.auth.signIn(this._token);
         }
         /* jshint camelCase: false */
-        var token: any = gapi.auth.getToken();
+        var token:any = gapi.auth.getToken();
 
         var now = Date.now() / 1000;
         if (token /*&& ((token.expires_at - now) > (60))*/) {
 
-            return new Promise((resolve, reject) => {resolve(token)});
+            return new Promise((resolve, reject) => {
+                resolve(token)
+            });
         } else {
             var params = {
                 'client_id': '616075536950-pauau0e7u0c980llqh99ftvg3sd32c61.apps.googleusercontent.com',
@@ -88,7 +89,7 @@ export class GoogleService {
         }
     }
 
-    public createDocument = function (document: any) {
+    public createDocument = function (document:any) {
         var multipartRequestBody = this.buildMetaData(document);
         const boundary = '-------314159265358979323846';
 
@@ -100,19 +101,22 @@ export class GoogleService {
                     reject(result);
                 }
             };
+            console.log('gapi', gapi,
+                gapi.client);
             gapi.client.request({
-                'path': '/upload/drive/v2/files',
+                'path': '/upload/drive/v3/files',
                 'method': 'POST',
-                'params': {'uploadType': 'multipart', 'alt': 'json'},
+                'params': {'uploadType': 'media'},
                 'headers': {
-                    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+                    // 'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+                    'Content-Type': 'text/plain'
                 },
                 'body': multipartRequestBody
             }).execute(onComplete);
         });
     }
 
-    public updateDocument = function(document) {
+    public updateDocument = function (document) {
         var multipartRequestBody = this.buildMetaData(document);
         const boundary = '-------314159265358979323846';
 
@@ -125,9 +129,9 @@ export class GoogleService {
                 }
             };
             gapi.client.request({
-                'path': '/upload/drive/v2/files/'+document.id,
+                'path': '/upload/drive/v2/files/' + document.id,
                 'method': 'PUT',
-                'params': {'uploadType': 'multipart', 'alt': 'json'},
+                'params': {'uploadType': 'multipart', 'alt': 'txt'},
                 'headers': {
                     'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
                 },
@@ -136,8 +140,8 @@ export class GoogleService {
         });
     }
 
-    
-    public getDocument = function(id) {
+
+    public getDocument = function (id) {
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
                 if (result && !result.error) {
@@ -147,26 +151,27 @@ export class GoogleService {
                 }
             };
             gapi.client.request({
-                'path': '/drive/v2/files/'+id,
+                'path': '/drive/v2/files/' + id,
                 'method': 'GET'
             }).execute(onComplete);
         });
     }
 
-    public findDocument = function(name: string, prefix?: string) {
-        if(!prefix) prefix = "AwesomeMentor: ";
+    public findDocument = function (name:string, prefix?:string) {
+        if (!prefix) prefix = "AwesomeMentor: ";
         var self = this;
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
+                console.log('|||||', result);
                 if (result && !result.error) {
                     if(result.items && result.items[0]) {
-                        self.getDocumentContent(result.items[0].webContentLink)
+                        self.getDocumentContent('http://138.201.29.152:804/drive/v2/files/'+result.items[0].id+'?alt=media')
                             .then(resolve)
                             .catch(reject);
                         return;
                     }
-                    console.log('-----');
-                    resolve(result.items[0]);
+                    // console.log('0000-----');
+                    // resolve(result.items[0]);
                 } else {
                     reject(result);
                 }
@@ -175,13 +180,13 @@ export class GoogleService {
                 'path': '/drive/v2/files/',
                 'method': 'GET',
                 'params': {
-                    'q': "title = '" + prefix+name + "'"
+                    'q': "title='" + prefix + name + "'"
                 }
             }).execute(onComplete);
         });
     }
 
-    public getDocumentContent(fileUrl: string) {
+    public getDocumentContent(fileUrl:string) {
         return new Promise((resolve, reject) => {
             let opts = this.getHttpOptions();
             this.http.get(fileUrl, opts).subscribe(res => {
@@ -191,9 +196,41 @@ export class GoogleService {
         });
     }
 
-    public buildMetaData(document: any, prefix?:string) {
-        var jsonData = document.courses.map(course => {return course.toJson();}).join(',');
-        if(!prefix) prefix = "AwesomeMentor: ";
+    public buildMetaData(document:any, prefix?:string) {
+        // var jsonData = document.courses.map(course => {
+        //     return course.toJson();
+        // }).join(',');
+        // if (!prefix) prefix = "AwesomeMentor: ";
+        // const boundary = '-------314159265358979323846';
+        // const delimiter = "\r\n--" + boundary + "\r\n";
+        // const close_delim = "\r\n--" + boundary + "--";
+        //
+        // var fileMetadata = {
+        //     title: prefix + document.name,
+        //     name: prefix + document.name,
+        //     mimeType: 'text/plain'
+        // };
+        //
+        // var contentType = 'text/plain';
+        // // Updating the metadata is optional and you can instead use the value from drive.files.get.
+        // var base64Data = Base64Service.encode(jsonData);
+        // var multipartRequestBody =
+        //     delimiter +
+        //     'Content-Type: ' + contentType + '\r\n\r\n' +
+        //     JSON.stringify(fileMetadata) +
+        //     delimiter +
+        //     'Content-Type: ' + contentType + '\r\n' +
+        //     'Content-Transfer-Encoding: base64\r\n' +
+        //     '\r\n' +
+        //     base64Data +
+        //     close_delim;
+        // return multipartRequestBody;
+
+        var jsonData = document.courses.map(course => {
+            return course.toJson();
+        }).join(',');
+
+        if (!prefix) prefix = "AwesomeMentor: ";
         const boundary = '-------314159265358979323846';
         const delimiter = "\r\n--" + boundary + "\r\n";
         const close_delim = "\r\n--" + boundary + "--";
@@ -201,15 +238,15 @@ export class GoogleService {
         var fileMetadata = {
             title: prefix + document.name,
             name: prefix + document.name,
-            mimeType: 'application/json'
+            mimeType: 'text/plain'
         };
 
-        var contentType = 'application/json';
+        var contentType = 'text/plain';
         // Updating the metadata is optional and you can instead use the value from drive.files.get.
         var base64Data = Base64Service.encode(jsonData);
         var multipartRequestBody =
             delimiter +
-            'Content-Type: application/json\r\n\r\n' +
+            'Content-Type: ' + contentType + '\r\n\r\n' +
             JSON.stringify(fileMetadata) +
             delimiter +
             'Content-Type: ' + contentType + '\r\n' +
