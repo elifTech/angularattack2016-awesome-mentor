@@ -75,10 +75,7 @@
                         <a class="btn btn-default btn-cancel pull-right" (click)="toggleEdit()" *ngIf="!profession.isNew">
                             Cancel
                         </a>
-                        <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
-                            <span *ngIf="!loading">Pull request</span>
-                            <span *ngIf="loading">Saving <span class="spinner"></span></span>
-                        </button>
+
                         <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
                             <span *ngIf="!loading">Save</span>
                             <span *ngIf="loading">Saving <span class="spinner"></span></span>
