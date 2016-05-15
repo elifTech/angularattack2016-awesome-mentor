@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {CORE_DIRECTIVES} from '@angular/common';
+import {CORE_DIRECTIVES, Location} from '@angular/common';
+import {ROUTER_DIRECTIVES, RouteParams} from '@angular/router-deprecated';
 
 import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {GithubService} from '../../services/github.service';
@@ -23,8 +24,13 @@ export class PublicSpecializationsController {
     public items:any[];
     public loading:boolean;
     public selectedLevel:Level;
+    public professionName:string = '';
+    public levelName:string = '';
+    public tag:string = '';
 
-    constructor(private github:GithubService, private professionService:ProfessionService) {
+    constructor(private github:GithubService, private location:Location,
+                private professionService:ProfessionService,
+                private params:RouteParams) {
         this.loading = true;
 
         github.getCurrentRepository().getTree(res => {
@@ -86,24 +92,59 @@ export class PublicSpecializationsController {
             this.loading = false;
         });
 
+        console.log('params', this.params);
+        if (this.params.get('specialization')) {
+            this.professionName = decodeURIComponent(this.params.get('specialization'));
+        }
+        if (this.params.get('degree')) {
+            this.levelName = decodeURIComponent(this.params.get('degree'));
+        }
+        if (this.params.get('tag')) {
+            this.tag = decodeURIComponent(this.params.get('tag'));
+        }
+        this.loadLevelItems();
     }
 
-    getLevelItems(professionName:string, levelName:string) {
-        console.log('getLevelItems', professionName, levelName);
+    public filterByTag(tag:string) {
+        this.tag = tag;
+        this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName +
+            '&tag=' + this.tag);
+        this.loadLevelItems();
+    }
 
-        this.selectedLevel = new Level({
-            name: levelName
-        });
+    public getLevelItems(professionName:string, levelName:string) {
+        this.professionName = professionName;
+        this.levelName = levelName;
 
-        this.loading = true;
-        this.professionService
-            .getLevelItems(professionName, levelName)
-            .then((levelItems) => {
-                console.log('levelItems', levelItems);
-                this.selectedLevel.items = levelItems.map(function (item:any) {
-                    return new LevelItem(item);
-                });
-                this.loading = false;
+        this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName);
+        this.loadLevelItems();
+    }
+
+    protected loadLevelItems() {
+        console.log('getLevelItems', this.professionName, this.levelName);
+
+        if (this.professionName.length > 0 && this.levelName.length > 0) {
+            this.selectedLevel = new Level({
+                name: this.levelName
             });
+
+            this.loading = true;
+            this.professionService
+                .getLevelItems(this.professionName, this.levelName)
+                .then((levelItems) => {
+                    console.log('levelItems', levelItems);
+                    this.selectedLevel.items = levelItems.filter((item) => {
+                        if(this.tag.length > 0) {
+                            item.tags = item.tags || [];
+                            return item.tags.indexOf(this.tag) != -1;
+                            // console.log('tag', this.tag, item);
+                        }
+                        return true;
+                    }).map((item:any) => {
+                        return new LevelItem(item);
+                    });
+                    this.loading = false;
+                });
+        }
     }
 }
