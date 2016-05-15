@@ -213,6 +213,8 @@ export class PublicSpecializationsController {
                         return new PublicLevelItem(item);
                     });
 
+                    this.start();
+
                     this.loading = false;
                 });
         }
