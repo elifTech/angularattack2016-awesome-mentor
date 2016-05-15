@@ -44,12 +44,21 @@ export class AuthService {
         if (AuthService.provider == 'github') {
             return this.github.getUser(user => {
                 user.type = 'github';
-                this._user = user;
-                this._userObserver.next(this._user);
+                this.github.getCollaborators()
+                    .then(res => {
+                        user.is_owner = true;
+                        this._user = user;
+                        this._userObserver.next(this._user);
+                    }).catch(res => {
+                        user.is_owner = false;
+                        this._user = user;
+                        this._userObserver.next(this._user);
+                    });
             });
         }
         this.google.getUser(user => {
             user.type = 'google';
+            user.is_owner = false;
             this._user = user;
             this._userObserver.next(this._user);
         });

@@ -18,7 +18,7 @@
                 <div class="card card-block">
 
                     <div class="pull-right" *ngIf="!enableEdit">
-                        <a (click)="toggleEdit()" class="btn btn-secondary-outline tooltipped tooltipped-nw" aria-label="Edit General Information">
+                        <a *ngIf="user && user.is_owner" (click)="toggleEdit()" class="btn btn-secondary-outline tooltipped tooltipped-nw" aria-label="Edit General Information">
                             <span class="fa fa-pencil fa-2x"></span>
                         </a>
                     </div>
@@ -76,6 +76,10 @@
                             Cancel
                         </a>
                         <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
+                            <span *ngIf="!loading">Pull request</span>
+                            <span *ngIf="loading">Saving <span class="spinner"></span></span>
+                        </button>
+                        <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
                             <span *ngIf="!loading">Save</span>
                             <span *ngIf="loading">Saving <span class="spinner"></span></span>
                         </button>
@@ -93,7 +97,7 @@
 
                     <div class="list-group">
                         <div class="list-group-item" *ngFor="let level of profession.levels; let i = index;">
-                            <a confirm (onOk)="removeLevel(i)" [message]="'Are you sure want to remove this degree?'" title="Remove degree"
+                            <a *ngIf="user && user.is_owner" confirm (onOk)="removeLevel(i)" [message]="'Are you sure want to remove this degree?'" title="Remove degree"
                                aria-label="Remove degree"  class="text-danger pull-right tooltipped tooltipped-nw">
                                 <span class="fa fa-times"></span>
                             </a>
@@ -107,7 +111,7 @@
                     </div>
 
                     <br>
-                    <a class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'New degree'}]">
+                    <a *ngIf="user && user.is_owner" class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'New degree'}]">
                         <span class="fa fa-plus"></span>
                         Add new degree
                     </a>

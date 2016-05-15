@@ -213,4 +213,13 @@ export class GithubService {
             next(res.json());
         });
     }
+
+    getCollaborators() {
+        if (this.auth.isAuthenticated()) {
+            this._token = this.auth.getToken();
+        }
+        let opts = this.getHttpOptions();
+        return this.http.get(GithubService.url  + '/repos/' + ConfigService.repOwner + '/' + ConfigService.repName + '/collaborators', opts)
+            .toPromise();
+    }
 }
