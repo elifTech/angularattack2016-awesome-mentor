@@ -16,7 +16,7 @@ import {AuthService} from '../../services/auth.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
 
-import {groupBy} from 'lodash';
+import {groupBy, find, filter, remove} from 'lodash';
 import {LevelItem} from "../../models/level-item.model";
 
 @Component({
@@ -43,11 +43,12 @@ export class MentorProfessionContentController {
     public professionName:string = '';
     public profession:Profession;
     public queryString:string = '';
+    public savedCourses:string[] = [];
 
     professionForm: any;
     youTubeResults: any[];
-    courseraResults$: Observable<any>;
-    awesomeResults$: Observable<any>;
+    courseraResults: any[];
+    awesomeResults: any[];
 
 
     constructor(protected router:Router, private _courseraService: CourseraService,
@@ -65,18 +66,8 @@ export class MentorProfessionContentController {
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(term => {
-                this.searchYoutube();
+                this.makeAllRequests();
             });
-
-        this.courseraResults$ = this.professionForm.controls.queryStringInput.valueChanges
-            .debounceTime(400)
-            .distinctUntilChanged()
-            .switchMap(term => this._courseraService.search(term));
-
-        this.awesomeResults$ = this.professionForm.controls.queryStringInput.valueChanges
-            .debounceTime(400)
-            .distinctUntilChanged()
-            .switchMap(term => this._awesomeService.search(term));
 
 
         this.professionName = decodeURIComponent(params.get('name'));
@@ -88,6 +79,7 @@ export class MentorProfessionContentController {
             .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
                 console.log(levelItems);
+                this.savedCourses = levelItems.map((item:any)=>{return item.source;});
                 this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});
             });
 
@@ -98,17 +90,48 @@ export class MentorProfessionContentController {
                 console.log('this.profession', this.profession);
             });
     }
-    
-    protected searchYoutube()
-    {
-        if(this.queryString.length > 0) {
-            console.log('this.queryString', this.queryString);
-            this._youTubeService.search(this.queryString).then(res => {
-                console.log('youTubeResults', res.json().items);
-                this.youTubeResults = res.json().items;
-            });
-        }
+
+    // helpers start
+
+    protected makeAllRequests() {
+        this.searchYoutube();
+        this.searchCoursera();
+        this.searchAwesome();
     }
+
+    // youtube
+    protected searchYoutube() {
+        if(this.queryString.length <= 1) return;
+        this._youTubeService.search(this.queryString).then(res => {
+            this.youTubeResults = this.youtubeFilter(res.json().items);
+        });
+    }
+
+    protected searchCoursera() {
+        if(this.queryString.length <= 1) return;
+        this._courseraService.search(this.queryString).then(res => {
+            this.courseraResults = this.courseraFilter(res);
+        });
+    }
+    protected searchAwesome() {
+        if(this.queryString.length <= 1) return;
+        this._awesomeService.search(this.queryString).then(res => {
+            this.awesomeResults = this.awesomeFilter(res);
+        });
+    }
+
+    protected youtubeFilter(items) {
+        return items.filter((result:any) => {return this.savedCourses.indexOf("https://www.youtube.com/watch?v=" + result.id.videoId) === -1;});
+    }
+    
+    protected courseraFilter(items) {
+        return items.filter((result:any) => {return this.savedCourses.indexOf('https://www.coursera.org/course/' + result.slug) === -1;});
+    }    
+    
+    protected awesomeFilter(items) {
+        return items.filter((result:any) => {return this.savedCourses.indexOf(result.href) === -1;});
+    }
+    // helpers end
     
     public saveItem()
     {
@@ -130,13 +153,25 @@ export class MentorProfessionContentController {
         var levelItem = new LevelItem();
         levelItem.parseFrom(item, type);
         this.level.items.push(levelItem);
-        console.log(' addToProfession',  item, type);
+
+        this.savedCourses = this.level.items.map((item:any)=>{return item.source;});
+        this.youTubeResults = this.youtubeFilter(this.youTubeResults);
+        this.courseraResults = this.courseraFilter(this.courseraResults);
+        this.awesomeResults = this.awesomeFilter(this.awesomeResults);
+
         this.currItemIndex = this.level.items.length - 1;
     }
 
-    public removeFromLevel(index:number)
+    public removeFromLevel(item:any)
     {
-        console.log(' removeFromProfession(result:any)',  index);
-        this.level.items.splice(index, 1);
+        var removed = remove(this.level.items, (levelItem) => {
+            return levelItem.source === item.source;
+        });
+        this.makeAllRequests();
+
+        console.log(this.level.items);
+
+        console.log(' removeFromProfession(result:any)',  removed);
+
     }
 }
