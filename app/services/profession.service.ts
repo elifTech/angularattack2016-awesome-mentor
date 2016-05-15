@@ -63,7 +63,7 @@ export class ProfessionService {
         if(level.isNew) {
             return new Promise((resolve, reject) => {
                 let file = this.repos.newFile('professions/' + professionName + '/' + level.name + '.md');
-                console.log('level.toMd()', level.toMd());
+                //console.log('level.toMd()', level.toMd());
                 file.setContent(level.toMd(), (new Date()).toString(), res => {
                     // console.info(res);
                     resolve(res);
@@ -76,7 +76,7 @@ export class ProfessionService {
                     if (!file) {
                         file = this.repos.newFile('professions/' + professionName + '/' + level.name + '.md');
                     }
-                    console.log('level.toMd()', level.toMd());
+                    //console.log('level.toMd()', level.toMd());
                     file.setContent(level.toMd(), (new Date()).toString(), res => {
                         // console.info(res);
                         resolve(res);

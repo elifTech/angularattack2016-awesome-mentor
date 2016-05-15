@@ -165,7 +165,7 @@ export class GoogleService {
                             .catch(reject);
                         return;
                     }
-                    console.log('-----');
+                    //console.log('-----');
                     resolve(result.items[0]);
                 } else {
                     reject(result);

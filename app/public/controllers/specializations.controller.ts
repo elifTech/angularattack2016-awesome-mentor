@@ -54,12 +54,12 @@ export class PublicSpecializationsController {
 
         this.repositoryUrl = GithubService.publicUrl;
         professionService.getTree((items) => {
-            console.log(this.items);
+            //console.log(this.items);
             this.items = items;
             this.loading = false;
         });
 
-        console.log('params', this.params);
+        //console.log('params', this.params);
         if (this.params.get('specialization')) {
             this.professionName = decodeURIComponent(this.params.get('specialization'));
         }
@@ -79,10 +79,10 @@ export class PublicSpecializationsController {
             google.driveAuth()
                 .then((response) => {
                     self.startSync();
-                    console.log(response);
+                    //console.log(response);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    //console.log(error);
                 });
 
         });
@@ -185,7 +185,7 @@ export class PublicSpecializationsController {
     }
 
     protected loadLevelItems() {
-        console.log('getLevelItems', this.professionName, this.levelName);
+        //console.log('getLevelItems', this.professionName, this.levelName);
 
         if (this.professionName.length > 0 && this.levelName.length > 0) {
             this.professionService
@@ -204,7 +204,7 @@ export class PublicSpecializationsController {
             this.professionService
                 .getLevelItems(this.professionName, this.levelName)
                 .then((levelItems) => {
-                    console.log('levelItems', levelItems);
+                    //console.log('levelItems', levelItems);
                     this.currLevelIems = levelItems;
                     this.selectedLevel.items = levelItems.filter((item:any) => {
                         if (this.currTag.length > 0) {
@@ -253,7 +253,7 @@ export class PublicSpecializationsController {
             this.selectedLevel.items[index].checked = levelItem.checked;
             this.selectedLevel.items[index].starred = levelItem.starred;
             this.selectedLevel.items[index].blacklist = levelItem.blacklist;
-            console.log(this.selectedLevel.items[index]);
+            //console.log(this.selectedLevel.items[index]);
         });
     }
     

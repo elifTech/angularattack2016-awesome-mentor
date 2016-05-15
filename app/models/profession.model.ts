@@ -17,7 +17,7 @@ export class Profession {
             this._parse(raw);
         } else {
             this.name = raw.name;
-            console.info(raw)
+            //console.info(raw)
             this.htmlUrl = raw.htmlUrl;
         }
         //console.log('raw', raw);

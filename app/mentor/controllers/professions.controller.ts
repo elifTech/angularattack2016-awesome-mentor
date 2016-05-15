@@ -28,7 +28,7 @@ export class MentorProfessionsController {
     public errorMessage: string;
 
     constructor(private professionService: ProfessionService){
-        console.log('MentorProfessionsController');
+        //console.log('MentorProfessionsController');
 
         this.loading = true;
         this.professionService
