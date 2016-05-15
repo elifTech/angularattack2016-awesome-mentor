@@ -8,5 +8,5 @@
 
 -angular2
 
-**Learn the fundamental features of JavaScript - the language used to add dynamic, interactive content to websites. I teach you how to get started with JavaScript, ...**
+**Learn the fundamental features of JavaScript - the language used to add dynamic, interactive content to websites. I teach you how to get started with JavaScript**
 
