@@ -1,0 +1,25 @@
+.loading {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &:after {
+    content: ' ';
+    background-image: url('../img/loading.gif');
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 129px;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -62px;
+  }
+
+  &.global {
+    position: static;
+  }
+}

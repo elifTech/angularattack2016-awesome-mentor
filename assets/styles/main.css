@@ -5285,6 +5285,27 @@ body {
   /* Vertically center the text there */
   background-color: #f5f5f5; }
 
+.loading {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+  .loading:after {
+    content: ' ';
+    background-image: url("../img/loading.gif");
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 129px;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -62px; }
+  .loading.global {
+    position: static; }
+
 .list-linear, .list-dots {
   display: block; }
   .list-linear > li, .list-dots > li {
@@ -5495,7 +5516,10 @@ body {
   .navbar.navbar-light .navbar-brand {
     padding: 0.75rem; }
   .navbar.navbar-light .nav-link {
-    font-weight: 600; }
+    font-weight: 600;
+    color: rgba(73, 67, 104, 0.8); }
+  .navbar.navbar-light .active .nav-link {
+    color: #494368; }
   .navbar.navbar-light .navbar-actions {
     margin-top: .6rem; }
 
