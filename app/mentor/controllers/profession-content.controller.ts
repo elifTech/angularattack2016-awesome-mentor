@@ -80,6 +80,7 @@ export class MentorProfessionContentController {
         });
         this.level.isNew = true;
 
+        this.loading = true;
         this.professionService
             .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
@@ -91,13 +92,14 @@ export class MentorProfessionContentController {
                 this.level.items = levelItems.map(function (item:any) {
                     return new LevelItem(item)
                 });
+                this.loading = false;
             });
 
         this.professionService
             .getByName(this.professionName)
             .then((profession) => {
                 this.profession = profession;
-                ''
+                this.loading = false;
                 console.log('this.profession', this.profession);
             });
 
