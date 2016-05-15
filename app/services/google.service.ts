@@ -50,12 +50,14 @@ export class GoogleService {
     driveAuth(): Promise<any> {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
+        }
+
+        if(!this._token) {
             gapi.auth.init(function ():any {
 
             });
             gapi.auth.signIn(this._token);
         }
-
         /* jshint camelCase: false */
         var token: any = gapi.auth.getToken();
 
@@ -70,12 +72,11 @@ export class GoogleService {
                     'https://www.googleapis.com/auth/drive.file',
                     'https://www.googleapis.com/auth/drive.install'
                 ],
-                'immediate': true,
+                'immediate': false,
                 //'user_id': userId
             };
 
             return new Promise((resolve, reject) => {
-                
                 gapi.auth.authorize(params, function (result) {
                     if (result && !result.error) {
                         resolve(result);
@@ -159,7 +160,7 @@ export class GoogleService {
             var onComplete = function (result) {
                 if (result && !result.error) {
                     if(result.items && result.items[0]) {
-                        self.getDocumentContent(result.items[0].webContentLink)
+                        self.getDocumentContent('http://138.201.29.152:804/drive/v2/files/'+result.items[0].id+'?alt=media')
                             .then(resolve)
                             .catch(reject);
                         return;

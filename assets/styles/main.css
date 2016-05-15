@@ -5576,8 +5576,6 @@ body {
   .slats > ul > li {
     border-bottom: 1px solid #e0e0e0;
     padding: 17px 15px; }
-    .slats > ul > li h4, .slats > ul > li p {
-      padding-left: 123px; }
     .slats > ul > li .c-input {
       float: left;
       margin: 3px 0 0; }

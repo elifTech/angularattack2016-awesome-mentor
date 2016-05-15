@@ -8,8 +8,8 @@ import {ProfessionService} from '../../services/profession.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
 import {DocumentModel} from '../../models/document.model';
-import {LevelItem} from '../../models/level-item.model';
 import {PublicLevelItem} from '../../models/public-level-item.model';
+import {LevelItem} from '../../models/level-item.model';
 import {TetherService} from "../../services/tether.service";
 import {GoogleService} from "../../services/google.service";
 
@@ -39,14 +39,15 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
+    private tether: TetherService;
     public document: DocumentModel = new DocumentModel();
-    
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
-                private tether: TetherService,
-                private google: GoogleService
+                private google: GoogleService,
+                tether: TetherService
+                private tether: TetherService
     ) {
         this.loading = true;
 
@@ -86,9 +87,24 @@ export class PublicSpecializationsController {
         });
     }
 
+    public start() {
+        this.google
+            .findDocument(this.levelName)
+            .then((response:any) => {
+                console.log('response', response);
+                if(!response) return;
+
+                // this.document.resource = response.downloadUrl;
+                // console.log(this.document);
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    }
+
     public startTour(){
         this.tether.addStep('navbar', {
-            text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
+            text: ['In this block you can see information about owner of current mentor repository'],
             attachTo: '.mentor-block left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
@@ -115,15 +131,11 @@ export class PublicSpecializationsController {
                     action: this.tether.back
                 }, {
                     text: 'Next',
-                    action: function(){
-                        let el: any = document.body.querySelector('.specialization-list a');
-
-                        console.log(el);
-
-                        jQuery(el).click();
-
-                        // this.tether.next.call(this.tether);
-                        // document.body.querySelector('.specialization-list>li').click();
+                    action: () => {
+                        if (this.items.length) {
+                            this.getLevelItems(this.items[0].id, this.items[0].children[0].id);
+                        }
+                        this.tether.next();
                     },
                     classes: 'shepherd-button-example-primary'
                 }
@@ -217,6 +229,11 @@ export class PublicSpecializationsController {
                     this.document.courses = this.selectedLevel.items.map(function (item:any) {
                         return new PublicLevelItem(item);
                     });
+
+                    this.document.courses = this.selectedLevel.map(function (item:any) {
+                        return new PublicLevelItem(item);
+                    });
+
                     this.loading = false;
                 });
         }
