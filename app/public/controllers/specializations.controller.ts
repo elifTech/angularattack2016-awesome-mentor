@@ -147,7 +147,7 @@ export class PublicSpecializationsController {
                 .getLevelItems(this.professionName, this.levelName)
                 .then((levelItems) => {
                     console.log('levelItems', levelItems);
-                    this.selectedLevel.items = levelItems.filter((item) => {
+                    this.selectedLevel.items = levelItems.filter((item: any) => {
                         if (this.currTag.length > 0) {
                             item.tags = item.tags || [];
                             return item.tags.indexOf(this.currTag) != -1;

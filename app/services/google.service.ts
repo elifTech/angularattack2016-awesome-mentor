@@ -152,7 +152,8 @@ export class GoogleService {
         });
     }
 
-    public findDocument = function(name) {
+    public findDocument = function(name: string, prefix?: string) {
+        if(!prefix) prefix = "AwesomeMentor: ";
         return new Promise((resolve, reject) => {
             var onComplete = function (result) {
                 if (result && !result.error) {
@@ -165,7 +166,7 @@ export class GoogleService {
                 'path': '/drive/v2/files/',
                 'method': 'GET',
                 'params': {
-                    'q': "title = '" + name + "'"
+                    'q': "title = '" + prefix+name + "'"
                 }
             }).execute(onComplete);
         });
