@@ -25,7 +25,7 @@
 		</div>
 	</nav>
 
-	<div *ngIf="githubService.getRateLimitRemaining() < 10">Overflow Github rate limit</div>
+	<div *ngIf="githubService.getRateLimitRemaining() < 10" class="alert alert-danger">Sorry, your Github rate limit reached out. Sorry, your Github query rate limit reached out. You need to sign in with GitHub for increase your limits. Please click Manage button.</div>
 
 	<div class="wrapper" *ngIf="router && router.navigating"></div>
 	<router-outlet></router-outlet>
