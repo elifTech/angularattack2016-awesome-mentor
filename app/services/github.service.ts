@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {Base64Service} from './base64.service';
 import {ConfigService} from './config.service';
+import {AuthService} from './auth.service';
 import 'rxjs/add/operator/map';
 import {Auth} from 'ng2-ui-auth';
 
@@ -181,7 +182,9 @@ export class GithubService {
                 'Accept': 'application/vnd.github.v3.raw'
             })
         };
-        if (this._token) {
+
+        var provider = localStorage.getItem('provider');
+        if (this._token && provider == 'github') {
             opts.headers.set('Authorization', 'Bearer ' + this._token);
         }
         if (body) {
