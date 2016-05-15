@@ -135,8 +135,8 @@ export class PublicSpecializationsController {
                     classes: 'shepherd-button-secondary',
                     action: this.tether.back
                 }, {
-                    text: 'Next',
-                    action: this.tether.next,
+                    text: 'Done',
+                    action: this.tether.cancel,
                     classes: 'shepherd-button-example-primary'
                 }
             ]
