@@ -71,6 +71,9 @@
 
                 <h4 class="card-title">Resources</h4>
 
+                <div *ngIf="!selectedLevel.items.length" class="text-center">
+                    No items by you request
+                </div>
                 <div class="media" *ngFor="let result of selectedLevel.items; let i = index">
                     <a class="media-left" *ngIf="result.img && result.img != 'undefined'" href="{{result.source}}">
                         <img class="media-object" [src]="result.img">
