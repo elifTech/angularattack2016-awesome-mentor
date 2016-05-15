@@ -51,7 +51,6 @@ export class MentorProfessionEditController implements OnInit {
             name: ['', Validators.pattern('[A-Za-z0-9\-\_\\s]+')]
         });
 
-        this.authService.init();
         AuthService.user$.subscribe(user => {
             this.user = user;
         });

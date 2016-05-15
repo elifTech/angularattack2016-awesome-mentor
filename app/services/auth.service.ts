@@ -44,7 +44,7 @@ export class AuthService {
         if (AuthService.provider == 'github') {
             return this.github.getUser(user => {
                 user.type = 'github';
-                this.github.getCollaborators()
+                this.github.getCurrentRepository().getCollaborators()
                     .then(res => {
                         user.is_owner = true;
                         this._user = user;

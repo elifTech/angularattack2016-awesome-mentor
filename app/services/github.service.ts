@@ -139,6 +139,11 @@ export class Repository {
             next(res.json().tree.map((item) => new RepositoryItem(this.http, this, item, this.service)));
         });
     }
+
+    getCollaborators() {
+        let opts = this.service.getHttpOptions();
+        return this.http.get(this.url + '/collaborators', opts).toPromise();
+    }
    /* createTree(sha:string, items:RepositoryItem[]) {
         let opts = this.service.getHttpOptions(),
             params = {
@@ -214,12 +219,13 @@ export class GithubService {
         });
     }
 
-    getCollaborators() {
+    makeGist(next) {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
         }
         let opts = this.getHttpOptions();
-        return this.http.get(GithubService.url  + '/repos/' + ConfigService.repOwner + '/' + ConfigService.repName + '/collaborators', opts)
-            .toPromise();
+        this.http.get(GithubService.url + '/user', opts).subscribe(res => {
+            next(res.json());
+        });
     }
 }
