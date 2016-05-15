@@ -4,11 +4,17 @@ import {MentorProfessionEditController} from './mentor/controllers/profession-ed
 import {MentorProfessionContentController} from './mentor/controllers/profession-content.controller';
 import {MentorLoginController} from "./mentor/controllers/login.controller";
 import {AboutController} from "./controllers/about.controller";
+import {PublicSpecializationsController} from "./public/controllers/specializations.controller";
 
 export var APP_ROUTES:RouteDefinition[] = [
     {
         path: '/',
-        name: 'MentorLogin', 
+        name: 'PublicSpecializations',
+        component: PublicSpecializationsController
+    },
+    {
+        path: '/login',
+        name: 'MentorLogin',
         component: MentorLoginController
     },
     {

@@ -132,6 +132,12 @@ export class Repository {
         }, path);
     }
 
+    getTree(next) {
+        let opts = this.service.getHttpOptions();
+        this.http.get(this.url + '/git/trees/master?recursive=1', opts).subscribe(res => {
+            next(res.json().tree.map((item) => new RepositoryItem(this.http, this, item, this.service)));
+        });
+    }
    /* createTree(sha:string, items:RepositoryItem[]) {
         let opts = this.service.getHttpOptions(),
             params = {

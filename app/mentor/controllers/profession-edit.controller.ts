@@ -26,14 +26,20 @@ import {LoadingContainerComponent} from '../../components/loading-container.comp
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionEditController implements OnInit {
     public profession:Profession;
+
     public loading:boolean;
+
+    public enableEdit:boolean;
+
     private tags:string[] = [''];
+
     public form: ControlGroup;
 
     constructor(private params:RouteParams, private professionService: ProfessionService,
                 protected router:Router, private fb: FormBuilder) {
-        console.log('MentorProfessionEditController');
+
         this.profession = new Profession({});
+
         this.profession.isNew = true;
 
         this.form = fb.group({
@@ -42,12 +48,14 @@ export class MentorProfessionEditController implements OnInit {
     }
 
     ngOnInit() {
+        this.enableEdit = true;
         if(this.params.get('name')) {
             this.loading = true;
             this.professionService
                 .getByName(this.params.get('name'))
                 .then((profession) => {
                     this.profession = profession;
+                    this.enableEdit = false;
                     this.loading = false;
                 });
         }
@@ -86,5 +94,9 @@ export class MentorProfessionEditController implements OnInit {
                 this.profession.tags.push(tagObj.id);
             }
         });
+    }
+
+    public toggleEdit() {
+        this.enableEdit = !this.enableEdit;
     }
 }
