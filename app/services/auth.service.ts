@@ -82,10 +82,10 @@ export class AuthService {
             //console.log('canComponentActivate', AuthService.$auth);
             if ((<any>next.routeData.data).permissions) {
                 if ((<any>next.routeData.data).permissions[0] == AuthService.provider) {
-                    console.log((<any>next.routeData.data).permissions[0],
+                    /*console.log((<any>next.routeData.data).permissions[0],
                         next.routeName, 'can activate -> ',  AuthService.auth && AuthService.auth.isAuthenticated(),
                         'permission', AuthService.provider
-                    );
+                    );*/
                     return resolve(AuthService.auth && AuthService.auth.isAuthenticated());
                 }
                 resolve(false);

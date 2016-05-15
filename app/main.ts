@@ -1,3 +1,4 @@
+import {enableProdMode} from '@angular/core';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 import {AppComponent} from './app.component';
@@ -15,6 +16,7 @@ const GOOGLE_CLIENT_ID = '616075536950-pauau0e7u0c980llqh99ftvg3sd32c61.apps.goo
 const GITHUB_CLIENT_ID = '54c368d51bca18a17397';
 const API_SERVER = 'http://52.26.114.209:8080';
 
+enableProdMode();
 bootstrap(AppComponent, [
     LoggerService,
     GithubService,

@@ -104,7 +104,7 @@ export class MentorProfessionContentController implements OnInit {
             .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
                 this.level.isNew = false;
-                console.log('levelItems', levelItems);
+                //console.log('levelItems', levelItems);
                 this.savedCourses = levelItems.map((item:any)=> {
                     return item.source;
                 });
@@ -119,7 +119,7 @@ export class MentorProfessionContentController implements OnInit {
             .then((profession) => {
                 this.profession = profession;
                 this.loading = false;
-                console.log('this.profession', this.profession);
+                //console.log('this.profession', this.profession);
             });
 
     }
@@ -140,7 +140,7 @@ export class MentorProfessionContentController implements OnInit {
     protected searchYoutube() {
         if (this.queryString.length <= 1) return;
         this._youTubeService.search(this.queryString, this.savedCourses.length).then(res => {
-            console.log(res.json().items);
+            //console.log(res.json().items);
             this.youTubeResults = this.youtubeFilter(res.json().items);
         });
     }
@@ -257,7 +257,7 @@ export class MentorProfessionContentController implements OnInit {
 
         this.makeAllRequests();
         this.currItemIndex = this.level.items.length - 1;
-        console.log(' removeFromProfession(result:any)', removed);
+        //console.log(' removeFromProfession(result:any)', removed);
 
     }
 

@@ -1,13 +1,11 @@
 @charset "UTF-8";
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,400,600,700,300);
 /*!
  * Bootstrap v4.0.0-alpha.2 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url(../../node_modules/tether/dist/css/tether.min.css);
-@import url(../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css);
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5219,7 +5217,6 @@ a {
   cursor: pointer; }
 
 h1, .h1 {
-  letter-spacing: -.1rem;
   text-transform: capitalize;
   margin-bottom: 25px; }
   h1.navbar-brand, .h1.navbar-brand {
@@ -5332,6 +5329,9 @@ h3, .h3 {
   .shepherd-active .body-scroll .shepherd-target.shepherd-enabled {
     opacity: 1;
     pointer-events: auto; }
+
+.shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons li .shepherd-button {
+  background: #fa63a8; }
 
 .footer {
   overflow: hidden;

@@ -27,7 +27,7 @@ a {
   cursor: pointer;
 }
 h1, .h1 {
-  letter-spacing: -.1rem;
+  //letter-spacing: -.1rem;
   text-transform: capitalize;
   margin-bottom: 25px;
 
@@ -179,4 +179,8 @@ h3, .h3 {
     opacity: 1;
     pointer-events: auto;
   }
+}
+
+.shepherd-element.shepherd-theme-arrows .shepherd-content footer .shepherd-buttons li .shepherd-button {
+  background: #fa63a8;
 }
