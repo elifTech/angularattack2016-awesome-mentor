@@ -28,6 +28,7 @@ export class PublicSpecializationsController {
     public professionName:string = '';
     public levelName:string = '';
     public currTag:string = '';
+    public currLevelIems:LevelItem[];
     public profession:Profession;
 
     constructor(private github:GithubService, private location:Location,
@@ -115,7 +116,18 @@ export class PublicSpecializationsController {
         } else {
             this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName);
         }
-        this.loadLevelItems();
+        // this.loadLevelItems();
+
+        this.selectedLevel.items = this.currLevelIems.filter((item) => {
+            if (this.currTag.length > 0) {
+                item.tags = item.tags || [];
+                return item.tags.indexOf(this.currTag) != -1;
+                // console.log('tag', this.tag, item);
+            }
+            return true;
+        }).map((item:any) => {
+            return new LevelItem(item);
+        });
     }
 
     public getLevelItems(professionName:string, levelName:string) {
@@ -147,6 +159,7 @@ export class PublicSpecializationsController {
                 .getLevelItems(this.professionName, this.levelName)
                 .then((levelItems) => {
                     console.log('levelItems', levelItems);
+                    this.currLevelIems = levelItems;
                     this.selectedLevel.items = levelItems.filter((item) => {
                         if (this.currTag.length > 0) {
                             item.tags = item.tags || [];

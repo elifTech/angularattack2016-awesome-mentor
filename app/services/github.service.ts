@@ -103,6 +103,7 @@ export class Repository {
     readDir(next, path = '') {
         let opts = this.service.getHttpOptions();
         this.http.get(this.url + '/contents/' + path, opts).subscribe(res => {
+            GithubService.rateLimitRemaining = parseInt(res.headers.get('X-RateLimit-Remaining'), 10);
             next(res.json().map((item) => new RepositoryItem(this.http, this, item, this.service)));
         }, err => {
             next([]);
@@ -129,7 +130,7 @@ export class Repository {
     }
 
     getFileContent(next, path = '', name = '') {
-        console.log(path, name);
+        console.log('getFileContent', path, name);
         this.readFiles(res => {
             let file = res.find(item => item.name == name);
             file ? file.getContent(next) : next(null);
@@ -164,6 +165,8 @@ export class Repository {
 
 @Injectable()
 export class GithubService {
+    public static rateLimitRemaining:number;
+
     private _token:string;
 
     constructor(public http:Http, private auth:Auth) {
@@ -173,6 +176,10 @@ export class GithubService {
         return 'https://api.github.com';
     }
 
+    getRateLimitRemaining() {
+        return GithubService.rateLimitRemaining;
+    }
+    
     getCurrentRepository() {
         return this.getRepository(ConfigService.repOwner, ConfigService.repName);
     }
