@@ -40,10 +40,17 @@ import {LevelItem} from "../../models/level-item.model";
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
     public level:Level;
+
+    public currTabIndex:number = 1;
+
     public currItemIndex:number;
+
     public professionName:string = '';
+
     public profession:Profession;
+
     public queryString:string = '';
+
     public savedCourses:string[] = [];
 
     youTubeResults:any[];
@@ -97,10 +104,13 @@ export class MentorProfessionContentController {
             .getByName(this.professionName)
             .then((profession) => {
                 this.profession = profession;
-                ''
                 console.log('this.profession', this.profession);
             });
 
+    }
+
+    public setTab(index) {
+        this.currTabIndex = index;
     }
 
     // helpers start
@@ -162,7 +172,6 @@ export class MentorProfessionContentController {
                 this.loading = false;
                 console.log('SAVED2222');
             });
-            ;
         } else {
             this.professionService.saveLevel(this.professionName, this.level).then(() => {
                 this.loading = false;

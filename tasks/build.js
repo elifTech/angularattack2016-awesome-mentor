@@ -67,7 +67,7 @@ gulp.task('build-assets', function (done) {
         gulp.src(config.assetsPath.images + '**/*.*', {
             base: config.assetsPath.images
         })
-        .pipe(gulp.dest(config.build.assetPath + 'images'));
+        .pipe(gulp.dest(config.build.assetPath + 'img'));
 
         return gulp.src(config.index)
             .pipe(useref())
