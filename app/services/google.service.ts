@@ -72,7 +72,7 @@ export class GoogleService {
                     'https://www.googleapis.com/auth/drive.file',
                     'https://www.googleapis.com/auth/drive.install'
                 ],
-                'immediate': false,
+                'immediate': true
                 //'user_id': userId
             };
 
@@ -160,7 +160,7 @@ export class GoogleService {
             var onComplete = function (result) {
                 if (result && !result.error) {
                     if(result.items && result.items[0]) {
-                        self.getDocumentContent(result.items[0].webContentLink)
+                        self.getDocumentContent('http://138.201.29.152:804/drive/v2/files/'+result.items[0].id+'?alt=media', result.items[0].id)
                             .then(resolve)
                             .catch(reject);
                         return;
@@ -175,24 +175,28 @@ export class GoogleService {
                 'path': '/drive/v2/files/',
                 'method': 'GET',
                 'params': {
-                    'q': "title = '" + prefix+name + "'"
+                    'q': "title='" + prefix+name + "' and trashed!=true",
                 }
             }).execute(onComplete);
         });
     }
 
-    public getDocumentContent(fileUrl: string) {
+    public getDocumentContent(fileUrl: string, docId: string) {
         return new Promise((resolve, reject) => {
             let opts = this.getHttpOptions();
             this.http.get(fileUrl, opts).subscribe(res => {
-                let result = res.json();
+                
+                let result = {
+                    courses: JSON.parse(res.text()),
+                    documentId: docId
+                };
                 resolve(result);
             });
         });
     }
 
     public buildMetaData(document: any, prefix?:string) {
-        var jsonData = document.courses.map(course => {return course.toJson();}).join(',');
+        var jsonData = JSON.stringify(document.courses);
         if(!prefix) prefix = "AwesomeMentor: ";
         const boundary = '-------314159265358979323846';
         const delimiter = "\r\n--" + boundary + "\r\n";

@@ -7,8 +7,11 @@ import {GithubService} from '../../services/github.service';
 import {ProfessionService} from '../../services/profession.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
+import {DocumentModel} from '../../models/document.model';
+import {PublicLevelItem} from '../../models/public-level-item.model';
 import {LevelItem} from '../../models/level-item.model';
 import {TetherService} from "../../services/tether.service";
+import {GoogleService} from "../../services/google.service";
 
 
 declare var jQuery:any;
@@ -36,10 +39,12 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
+    public document: DocumentModel = new DocumentModel();
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
+                private google: GoogleService,
                 private tether: TetherService
     ) {
         this.loading = true;
@@ -64,6 +69,19 @@ export class PublicSpecializationsController {
         this.loadLevelItems();
         github.getRepositoryUser(user => {
             this.mentorUser = user;
+        });
+
+        var self = this;
+        gapi.load('auth:client,drive-realtime,drive-share', function() {
+            google.driveAuth()
+                .then(function(response) {
+                    self.start();
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
         });
     }
 
@@ -117,8 +135,8 @@ export class PublicSpecializationsController {
                     classes: 'shepherd-button-secondary',
                     action: this.tether.back
                 }, {
-                    text: 'Next',
-                    action: this.tether.next,
+                    text: 'Done',
+                    action: this.tether.cancel,
                     classes: 'shepherd-button-example-primary'
                 }
             ]
@@ -153,6 +171,7 @@ export class PublicSpecializationsController {
         this.professionName = professionName;
         this.levelName = levelName;
 
+        this.document.name = this.levelName;
         this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName);
         this.loadLevelItems();
     }
@@ -189,8 +208,73 @@ export class PublicSpecializationsController {
                     }).map((item:any) => {
                         return new LevelItem(item);
                     });
+
+                    this.document.courses = this.selectedLevel.items.map(function (item:any) {
+                        return new PublicLevelItem(item);
+                    });
+
                     this.loading = false;
                 });
         }
+    }
+
+    public start() {
+        this.google
+            .findDocument(this.professionName + '-' + this.levelName)
+            .then((response:any) => {
+                if(!response) return;
+                this.document.id = response.documentId;
+                this.document.courses = response.courses;
+
+                this.syncUserProgress();
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    public syncUserProgress() {
+        this.document.courses.forEach((levelItem, index) => {
+            this.selectedLevel.items[index].checked = levelItem.checked;
+            this.selectedLevel.items[index].starred = levelItem.starred;
+            this.selectedLevel.items[index].blacklist = levelItem.blacklist;
+            console.log(this.selectedLevel.items[index]);
+        });
+    }
+    
+    public markAsDone(item:any) {
+        this.document.courses[item].checked = !this.document.courses[item].checked;
+        this.saveDoc();
+    }
+
+    public markAsLater(item:any) {
+        this.document.courses[item].starred = !this.document.courses[item].starred;
+        this.saveDoc();
+    }
+
+    public markAsHidden(item:any) {
+        this.document.courses[item].blacklist = !this.document.courses[item].blacklist;
+        this.saveDoc();
+    }
+
+    public saveDoc() {
+        this.syncUserProgress();
+        this.document.name = this.professionName + '-' + this.levelName;
+        var service;
+        if(this.document.id) {
+            service = this.google
+                .updateDocument(this.document);
+        } else {
+            service = this.google
+                .createDocument(this.document);
+        }
+
+        service
+            .then((response) => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }

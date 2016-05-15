@@ -8,6 +8,11 @@ export class LevelItem {
     public description: string;
     public domain: string;
 
+    public checked: boolean = false;
+    public starred: boolean = false;
+    public blacklist: boolean = false;
+
+
     constructor(item?: any) {
         if(!item) return;
 

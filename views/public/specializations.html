@@ -75,35 +75,37 @@
                     No items by you request
                 </div>
                 <div class="media" *ngFor="let result of selectedLevel.items; let i = index">
-                    <a class="media-left" *ngIf="result.img && result.img != 'undefined'" href="{{result.source}}">
-                        <img class="media-object" [src]="result.img">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">
-                            <div class="pull-right">
+                    <div *ngIf="!result.blacklist">
+                        <a class="media-left" *ngIf="result.img && result.img != 'undefined'" href="{{result.source}}">
+                            <img class="media-object" [src]="result.img">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <div class="pull-right">
 
-                            </div>
-                            <a href="{{result.source}}" target="_blank">
-                                {{result.name}}
-                                <span class="fa fa-external-link"></span>
-                            </a>
-                        </h4>
-                        {{result.description}}
+                                </div>
+                                <a href="{{result.source}}" target="_blank">
+                                    {{result.name}}
+                                    <span class="fa fa-external-link"></span>
+                                </a>
+                            </h4>
+                            {{result.description}}
 
-                        <p>
-                            <span *ngFor="let tag of result.tags">
-                                <a (click)="filterByTag(tag)" class="label label-default">{{tag}}</a>
+                            <p>
+                                <span *ngFor="let tag of result.tags">
+                                    <a (click)="filterByTag(tag)" class="label label-default">{{tag}}</a>
+                                </span>
+                            </p>
+
+                            <span>
+                                <a (click)="markAsDone(i)">{{result.checked ? '-' : '+'}}</a>
+                                <a (click)="markAsLater(i)">{{result.starred ? '-' : '*'}}</a>
+                                <a (click)="markAsHidden(i)">x</a>
                             </span>
-                        </p>
 
-                        <span *ngIf="mentorUser && mentorUser.type == 'google'">
-                            <a (click)="markAsDone(i)">+</a>
-                            <a (click)="markAsLater(i)">*</a>
-                            <a (click)="markAsHidden(i)">x</a>
-                        </span>
-
-                        <div class="clearfix"></div>
-                        <hr/>
+                            <div class="clearfix"></div>
+                            <hr/>
+                        </div>
                     </div>
                 </div>
 
