@@ -67,13 +67,47 @@ export class PublicSpecializationsController {
     public startTour(){
         this.tether.addStep('navbar', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.navbar bottom',
+            attachTo: '.mentor-block bottom',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
                     text: 'Exit',
                     classes: 'shepherd-button-secondary',
                     action: this.tether.cancel
+                }, {
+                    text: 'Next',
+                    action: this.tether.next,
+                    classes: 'shepherd-button-example-primary'
+                }
+            ]
+        });
+
+        this.tether.addStep('g', {
+            text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
+            attachTo: '.general-information-block bottom',
+            classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+            buttons: [
+                {
+                    text: 'Back',
+                    classes: 'shepherd-button-secondary',
+                    action: this.tether.back
+                }, {
+                    text: 'Next',
+                    action: this.tether.next,
+                    classes: 'shepherd-button-example-primary'
+                }
+            ]
+        });
+
+        this.tether.addStep('h', {
+            text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
+            attachTo: '.main-block bottom',
+            classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+            buttons: [
+                {
+                    text: 'Back',
+                    classes: 'shepherd-button-secondary',
+                    action: this.tether.back
                 }, {
                     text: 'Next',
                     action: this.tether.next,
