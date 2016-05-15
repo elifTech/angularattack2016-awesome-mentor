@@ -27,6 +27,7 @@ import {DocumentModel} from '../../models/document.model';
     ]
 })
 export class PublicDegreeController {
+    
     public loading: boolean;
     public level: Level;
     public professionName: string = '';
