@@ -5,6 +5,7 @@ import {LoggerService} from './services/logger.service';
 import {UserModel, AuthService} from './services/auth.service';
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./services/github.service";
+import {ToastrService} from "./services/toastr.service";
 
 @Component({
     selector: 'as-main-app',
@@ -20,8 +21,10 @@ export class AppComponent {
 
     private auth: Auth;
 
-    constructor(private authService:AuthService, private router: Router) {
+    constructor(private authService:AuthService, private router: Router, private toastr: ToastrService) {
         authService.init();
+
+        this.toastr.success('123123123123');
 
         this.auth = AuthService.auth;
         AuthService.user$.subscribe(user => {

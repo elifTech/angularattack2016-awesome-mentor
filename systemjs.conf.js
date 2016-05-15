@@ -18,7 +18,10 @@
         '@angular': 'n:@angular',
         'lodash': 'n:lodash',
         'ng2-ui-auth': 'n:ng2-ui-auth',
-        'ng2-select': 'n:ng2-select'
+        'ng2-select': 'n:ng2-select',
+        'ng2-bs3-modal': 'n:ng2-bs3-modal',
+        'jquery': 'n:jquery',
+        'toastr': 'n:toastr'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -44,6 +47,8 @@
         '@angular/router',
         '@angular/router-deprecated',
         '@angular/testing',
+        'jquery',
+        'toastr',
         'lodash'
     ];
 
@@ -54,6 +59,9 @@
 
     packages['ng2-ui-auth'] = { main: 'dist/ng2-ui-auth.js', defaultExtension: 'js' };
     packages['ng2-select'] = { main: 'ng2-select.js', defaultExtension: 'js' };
+    packages['ng2-bs3-modal'] = { main: 'ng2-bs3-modal.js', defaultExtension: 'js' };
+    packages['jquery'] = { main: 'dist/jquery.js', defaultExtension: 'js' };
+    packages['toastr'] = { main: 'toastr.js', defaultExtension: 'js' };
 
     var config = {
         map: map,
