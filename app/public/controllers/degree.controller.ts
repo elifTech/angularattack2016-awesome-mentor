@@ -117,7 +117,7 @@ export class PublicDegreeController {
         item.checked != item.checked;
         this.saveDoc(item);
     }
-
+    
     public markAsLater(item:PublicLevelItem) {
         item.starred != item.starred;
         this.saveDoc(item);
