@@ -153,8 +153,6 @@ export class GoogleService {
         });
     }
 
-    
-
     public findDocument = function(name: string, prefix?: string) {
         if(!prefix) prefix = "AwesomeMentor: ";
         var self = this;
