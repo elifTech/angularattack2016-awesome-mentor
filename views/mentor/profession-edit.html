@@ -2,7 +2,7 @@
 
     <h1>
         <span *ngIf="profession.isNew">New Specialization</span>
-        <span *ngIf="!profession.isNew">Specialization</span>
+        <span *ngIf="!profession.isNew">{{profession.name}}</span>
     </h1>
 
 </div>
@@ -18,7 +18,7 @@
                 <div class="card card-block">
 
                     <div class="pull-right" *ngIf="!enableEdit">
-                        <a (click)="toggleEdit()" class="btn btn-secondary-outline tooltipped tooltipped-nw" aria-label="Edit General Information">
+                        <a *ngIf="user && user.is_owner" (click)="toggleEdit()" class="btn btn-secondary-outline tooltipped tooltipped-nw" aria-label="Edit General Information">
                             <span class="fa fa-pencil fa-2x"></span>
                         </a>
                     </div>
@@ -50,9 +50,9 @@
                                 Invalid field value
                             </div>
 
-                            <div class="help-block text-muted">
+                            <small class="help-block text-muted">
                                 Example: Javascript developer
-                            </div>
+                            </small>
                         </div>
 
                         <div class="form-group">
@@ -63,9 +63,9 @@
                                            [items]="tags" class="custom-ui-select-table">
                                 </ng-select>
 
-                                <div class="help-block text-muted">
+                                <small class="help-block text-muted">
                                     Write skills that people gain in this specialization. Example: angular2, lodash, momentjs
-                                </div>
+                                </small>
                             </div>
                         </div>
 
@@ -75,6 +75,7 @@
                         <a class="btn btn-default btn-cancel pull-right" (click)="toggleEdit()" *ngIf="!profession.isNew">
                             Cancel
                         </a>
+
                         <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
                             <span *ngIf="!loading">Save</span>
                             <span *ngIf="loading">Saving <span class="spinner"></span></span>
@@ -89,23 +90,27 @@
 
                 <div class="card card-block">
 
-                    <h4 class="card-title">Levels</h4>
+                    <h4 class="card-title">Degrees</h4>
 
-                    <div class="form-group">
+                    <div class="list-group">
+                        <div class="list-group-item" *ngFor="let level of profession.levels; let i = index;">
+                            <a *ngIf="user && user.is_owner" confirm (onOk)="removeLevel(i)" [message]="'Are you sure want to remove this degree?'" title="Remove degree"
+                               aria-label="Remove degree"  class="text-danger pull-right tooltipped tooltipped-nw">
+                                <span class="fa fa-times"></span>
+                            </a>
 
-                        <div *ngFor="let level of profession.levels; let i = index;">
-                            <div *ngIf="!level.isDeleted">
-                                {{level.name}}
-                                <a confirm (onOk)="removeLevel(i)" [message]="'Remove this level ?'" title="Remove level">x</a>
-                                <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
-                            </div>
+                            <h4 class="list-group-item-heading">
+                                <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]">
+                                   {{level.name}}
+                                </a>
+                            </h4>
                         </div>
-
                     </div>
 
-                    <a class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'Level ' + (profession.levels.length + 1)}]">
+                    <br>
+                    <a *ngIf="user && user.is_owner" class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'New degree'}]">
                         <span class="fa fa-plus"></span>
-                        Add level
+                        Add new degree
                     </a>
                 </div>
 

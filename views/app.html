@@ -16,7 +16,7 @@
 		<div class="navbar-actions pull-xs-right">
 			<span *ngIf="user">
 				<img *ngIf="user.avatar_url" [src]="user.avatar_url" width="32" height="32" />
-				{{user.name}}
+				{{user.name}} i:{{user.is_owner}}
 			</span>
 
 			<a [routerLink]="['MentorLogin']" *ngIf="!auth.isAuthenticated()" class="btn btn-success-outline">Become a Mentor</a>

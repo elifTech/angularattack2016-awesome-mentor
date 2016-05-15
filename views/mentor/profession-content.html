@@ -1,141 +1,236 @@
 
-<div loading-container [loading]="loading" class="page-specialization">
+<form [ngFormModel]="form">
 
-    <form [ngFormModel]="form">
-
-        <div class="row">
-
-            <div class="col-md-6">
-
-                <div class="card card-block">
-
-                    <h4 class="card-title">General Information</h4>
-
-                    <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
-                        <label for="name">Name</label>
-                        <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
-                               (ngModelChange)="onLevelNameChanged($event)"
-                               [ngModel]="level.name"/>
-                        <div class="help-block"
-                             *ngIf="name.dirty && name.errors && name.errors.required">
-                            Required field
-                        </div>
-                        <div class="help-block"
-                             *ngIf="name.dirty && name.errors && name.errors.pattern">
-                            Invalid field value
-                        </div>
-
-                        <div class="help-block text-muted">
-                            Example: Javascript developer
-                        </div>
-                    </div>
+<div>
 
 
+    <button (click)="saveItem()" class="btn btn-primary pull-right">
+        <span *ngIf="!loading">Save</span>
+        <span *ngIf="loading">Saving <span class="spinner"></span></span>
+    </button>
 
-
-                    <h1>{{professionName}}</h1>
-                    <h2>{{level.name}}</h2>
-                    <pre>{{level|json}}</pre>
-
-                    <button (click)="saveItem()" class="btn btn-primary">
-                        <span *ngIf="!loading">Save</span>
-                        <span *ngIf="loading">Saving <span class="spinner"></span></span>
-                    </button>
-
-
-                    queryString: {{queryString}}
-
-                    <input class="form-control" type="text" ngControl="queryStringInput" [(ngModel)]="queryString"/>
-
-                    <div>
-                        <div>Youtube</div>
-                        <ul>
-                            <li *ngFor="let result of youTubeResults">
-                                <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
-                                    <h3>{{result.snippet.title}}</h3>
-                                </a>
-                                <p>{{result.snippet.description}}</p>
-                                <img [src]="result.snippet.thumbnails.default.url" style="width: 100%; max-width: 90px" />
-                                <a (click)="addToLevel(result, 'youtube')">+</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div>CoursEra</div>
-
-                        <ul>
-                            <li *ngFor="let result of courseraResults">
-                                {{result.name}}
-                                <a (click)="addToLevel(result, 'coursera')">+</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div>Awesome</div>
-
-                        <ul>
-                            <li *ngFor="let result of awesomeResults">
-                                [{{result.category }}] <a href="{{result.href}}" target="_blank">{{result.name}}</a>
-                                <a (click)="addToLevel(result, 'awesome')">+</a>
-                            </li>
-                        </ul>
-                    </div>
-
-
-                    <modal #modal class="modal-dialog modal-lg">
-                        <modal-header [show-close]="true">
-                            <h4 class="modal-title">Add resource</h4>
-                        </modal-header>
-                        <modal-body>
-                            <form *ngIf="profession && currItemIndex >= 0" name="tagsForm" novalidate>
-                                <div class="form-group">
-                                    <label>Tags</label>
-                                    <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
-                                               [initData]="level.items[currItemIndex].tags" (data)="onSelectTag($event)"
-                                               [items]="profession.tags" class="custom-ui-select-table"></ng-select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <div>
-                                        <textarea id="description" [(ngModel)]="level.items[currItemIndex].description"></textarea>
-                                    </div>
-                                </div>
-                            </form>
-                        </modal-body>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">OK</button>
-                        </div>
-                    </modal>
-
-
-
-
-                    <div class="clearfix"></div>
-                </div>
-
-            </div>
-            <div class="col-md-6">
-                <div class="card card-block">
-                    <div>Saved resources</div>
-                    <ul>
-                        <li *ngFor="let result of level.items">
-                            <a href="{{result.source}}" target="_blank">
-                                <h3>{{result.name}}</h3>
-                            </a>
-                            <p>{{result.description}}</p>
-                            <img *ngIf="result.img" [src]="result.img" style="width: 100%; max-width: 90px" />
-
-                            <a (click)="removeFromLevel(result)">-</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="clearfix"></div>
-
-            </div>
-
-        </div>
-    </form>
+    <h1>
+        <a [routerLink]="['MentorProfessionEdit', {name: professionName}]">
+        {{professionName}}
+        </a>
+        <span class="fa fa-angle-right"></span>
+        {{level.name}}
+    </h1>
 
 </div>
+
+<div loading-container [loading]="loading" class="page-specialization">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card card-block">
+
+                <h4 class="card-title">General Information</h4>
+
+                <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
+                    <label for="name">Name</label>
+                    <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
+                           (ngModelChange)="onLevelNameChanged($event)"
+                           [ngModel]="level.name"/>
+                    <div class="help-block"
+                         *ngIf="name.dirty && name.errors && name.errors.required">
+                        Required field
+                    </div>
+                    <div class="help-block"
+                         *ngIf="name.dirty && name.errors && name.errors.pattern">
+                        Invalid field value
+                    </div>
+
+                    <small class="help-block text-muted">
+                        Example: Junior
+                    </small>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card card-inverse card-info">
+                <div class="card-block">
+                    <h4 class="card-title">Help</h4>
+
+                    <blockquote class="card-blockquote">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                        <footer>Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="card card-block">
+
+        <h4 class="card-title">Resources</h4>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div id="search">
+                <label for="search-input"><i class="fa fa-search"></i></label>
+                <input id="search-input" class="form-control" placeholder="Search resource by keyword..." type="text" ngControl="queryStringInput" [(ngModel)]="queryString"/>
+            </div>
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="currTabIndex == 1" (click)="setTab(1)">Youtube</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" [class.active]="currTabIndex == 2" (click)="setTab(2)">Coursera</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="currTabIndex == 3" (click)="setTab(3)">Awesome Repository</a>
+                </li>
+            </ul>
+
+            <div *ngIf="currTabIndex == 1">
+
+                <div class="media" *ngFor="let result of youTubeResults">
+                    <a class="media-left" href="https://www.youtube.com/watch?v={{result.id.videoId}}">
+                        <img class="media-object" [src]="result.snippet.thumbnails.default.url">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
+                                {{result.snippet.title}}
+                                <span class="fa fa-external-link"></span>
+                            </a>
+                        </h4>
+                        {{result.snippet.description}}
+
+                        <a (click)="addToLevel(result, 'youtube')" class="btn btn-success-outline btn-xs pull-right">
+                            Approved <span class="fa fa-arrow-right"></span>
+                        </a>
+                        <div class="clearfix"></div>
+                        <hr/>
+                    </div>
+                </div>
+                <br/>
+                <div class="alert alert-info" *ngIf="youTubeResults">We showed you only first <strong>5</strong> results. If you want see more you must write more detailed query</div>
+                <div class="text-center" *ngIf="!queryString">
+                    Enter some query for start search
+                </div>
+            </div>
+            <div *ngIf="currTabIndex == 2">
+                <div class="media" *ngFor="let result of courseraResults">
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="https://pt.coursera.org/learn/{{result.slug}}" target="_blank">
+                                {{result.name}}
+                                <span class="fa fa-external-link"></span>
+                            </a>
+                        </h4>
+
+                        <a (click)="addToLevel(result, 'coursera')" class="btn btn-success-outline btn-xs pull-right">
+                            Approved <span class="fa fa-arrow-right"></span>
+                        </a>
+                        <div class="clearfix"></div>
+                        <hr/>
+                    </div>
+                </div>
+                <br/>
+                <div class="alert alert-info" *ngIf="courseraResults">We showed you only first <strong>10</strong> results. If you want see more you must write more detailed query</div>
+                <div class="text-center" *ngIf="!queryString">
+                    Enter some query for start search
+                </div>
+            </div>
+            <div *ngIf="currTabIndex == 3">
+
+                <div class="media" *ngFor="let result of awesomeResults">
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="{{result.href}}" target="_blank">
+                                {{result.name}}
+                                <span class="fa fa-external-link"></span>
+                            </a>
+                        </h4>
+                        Category: {{result.category }}
+
+                        <a (click)="addToLevel(result, 'awesome')" class="btn btn-success-outline btn-xs pull-right">
+                            Approved <span class="fa fa-arrow-right"></span>
+                        </a>
+                        <div class="clearfix"></div>
+                        <hr/>
+                    </div>
+                </div>
+                <br/>
+                <div class="alert alert-info" *ngIf="awesomeResults">We showed you only first <strong>10</strong> results. If you want see more you must write more detailed query</div>
+                <div class="text-center" *ngIf="!queryString">
+                    Enter some query for start search
+                </div>
+            </div>
+
+
+            <modal #modal class="modal-dialog modal-lg">
+                <modal-header [show-close]="true">
+                    <h4 class="modal-title">Add resource</h4>
+                </modal-header>
+                <modal-body>
+                    <form *ngIf="profession && currItemIndex >= 0" name="tagsForm" novalidate>
+                        <div class="form-group">
+                            <label>Tags</label>
+                            <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
+                                       [initData]="level.items[currItemIndex].tags" (data)="onSelectTag($event)"
+                                       [items]="profession.tags" class="custom-ui-select-table"></ng-select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <div>
+                                <textarea id="description" [(ngModel)]="level.items[currItemIndex].description"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </modal-body>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">OK</button>
+                </div>
+            </modal>
+
+        </div>
+        <div class="col-md-6">
+
+            <div>Approved resources</div>
+
+            <div class="media" *ngFor="let result of level.items">
+                <a class="media-left" *ngIf="result.img && result.img != 'undefined'" href="{{result.source}}">
+                    <img class="media-object" [src]="result.img">
+                </a>
+                <div class="media-body">
+                    <a (click)="removeFromLevel(result)" class="btn btn-danger-outline btn-xs pull-right">
+                        <span class="fa fa-times"></span> Remove
+                    </a>
+                    <h4 class="media-heading">
+                        <a href="{{result.source}}" target="_blank">
+                            {{result.name}}
+                            <span class="fa fa-external-link"></span>
+                        </a>
+                    </h4>
+                    {{result.description}}
+
+                    <div class="clearfix"></div>
+                    <hr/>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+</div>
+
+
+</form>

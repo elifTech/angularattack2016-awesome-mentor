@@ -5,12 +5,7 @@ import {ComponentInstruction} from '@angular/router-deprecated';
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./github.service";
 import {GoogleService} from "./google.service";
-
-export interface UserModel {
-    type: string,
-    avatar_url: string,
-    name: string
-}
+import {UserModel} from "../models/user.model";
 
 @Injectable()
 export class AuthService {
@@ -49,12 +44,21 @@ export class AuthService {
         if (AuthService.provider == 'github') {
             return this.github.getUser(user => {
                 user.type = 'github';
-                this._user = user;
-                this._userObserver.next(this._user);
+                this.github.getCurrentRepository().getCollaborators()
+                    .then(res => {
+                        user.is_owner = true;
+                        this._user = user;
+                        this._userObserver.next(this._user);
+                    }).catch(res => {
+                        user.is_owner = false;
+                        this._user = user;
+                        this._userObserver.next(this._user);
+                    });
             });
         }
         this.google.getUser(user => {
             user.type = 'google';
+            user.is_owner = false;
             this._user = user;
             this._userObserver.next(this._user);
         });

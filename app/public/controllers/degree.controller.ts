@@ -1,14 +1,15 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
+import {Auth} from 'ng2-ui-auth';
 
 import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {ProfessionService} from '../../services/profession.service';
+import {AuthService} from '../../services/auth.service';
+import {UserModel} from "../../models/user.model";
 import {Level} from '../../models/level.model';
 import {LevelItem} from '../../models/level-item.model';
 import {Profession} from '../../models/profession.model';
-
-import 'gapi.load';
 
 @Component({
     templateUrl: '/views/public/degree.html',
@@ -27,9 +28,23 @@ export class PublicDegreeController {
     public savedCourses:string[] = [];
     public profession:Profession;
 
+    private user: UserModel;
+
+    private auth: Auth;
+    
+    constructor(private authService:AuthService, 
+                private params:RouteParams, 
+                private professionService:ProfessionService){
+        
+        console.log('PublicDegreeController');
     constructor(private params:RouteParams, private professionService:ProfessionService){
         gapi.load('auth:client,drive-realtime,drive-share', this.start);
         
+
+        this.auth = AuthService.auth;
+        AuthService.user$.subscribe(user => {
+            this.user = user;
+        });
 
         this.professionName = decodeURIComponent(params.get('profession'));
         var levelName = decodeURIComponent(params.get('level')) || 'New level';
@@ -73,7 +88,7 @@ export class PublicDegreeController {
         this.wireTextBoxes(collaborativeString);
         document.getElementById('json_button').addEventListener('click', function(){
             console.log(model.toJson());
-
+            
             //document.getElementById('json_textarea').value = model.toJson();
         });
     }

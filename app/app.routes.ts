@@ -32,14 +32,6 @@ export var APP_ROUTES:RouteDefinition[] = [
         }
     },
     {
-        path: '/mentor/profession/:name/edit', 
-        name: 'MentorProfessionEdit', 
-        component: MentorProfessionEditController,
-        data: {
-            permissions: ["github"]
-        }
-    },
-    {
         path: '/mentor/profession/:name/content/:level',
         name: 'MentorProfessionContent',
         component: MentorProfessionContentController,
@@ -50,6 +42,14 @@ export var APP_ROUTES:RouteDefinition[] = [
     {
         path: '/mentor/profession/create', 
         name: 'MentorProfessionCreate', 
+        component: MentorProfessionEditController,
+        data: {
+            permissions: ["github"]
+        }
+    },
+    {
+        path: '/mentor/profession/:name',
+        name: 'MentorProfessionEdit',
         component: MentorProfessionEditController,
         data: {
             permissions: ["github"]

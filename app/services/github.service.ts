@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {Base64Service} from './base64.service';
 import {ConfigService} from './config.service';
+import {AuthService} from './auth.service';
 import 'rxjs/add/operator/map';
 import {Auth} from 'ng2-ui-auth';
 
@@ -138,6 +139,11 @@ export class Repository {
             next(res.json().tree.map((item) => new RepositoryItem(this.http, this, item, this.service)));
         });
     }
+
+    getCollaborators() {
+        let opts = this.service.getHttpOptions();
+        return this.http.get(this.url + '/collaborators', opts).toPromise();
+    }
    /* createTree(sha:string, items:RepositoryItem[]) {
         let opts = this.service.getHttpOptions(),
             params = {
@@ -181,7 +187,9 @@ export class GithubService {
                 'Accept': 'application/vnd.github.v3.raw'
             })
         };
-        if (this._token) {
+
+        var provider = localStorage.getItem('provider');
+        if (this._token && provider == 'github') {
             opts.headers.set('Authorization', 'Bearer ' + this._token);
         }
         if (body) {
@@ -202,6 +210,16 @@ export class GithubService {
     }
 
     getUser(next) {
+        if (this.auth.isAuthenticated()) {
+            this._token = this.auth.getToken();
+        }
+        let opts = this.getHttpOptions();
+        this.http.get(GithubService.url + '/user', opts).subscribe(res => {
+            next(res.json());
+        });
+    }
+
+    makeGist(next) {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
         }
