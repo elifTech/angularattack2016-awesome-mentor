@@ -46,7 +46,7 @@ export class PublicSpecializationsController {
                 private professionService:ProfessionService,
                 private params:RouteParams,
                 private google: GoogleService,
-                tether: TetherService
+                tether: TetherService,
                 private tether: TetherService
     ) {
         this.loading = true;
