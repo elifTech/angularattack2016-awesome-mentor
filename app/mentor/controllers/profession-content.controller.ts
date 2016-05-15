@@ -114,7 +114,8 @@ export class MentorProfessionContentController {
     // youtube
     protected searchYoutube() {
         if (this.queryString.length <= 1) return;
-        this._youTubeService.search(this.queryString).then(res => {
+        this._youTubeService.search(this.queryString, this.savedCourses.length).then(res => {
+            console.log(res.json().items);
             this.youTubeResults = this.youtubeFilter(res.json().items);
         });
     }
@@ -184,6 +185,7 @@ export class MentorProfessionContentController {
         levelItem.parseFrom(item, type);
         this.level.items.push(levelItem);
 
+        this.makeAllRequests();
         this.savedCourses = this.level.items.map((item:any)=> {
             return item.source;
         });
@@ -198,6 +200,12 @@ export class MentorProfessionContentController {
         var removed = remove(this.level.items, (levelItem) => {
             return levelItem.source === item.source;
         });
+
+        this.savedCourses = this.level.items.map((item:any)=> {
+            return item.source;
+        });
+        if(!this.level.items.length) this.savedCourses = [];
+
         this.makeAllRequests();
         this.currItemIndex = this.level.items.length - 1;
         console.log(' removeFromProfession(result:any)', removed);
