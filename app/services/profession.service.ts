@@ -165,7 +165,9 @@ export class ProfessionService {
                 item.data.pathParts = item.data.path.replace(/\.md/g, '').split('/');
 
                 return item;
-            });
+            }).filter(item => item !== 'README');
+
+            console.log(res);
 
             let plain = {};
 

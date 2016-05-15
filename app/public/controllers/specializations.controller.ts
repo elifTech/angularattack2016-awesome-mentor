@@ -10,6 +10,9 @@ import {Profession} from '../../models/profession.model';
 import {LevelItem} from '../../models/level-item.model';
 import {TetherService} from "../../services/tether.service";
 
+
+declare var jQuery:any;
+
 @Component({
     templateUrl: '/views/public/specializations.html',
     directives: [
@@ -67,7 +70,7 @@ export class PublicSpecializationsController {
     public startTour(){
         this.tether.addStep('navbar', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.mentor-block bottom',
+            attachTo: '.mentor-block left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
@@ -84,7 +87,7 @@ export class PublicSpecializationsController {
 
         this.tether.addStep('g', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.general-information-block bottom',
+            attachTo: '.specialization-list>li left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
@@ -93,7 +96,16 @@ export class PublicSpecializationsController {
                     action: this.tether.back
                 }, {
                     text: 'Next',
-                    action: this.tether.next,
+                    action: function(){
+                        let el: any = document.body.querySelector('.specialization-list a');
+
+                        console.log(el);
+
+                        jQuery(el).click();
+
+                        // this.tether.next.call(this.tether);
+                        // document.body.querySelector('.specialization-list>li').click();
+                    },
                     classes: 'shepherd-button-example-primary'
                 }
             ]
@@ -101,7 +113,7 @@ export class PublicSpecializationsController {
 
         this.tether.addStep('h', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.main-block bottom',
+            attachTo: '.main-block left',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
