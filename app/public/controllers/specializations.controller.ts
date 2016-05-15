@@ -7,12 +7,13 @@ import {GithubService} from '../../services/github.service';
 import {ProfessionService} from '../../services/profession.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
+import {UserModel} from '../../models/user.model';
 import {DocumentModel} from '../../models/document.model';
 import {PublicLevelItem} from '../../models/public-level-item.model';
 import {LevelItem} from '../../models/level-item.model';
 import {TetherService} from "../../services/tether.service";
 import {GoogleService} from "../../services/google.service";
-
+import {AuthService} from '../../services/auth.service';
 
 declare var jQuery:any;
 
@@ -40,11 +41,13 @@ export class PublicSpecializationsController {
     public mentorUser:any;
     public repositoryUrl:string;
     public document: DocumentModel = new DocumentModel();
+    private user: UserModel;
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
                 private google: GoogleService,
+                private authService:AuthService,
                 private tether: TetherService
     ) {
         this.loading = true;
@@ -82,6 +85,11 @@ export class PublicSpecializationsController {
                     console.log(error);
                 });
 
+        });
+
+        this.user = this.authService.getUser();
+        AuthService.user$.subscribe(user => {
+            this.user = user;
         });
     }
 
