@@ -7,6 +7,8 @@ import {Level} from '../../models/level.model';
 import {LevelItem} from '../../models/level-item.model';
 import {Profession} from '../../models/profession.model';
 
+import 'gapi.load';
+
 @Component({
     templateUrl: '/views/public/degree.html',
     directives: [
@@ -24,7 +26,8 @@ export class PublicDegreeController {
     public profession:Profession;
 
     constructor(private params:RouteParams, private professionService:ProfessionService){
-        console.log('PublicDegreeController');
+        gapi.load('auth:client,drive-realtime,drive-share', this.start);
+        
 
         this.professionName = decodeURIComponent(params.get('profession'));
         var levelName = decodeURIComponent(params.get('level')) || 'New level';
@@ -60,6 +63,7 @@ export class PublicDegreeController {
 
     public start() {
         var doc = gapi.drive.realtime.newInMemoryDocument();
+        console.log(doc);
         var model = doc.getModel();
         var collaborativeString = model.createString();
         collaborativeString.setText('Welcome to the Quickstart App!');
@@ -67,7 +71,7 @@ export class PublicDegreeController {
         this.wireTextBoxes(collaborativeString);
         document.getElementById('json_button').addEventListener('click', function(){
             console.log(model.toJson());
-            
+
             //document.getElementById('json_textarea').value = model.toJson();
         });
     }
