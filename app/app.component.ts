@@ -21,7 +21,7 @@ export class AppComponent {
 
     private auth: Auth;
 
-    constructor(private authService:AuthService, private router: Router, private toastr: ToastrService) {
+    constructor(private authService:AuthService, public router: Router, private toastr: ToastrService) {
         authService.init();
 
         this.toastr.success('123123123123');
