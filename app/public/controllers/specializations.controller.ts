@@ -40,6 +40,8 @@ export class PublicSpecializationsController {
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
+                private tether: TetherService,
+                private google: GoogleService
                 tether: TetherService
     ) {
         this.loading = true;
@@ -126,7 +128,7 @@ export class PublicSpecializationsController {
     public startTour(){
         this.tether.addStep('navbar', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.card bottom',
+            attachTo: '.navbar bottom',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
@@ -142,6 +144,44 @@ export class PublicSpecializationsController {
         });
 
         this.tether.startShepherd();
+        tether.startShepherd();
+
+        var self = this;
+        gapi.load('auth:client,drive-realtime,drive-share', function() {
+            google.driveAuth()
+                .then(function(response) {
+                    self.start();
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        });
+    }
+
+    public start() {
+        this.google
+            .findDocument(this.levelName)
+            .then((response:any) => {
+                if(!response) return;
+
+                // this.google
+                //     .getDocument(response.id)
+                //     .then((response:any) => {
+                //             if(!response) return;
+                //             console.log(response);
+                //         }
+                //     );
+
+                // this.document.id = response.id;
+                // this.document.resource = response.downloadUrl;
+                // console.log(this.document);
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     public filterByTag(tag:string) {
