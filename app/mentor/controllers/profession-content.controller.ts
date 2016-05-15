@@ -39,7 +39,7 @@ import {LevelItem} from "../../models/level-item.model";
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
     public level:Level;
-    public currItem:LevelItem;
+    public currItemIndex:number;
     public professionName:string = '';
     public profession:Profession;
     public queryString:string = '';
@@ -102,18 +102,23 @@ export class MentorProfessionContentController {
         this.professionService.saveLevel(this.professionName, this.level);
     }
 
-    public onSelectTag(tag:string)
+    public onSelectTag($event:any)
     {
-        
-
+        this.level.items[this.currItemIndex].tags = [];
+        $event.forEach(tagObj => {
+            if(tagObj.id.length > 0) {
+                this.level.items[this.currItemIndex].tags.push(tagObj.id);
+            }
+        });
     }
+
     public addToLevel(item:any, type:string)
     {
         var levelItem = new LevelItem();
         levelItem.parseFrom(item, type);
         this.level.items.push(levelItem);
         console.log(' addToProfession',  item, type);
-        this.currItem = levelItem;
+        this.currItemIndex = this.level.items.length - 1;
     }
 
     public removeFromLevel(index:number)
