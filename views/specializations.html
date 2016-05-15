@@ -1,19 +1,73 @@
+<div>
 
+    <h1>
+        Specializations
+    </h1>
+
+</div>
 <div loading-container [loading]="loading" class="container">
-   <ul *ngIf="items">
-       <li *ngFor="let result2 of items">
-           {{result2.id}}
 
-           <ul *ngIf="result2.children">
-               <li *ngFor="let result3 of result2.children">
-                   <a (click)="getLevelItems(result2.id, result3.id)">{{result3.id}}</a>
-               </li>
-           </ul>
-       </li>
-   </ul>
+    <div class="row">
+
+        <div class="col-md-4">
 
 
-    <div *ngIf="selectedLevel">
-        {{selectedLevel|json}}
+            <div class="card card-block">
+
+                <h4 class="card-title">General Information</h4>
+
+                <ul *ngIf="items">
+                    <li *ngFor="let result2 of items">
+                        {{result2.id}}
+
+                        <ul *ngIf="result2.children">
+                            <li *ngFor="let result3 of result2.children">
+                                <a (click)="getLevelItems(result2.id, result3.id)">{{result3.id}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="col-md-8">
+
+
+            <div class="card card-block">
+
+            <div *ngIf="selectedLevel">
+                <h4 class="card-title">Resources</h4>
+
+                <div class="media" *ngFor="let result of selectedLevel.items; let i = index">
+                    <a class="media-left" *ngIf="result.img && result.img != 'undefined'" href="{{result.source}}">
+                        <img class="media-object" [src]="result.img">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="{{result.source}}" target="_blank">
+                                {{result.name}}
+                                <span class="fa fa-external-link"></span>
+                            </a>
+                        </h4>
+                        {{result.description}}
+
+                        <p>
+                            <span *ngFor="let tag of result.tags">
+                                <a class="label label-default">{{tag}}</a>
+                            </span>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <hr/>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+
+        </div>
+
     </div>
+
 </div>

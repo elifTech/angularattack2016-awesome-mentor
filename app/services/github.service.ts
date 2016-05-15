@@ -215,6 +215,13 @@ export class GithubService {
         });
     }
 
+    getRepositoryUser(next) {
+        let opts = this.getHttpOptions();
+        this.http.get(GithubService.url + '/users/' + ConfigService.repOwner, opts).subscribe(res => {
+            next(res.json());
+        });
+    }
+
     getUser(next) {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();

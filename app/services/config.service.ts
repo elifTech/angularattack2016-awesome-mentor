@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class ConfigService {
     static get repOwner() {
-        return 'rumblex';
+        return 'esvit';
     }
 
     static get repName() {
-        return 'angularattack2016-eliftech';
+        return 'test-repos';
     }
 }
