@@ -5,12 +5,7 @@ import {ComponentInstruction} from '@angular/router-deprecated';
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./github.service";
 import {GoogleService} from "./google.service";
-
-export interface UserModel {
-    type: string,
-    avatar_url: string,
-    name: string
-}
+import {UserModel} from "../models/user.model";
 
 @Injectable()
 export class AuthService {
