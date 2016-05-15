@@ -5324,6 +5324,15 @@ h3, .h3 {
   .btn-tour .fa {
     display: block; }
 
+.shepherd-active .body-scroll .shepherd-target {
+  -webkit-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+  opacity: 0.3;
+  pointer-events: none; }
+  .shepherd-active .body-scroll .shepherd-target.shepherd-enabled {
+    opacity: 1;
+    pointer-events: auto; }
+
 html {
   position: relative;
   min-height: 100%; }
