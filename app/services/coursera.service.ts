@@ -16,6 +16,7 @@ export class CourseraService {
         return this.http
             .get(this._apiUrl + '?q=search&limit=10&query=' + query)
             .map(response => response.json())
-            .map(res => res.elements);
+            .map(res => res.elements)
+            .toPromise();
     }
 }

@@ -75,6 +75,7 @@ export class ProfessionService {
                 promises.push(this.saveLevel(item.name, level));
             }
         });
+        console.log('promises', promises);
 
         return Promise.all(promises);
     }

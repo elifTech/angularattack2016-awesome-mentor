@@ -15,7 +15,7 @@ export class AwesomeService extends GithubService {
         super(_http, _auth);
     }
 
-    search(query:string):Observable<Object> {
+    search(query:string):Promise<Object> {
         let res:string = `
         <h1 align="center">
 	<br>
@@ -444,7 +444,7 @@ To the extent possible under law, [Sindre Sorhus](http://sindresorhus.com) has w
         `;
 
         // let rep :Repository = this.getRepository("sindresorhus", "awesome");
-        return new Observable((observer) => {
+        return new Promise((resolve, reject) => {
             // rep.getReadmeContent((res) => {
             // console.info(res);
 
@@ -1084,8 +1084,8 @@ To the extent possible under law, [Sindre Sorhus](http://sindresorhus.com) has w
             });
 
             results = results.filter(item => (item.category.toLowerCase().indexOf(query) >= 0 || item.name.toLowerCase().indexOf(query) >= 0) && (i--) > 0);
-            
-            observer.next(results);
+
+            resolve(results);
         });
     }
 }

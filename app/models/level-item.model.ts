@@ -2,7 +2,7 @@ declare var jQuery:any;
 
 export class LevelItem {
     public name: string[] = [];
-    public tags: string[] ;
+    public tags: string[] = [];
     public source: string;
     public img: string;
     public description: string;
@@ -16,6 +16,7 @@ export class LevelItem {
         this.img = item.img || '';
         this.description = item.description || '';
         this.domain = item.domain || '';
+        this.tags = item.tags || [];
     }
 
     public _parse(element:DOMParser)

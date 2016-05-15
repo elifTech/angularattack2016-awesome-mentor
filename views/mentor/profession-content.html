@@ -1,88 +1,130 @@
-<form name="formEdit" [ngFormModel]="professionForm" #formEdit="ngForm" novalidate>
 
-    <h1>{{professionName}}</h1>
-    <h2>{{level.name}}</h2>
+<div loading-container [loading]="loading" class="page-specialization">
 
-    <button (click)="saveItem()" class="btn btn-primary">
-        <span *ngIf="!saveLoading">Save</span>
-        <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
-    </button>
+    <form [ngFormModel]="form">
 
+        <div class="row">
 
-    level: {{level|json}}
-    queryString: {{queryString}}
+            <div class="col-md-6">
 
-    <input class="form-control" type="text" ngControl="queryStringInput" required [(ngModel)]="queryString"/>
+                <div class="card card-block">
 
-    <div>
-        <div>Youtube</div>
-        <ul>
-            <li *ngFor="let result of level.items">
-                <a href="{{result.source}}" target="_blank">
-                    <h3>{{result.name}}</h3>
-                </a>
-                <p>{{result.description}}</p>
-                <img [src]="result.img" style="width: 100%; max-width: 90px" />
-            </li>
+                    <h4 class="card-title">General Information</h4>
 
-            <li *ngFor="let result of youTubeResults">
-                <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
-                    <h3>{{result.snippet.title}}</h3>
-                </a>
-                <p>{{result.snippet.description}}</p>
-                <img [src]="result.snippet.thumbnails.default.url" style="width: 100%; max-width: 90px" />
-                <a (click)="addToLevel(result, 'youtube'); modal.open('lg');">+</a> /
-                <a (click)="removeFromLevel(result)">-</a>
-            </li>
-        </ul>
-    </div>
-    <div>
-        <div>CoursEra</div>
+                    <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
+                        <label for="name">Name</label>
+                        <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required [(ngModel)]="level.name"/>
+                        <div class="help-block"
+                             *ngIf="name.dirty && name.errors && name.errors.required">
+                            Required field
+                        </div>
+                        <div class="help-block"
+                             *ngIf="name.dirty && name.errors && name.errors.pattern">
+                            Invalid field value
+                        </div>
 
-        <ul>
-            <li *ngFor="let result of courseraResults$ | async">
-                {{result.name}}
-                <a (click)="addToLevel(result, 'coursera')">+</a> /
-                <a (click)="removeFromLevel(result)">-</a>
-            </li>
-        </ul>
-    </div>
-    <div>
-        <div>Awesome</div>
-
-        <ul>
-            <li *ngFor="let result of awesomeResults$ | async">
-                [{{result.category }}] <a href="{{result.href}}" target="_blank">{{result.name}}</a>
-                <a (click)="addToLevel(result, 'awesome')">+</a> /
-                <a (click)="removeFromLevel(result)">-</a>
-            </li>
-        </ul>
-    </div>
-
-
-    <modal #modal class="modal-dialog modal-lg">
-        <modal-header [show-close]="true">
-            <h4 class="modal-title">Add resource</h4>
-        </modal-header>
-        <modal-body>
-            <form *ngIf="profession && currItemIndex" name="tagsForm" novalidate>
-                <div class="form-group">
-                    <label>Tags</label>
-                    <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
-                               [initData]="level.items[currItemIndex].tags" (data)="onSelectTag($event)"
-                               [items]="profession.tags" class="custom-ui-select-table"></ng-select>
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <div>
-                        <textarea id="description" [(ngModel)]="level.items[currItemIndex].description"></textarea>
+                        <div class="help-block text-muted">
+                            Example: Javascript developer
+                        </div>
                     </div>
+
+
+
+
+                    <h1>{{professionName}}</h1>
+                    <h2>{{level.name}}</h2>
+
+                    <button (click)="saveItem()" class="btn btn-primary">
+                        <span *ngIf="!loading">Save</span>
+                        <span *ngIf="loading">Saving <span class="spinner"></span></span>
+                    </button>
+
+
+                    queryString: {{queryString}}
+
+                    <input class="form-control" type="text" ngControl="queryStringInput" required [(ngModel)]="queryString"/>
+
+                    <div>
+                        <div>Youtube</div>
+                        <ul>
+
+                            <li *ngFor="let result of level.items">
+                                <a href="{{result.source}}" target="_blank">
+                                    <h3>{{result.name}}</h3>
+                                </a>
+                                <p>{{result.description}}</p>
+                                <img *ngIf="result.img" [src]="result.img" style="width: 100%; max-width: 90px" />
+
+                                <a (click)="removeFromLevel(result)">-</a>
+                            </li>
+
+                            <li *ngFor="let result of youTubeResults">
+                                <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
+                                    <h3>{{result.snippet.title}}</h3>
+                                </a>
+                                <p>{{result.snippet.description}}</p>
+                                <img [src]="result.snippet.thumbnails.default.url" style="width: 100%; max-width: 90px" />
+                                <a (click)="addToLevel(result, 'youtube')">+</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div>CoursEra</div>
+
+                        <ul>
+                            <li *ngFor="let result of courseraResults">
+                                {{result.name}}
+                                <a (click)="addToLevel(result, 'coursera')">+</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div>Awesome</div>
+
+                        <ul>
+                            <li *ngFor="let result of awesomeResults">
+                                [{{result.category }}] <a href="{{result.href}}" target="_blank">{{result.name}}</a>
+                                <a (click)="addToLevel(result, 'awesome')">+</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <modal #modal class="modal-dialog modal-lg">
+                        <modal-header [show-close]="true">
+                            <h4 class="modal-title">Add resource</h4>
+                        </modal-header>
+                        <modal-body>
+                            <form *ngIf="profession && currItemIndex" name="tagsForm" novalidate>
+                                <div class="form-group">
+                                    <label>Tags</label>
+                                    <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
+                                               [initData]="level.items[currItemIndex].tags" (data)="onSelectTag($event)"
+                                               [items]="profession.tags" class="custom-ui-select-table"></ng-select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <div>
+                                        <textarea id="description" [(ngModel)]="level.items[currItemIndex].description"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </modal-body>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">OK</button>
+                        </div>
+                    </modal>
+
+
+
+
+                    <div class="clearfix"></div>
                 </div>
-            </form>
-        </modal-body>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">OK</button>
+
+            </div>
+
         </div>
-    </modal>
-</form>
+    </form>
+
+</div>

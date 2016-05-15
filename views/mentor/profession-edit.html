@@ -95,8 +95,8 @@
 
                         <div *ngFor="let level of profession.levels; let i = index;">
                             <div *ngIf="!level.isDeleted">
-                                <input required  (ngModelChange)="onLevelNameChanged(i, $event)" [ngModel]="profession.levels[i].name" type="text" class="form-control" size="50">
-                                <a (click)="removeLevel(i)">x</a>
+                                {{level.name}}
+                                <a confirm (onOk)="removeLevel(i)" [message]="'Remove this level ?'" title="Remove level">x</a>
                                 <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
                             </div>
                         </div>
