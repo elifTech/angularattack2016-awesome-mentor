@@ -35,6 +35,7 @@
 
                     <h1>{{professionName}}</h1>
                     <h2>{{level.name}}</h2>
+                    <pre>{{level|json}}</pre>
 
                     <button (click)="saveItem()" class="btn btn-primary">
                         <span *ngIf="!loading">Save</span>
@@ -44,7 +45,7 @@
 
                     queryString: {{queryString}}
 
-                    <input class="form-control" type="text" ngControl="queryStringInput" required [(ngModel)]="queryString"/>
+                    <input class="form-control" type="text" ngControl="queryStringInput" [(ngModel)]="queryString"/>
 
                     <div>
                         <div>Youtube</div>

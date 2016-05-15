@@ -50,6 +50,7 @@ export class MentorProfessionContentController {
     courseraResults: any[];
     awesomeResults: any[];
     public form: any;
+    public loading: boolean;
 
 
     constructor(protected router:Router, private _courseraService: CourseraService,
@@ -82,6 +83,7 @@ export class MentorProfessionContentController {
         this.professionService
             .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
+                this.level.isNew = false;
                 console.log('levelItems', levelItems);
                 this.savedCourses = levelItems.map((item:any)=>{return item.source;});
                 this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});
@@ -140,7 +142,21 @@ export class MentorProfessionContentController {
     
     public saveItem()
     {
-        this.professionService.saveLevel(this.professionName, this.level);
+        this.loading = true;
+        if (this.level.isRenamed) {
+            Promise.all([
+                this.professionService.saveLevel(this.professionName, this.level),
+                this.professionService.removeLevel(this.professionName, this.level.oldName)
+            ]).then(() => {
+                this.loading = false;
+                console.log('SAVED2222');
+            });;
+        } else {
+            this.professionService.saveLevel(this.professionName, this.level).then(() => {
+                this.loading = false;
+                console.log('SAVED');
+            });
+        }
     }
 
     public onSelectTag($event:any)

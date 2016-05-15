@@ -35,7 +35,7 @@ export class ProfessionService {
         });
     }
 
-    private _saveProf(item:Profession) {
+    public save(item:Profession) {
         this.repos = this.github.getCurrentRepository();
 
         return new Promise((resolve, reject) => {
@@ -60,25 +60,25 @@ export class ProfessionService {
         });
     }
 
-    public save(item:Profession) {
-        var promises = [];
-
-        promises.push(this._saveProf(item));
-
-        item.levels.forEach((level) => {
-            if (level.isDeleted) {
-                promises.push(this.removeLevel(item.name, level.name));
-            } else if (level.isRenamed) {
-                promises.push(this.saveLevel(item.name, level));
-                promises.push(this.removeLevel(item.name, level.oldName));
-            } else {
-                promises.push(this.saveLevel(item.name, level));
-            }
-        });
-        console.log('promises', promises);
-
-        return Promise.all(promises);
-    }
+    // public save(item:Profession) {
+    //     var promises = [];
+    //
+    //     promises.push(this._saveProf(item));
+    //
+    //     item.levels.forEach((level) => {
+    //         if (level.isDeleted) {
+    //             promises.push(this.removeLevel(item.name, level.name));
+    //         } else if (level.isRenamed) {
+    //             promises.push(this.saveLevel(item.name, level));
+    //             promises.push(this.removeLevel(item.name, level.oldName));
+    //         } else {
+    //             promises.push(this.saveLevel(item.name, level));
+    //         }
+    //     });
+    //     console.log('promises', promises);
+    //
+    //     return Promise.all(promises);
+    // }
 
     public saveLevel(professionName:string, level:Level) {
         this.repos = this.github.getCurrentRepository();
