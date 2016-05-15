@@ -45,7 +45,7 @@ export class MentorProfessionContentController {
     public queryString:string = '';
 
     professionForm: any;
-    youTubeResults$: Observable<any>;
+    youTubeResults: any[];
     courseraResults$: Observable<any>;
     awesomeResults$: Observable<any>;
 
@@ -61,10 +61,12 @@ export class MentorProfessionContentController {
             'queryStringInput': ['', Validators.required]
         });
 
-        this.youTubeResults$ = this.professionForm.controls.queryStringInput.valueChanges
+        this.professionForm.controls.queryStringInput.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
-            .switchMap(term => this._youTubeService.search(term));
+            .subscribe(term => {
+                this.searchYoutube();
+            });
 
         this.courseraResults$ = this.professionForm.controls.queryStringInput.valueChanges
             .debounceTime(400)
@@ -95,6 +97,17 @@ export class MentorProfessionContentController {
                 this.profession = profession;
                 console.log('this.profession', this.profession);
             });
+    }
+    
+    protected searchYoutube()
+    {
+        if(this.queryString.length > 0) {
+            console.log('this.queryString', this.queryString);
+            this._youTubeService.search(this.queryString).then(res => {
+                console.log('youTubeResults', res.json().items);
+                this.youTubeResults = res.json().items;
+            });
+        }
     }
     
     public saveItem()
