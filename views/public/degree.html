@@ -1,35 +1,8 @@
 
-<script>
-    // Load the Realtime API, no auth needed.
-
-</script>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-list"></i>Drive Files</h3>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-
-                    <h1>Realtime Collaboration Quickstart</h1>
-                    <p>Welcome to the quickstart in-memory app!</p>
-                    <input id="text_area_1" accept="application/json"/>
-                    <input id="text_area_2" accept="application/json"/>
-                    <p>This document only exists in memory, so it doesn't have real-time collaboration enabled. However, you can persist it to your own disk using the model.toJson() function and load it using the model.loadFromJson() function. This enables your users without Google accounts to use your application.</p>
-                    <textarea id="json_textarea"></textarea>
-                    <button id="json_button" (click)="editCourse(model)" class="visible">GetJson</button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div loading-container [loading]="loading">
     <ul>
-        <li *ngFor="let item of level.items">
+        <li *ngFor="let item of document.courses">
             {{item|json}}
 
             <span *ngIf="user && user.type == 'google'">
