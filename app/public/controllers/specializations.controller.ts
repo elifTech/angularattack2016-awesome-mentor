@@ -75,7 +75,7 @@ export class PublicSpecializationsController {
         gapi.load('auth:client,drive-realtime,drive-share', function() {
             google.driveAuth()
                 .then(function(response) {
-                    self.start();
+                    self.startSync();
                     console.log(response);
                 })
                 .catch(function (error) {
@@ -213,14 +213,14 @@ export class PublicSpecializationsController {
                         return new PublicLevelItem(item);
                     });
 
-                    this.start();
+                    this.startSync();
 
                     this.loading = false;
                 });
         }
     }
 
-    public start() {
+    public startSync() {
         this.google
             .findDocument(this.professionName + '-' + this.levelName)
             .then((response:any) => {
