@@ -21,7 +21,7 @@ export class PublicSpecializationsController {
             var nodes = {};
 
             res = res.map(item => {
-                item.data.pathParts = item.data.path.split('/');
+                item.data.pathParts = item.data.path.replace(/\.md/g, '').split('/');
 
                 return item;
             });
@@ -59,7 +59,7 @@ export class PublicSpecializationsController {
 
                 return node;
             };
-            
+
             var k;
             for(k in plain){
                 let node = plain[k];
