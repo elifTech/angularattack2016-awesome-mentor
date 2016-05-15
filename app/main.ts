@@ -6,6 +6,7 @@ import {GithubService} from './services/github.service';
 import {ConfigService} from './services/config.service';
 import {AuthService} from './services/auth.service';
 import {GoogleService} from './services/google.service';
+import {ToastrService} from './services/toastr.service';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {NG2_UI_AUTH_PROVIDERS} from 'ng2-ui-auth';
 
@@ -19,6 +20,7 @@ bootstrap(AppComponent, [
     ConfigService,
     AuthService,
     GoogleService,
+    ToastrService,
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     NG2_UI_AUTH_PROVIDERS({
