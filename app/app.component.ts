@@ -7,7 +7,6 @@ import {UserModel} from "./models/user.model";
 import {Auth} from 'ng2-ui-auth';
 import {GithubService} from "./services/github.service";
 import {ToastrService} from "./services/toastr.service";
-import {TetherService} from "./services/tether.service";
 
 @Component({
     selector: 'as-main-app',
@@ -23,7 +22,7 @@ export class AppComponent {
 
     private auth: Auth;
 
-    constructor(private authService:AuthService, public router: Router, private toastr: ToastrService, private tether: TetherService) {
+    constructor(private authService:AuthService, public router: Router, private toastr: ToastrService) {
         authService.init();
 
         this.auth = AuthService.auth;
