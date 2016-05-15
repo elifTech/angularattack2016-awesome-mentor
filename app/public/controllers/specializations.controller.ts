@@ -12,6 +12,9 @@ import {LevelItem} from '../../models/level-item.model';
 import {toArray} from 'lodash';
 import {TetherService} from "../../services/tether.service";
 
+import {DocumentModel} from '../../models/document.model';
+import {PublicLevelItem} from "../../models/public-level-item.model";
+
 @Component({
     templateUrl: '/views/public/specializations.html',
     directives: [
@@ -35,6 +38,7 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
+    public document: DocumentModel = new DocumentModel();
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
@@ -197,6 +201,8 @@ export class PublicSpecializationsController {
         }).map((item:any) => {
             return new LevelItem(item);
         });
+        
+        this.document.courses = this.selectedLevel.items.map(item => {return new PublicLevelItem(item)});
     }
 
     public getLevelItems(professionName:string, levelName:string) {
@@ -242,5 +248,40 @@ export class PublicSpecializationsController {
                     this.loading = false;
                 });
         }
+    }
+
+    public markAsDone(item:any) {
+        this.document.courses[item].checked = !this.document.courses[item].checked;
+        this.saveDoc();
+    }
+
+    public markAsLater(item:any) {
+        this.document.courses[item].starred = !this.document.courses[item].starred;
+        this.saveDoc();
+    }
+
+    public markAsHidden(item:any) {
+        this.document.courses[item].blacklist = !this.document.courses[item].blacklist;
+        item.blacklist != item.blacklist;
+        this.saveDoc();
+    }
+
+    public saveDoc() {
+        var service;
+        if(this.document.id) {
+            service = this.google
+                .updateDocument(this.document);
+        } else {
+            service = this.google
+                .createDocument(this.document);
+        }
+
+        service
+            .then((response) => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }
