@@ -34,14 +34,11 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
-
     private tether: TetherService;
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
-                private tether: TetherService,
-                private google: GoogleService
                 tether: TetherService
     ) {
         this.loading = true;
@@ -144,44 +141,6 @@ export class PublicSpecializationsController {
         });
 
         this.tether.startShepherd();
-        tether.startShepherd();
-
-        var self = this;
-        gapi.load('auth:client,drive-realtime,drive-share', function() {
-            google.driveAuth()
-                .then(function(response) {
-                    self.start();
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-        });
-    }
-
-    public start() {
-        this.google
-            .findDocument(this.levelName)
-            .then((response:any) => {
-                if(!response) return;
-
-                // this.google
-                //     .getDocument(response.id)
-                //     .then((response:any) => {
-                //             if(!response) return;
-                //             console.log(response);
-                //         }
-                //     );
-
-                // this.document.id = response.id;
-                // this.document.resource = response.downloadUrl;
-                // console.log(this.document);
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
     }
 
     public filterByTag(tag:string) {
