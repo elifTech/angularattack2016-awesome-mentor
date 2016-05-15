@@ -5,7 +5,6 @@ import {ROUTER_DIRECTIVES, RouteParams} from '@angular/router-deprecated';
 import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {GithubService} from '../../services/github.service';
 import {ProfessionService} from '../../services/profession.service';
-import {GoogleService} from '../../services/google.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
 import {LevelItem} from '../../models/level-item.model';
@@ -34,14 +33,16 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
+    private tether: TetherService;
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
-                private tether: TetherService,
-                private google: GoogleService
+                tether: TetherService
     ) {
         this.loading = true;
+
+        this.tether = tether;
 
         this.repositoryUrl = GithubService.publicUrl;
         professionService.getTree((items) => {
@@ -64,8 +65,10 @@ export class PublicSpecializationsController {
         github.getRepositoryUser(user => {
             this.mentorUser = user;
         });
+    }
 
-        tether.addStep('navbar', {
+    public startTour(){
+        this.tether.addStep('navbar', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
             attachTo: '.navbar bottom',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
@@ -73,53 +76,16 @@ export class PublicSpecializationsController {
                 {
                     text: 'Exit',
                     classes: 'shepherd-button-secondary',
-                    action: tether.cancel
+                    action: this.tether.cancel
                 }, {
                     text: 'Next',
-                    action: tether.next,
+                    action: this.tether.next,
                     classes: 'shepherd-button-example-primary'
                 }
             ]
         });
 
-        tether.startShepherd();
-
-        var self = this;
-        gapi.load('auth:client,drive-realtime,drive-share', function() {
-            google.driveAuth()
-                .then(function(response) {
-                    self.start();
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-        });
-    }
-
-    public start() {
-        this.google
-            .findDocument(this.levelName)
-            .then((response:any) => {
-                if(!response) return;
-
-                // this.google
-                //     .getDocument(response.id)
-                //     .then((response:any) => {
-                //             if(!response) return;
-                //             console.log(response);
-                //         }
-                //     );
-
-                // this.document.id = response.id;
-                // this.document.resource = response.downloadUrl;
-                // console.log(this.document);
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        this.tether.startShepherd();
     }
 
     public filterByTag(tag:string) {
