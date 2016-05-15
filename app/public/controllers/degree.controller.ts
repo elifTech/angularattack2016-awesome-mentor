@@ -54,5 +54,28 @@ export class PublicDegreeController {
                 // console.log('this.profession', this.profession);
                 this.loading = false;
             });
+
+
+    }
+
+    public start() {
+        var doc = gapi.drive.realtime.newInMemoryDocument();
+        var model = doc.getModel();
+        var collaborativeString = model.createString();
+        collaborativeString.setText('Welcome to the Quickstart App!');
+        model.getRoot().set('demo_string', collaborativeString);
+        this.wireTextBoxes(collaborativeString);
+        document.getElementById('json_button').addEventListener('click', function(){
+            console.log(model.toJson());
+            //document.getElementById('json_textarea').value = model.toJson();
+        });
+    }
+
+    // Connects the text boxes to the collaborative string.
+    public wireTextBoxes(collaborativeString) {
+        var textArea1: any = document.getElementsByTagName('input')[0];
+        var textArea2: any = document.getElementsByTagName('input')[1];
+        gapi.drive.realtime.databinding.bindString(collaborativeString, textArea1);
+        gapi.drive.realtime.databinding.bindString(collaborativeString, textArea2);
     }
 }
