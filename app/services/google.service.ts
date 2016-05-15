@@ -50,14 +50,12 @@ export class GoogleService {
     driveAuth(): Promise<any> {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
-        }
-
-        if(!this._token) {
             gapi.auth.init(function ():any {
 
             });
             gapi.auth.signIn(this._token);
         }
+
         /* jshint camelCase: false */
         var token: any = gapi.auth.getToken();
 
@@ -72,11 +70,12 @@ export class GoogleService {
                     'https://www.googleapis.com/auth/drive.file',
                     'https://www.googleapis.com/auth/drive.install'
                 ],
-                'immediate': false,
+                'immediate': true,
                 //'user_id': userId
             };
 
             return new Promise((resolve, reject) => {
+                
                 gapi.auth.authorize(params, function (result) {
                     if (result && !result.error) {
                         resolve(result);
