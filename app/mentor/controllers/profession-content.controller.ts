@@ -3,8 +3,9 @@ import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 import {MODAL_DIRECTIVES} from 'ng2-bs3-modal/ng2-bs3-modal';
+import {FormBuilder, Control, ControlGroup, Validators} from '@angular/common';
 
-
+import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {CourseraService} from '../../services/coursera.service';
 import {YouTubeService} from '../../services/youtube.service';
 import {AwesomeService} from '../../services/awesome.service';
@@ -26,6 +27,7 @@ import {LevelItem} from "../../models/level-item.model";
         FORM_DIRECTIVES,
         ROUTER_DIRECTIVES,
         Select,
+        LoadingContainerComponent,
         SELECT_DIRECTIVES
     ],
     providers: [
@@ -45,24 +47,25 @@ export class MentorProfessionContentController {
     public queryString:string = '';
     public savedCourses:string[] = [];
 
-    professionForm: any;
     youTubeResults: any[];
     courseraResults: any[];
     awesomeResults: any[];
+    public form: any;
 
 
     constructor(protected router:Router, private _courseraService: CourseraService,
-                private _youTubeService: YouTubeService, 
-                private _formBuilder: FormBuilder,
+                private _youTubeService: YouTubeService,
                 private professionService: ProfessionService,
                 private params: RouteParams,
-                private _awesomeService: AwesomeService) {
+                private _awesomeService: AwesomeService, private fb: FormBuilder) {
 
-        this.professionForm = this._formBuilder.group({
-            'queryStringInput': ['', Validators.required]
+
+        this.form = fb.group({
+            queryStringInput: ['', Validators.required],
+            name: ['', Validators.pattern('[A-Za-z0-9\-\_\\s]+')]
         });
 
-        this.professionForm.controls.queryStringInput.valueChanges
+        this.form.controls.queryStringInput.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(term => {
@@ -89,6 +92,7 @@ export class MentorProfessionContentController {
                 this.profession = profession;
                 console.log('this.profession', this.profession);
             });
+
     }
 
     // helpers start
