@@ -9,7 +9,7 @@
 
 <div loading-container [loading]="loading" class="page-specialization">
 
-    <form name="formEdit" #formEdit="ngForm" novalidate>
+    <form [ngFormModel]="form">
 
         <div class="row">
 
@@ -21,11 +21,14 @@
 
                     <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
                         <label for="name">Name</label>
-                        <input #name="ngForm" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
-
+                        <input #name="ngForm"  ngControl="name" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
                         <div class="help-block"
-                             *ngIf="(name.dirty && !name.valid) || (errors && errors.name)">
+                             *ngIf="name.dirty && name.errors && name.errors.required">
                             Required field
+                        </div>
+                        <div class="help-block"
+                             *ngIf="name.dirty && name.errors && name.errors.pattern">
+                            Invalid field value
                         </div>
 
                         <div class="help-block text-muted">
@@ -48,9 +51,9 @@
                     </div>
 
 
-                    <button ng-disabled="!profession.title" (click)="saveItem()" class="btn btn-primary pull-right">
-                        <span *ngIf="!saveLoading">Save</span>
-                        <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
+                    <button [disabled]="!form.valid" (click)="saveItem()" class="btn btn-primary pull-right">
+                        <span *ngIf="!loading">Save</span>
+                        <span *ngIf="loading">Saving <span class="spinner"></span></span>
                     </button>
 
                     <a class="btn btn-default btn-cancel pull-right" [routerLink]="['MentorProfessions']">

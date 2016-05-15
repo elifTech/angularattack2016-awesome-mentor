@@ -28,7 +28,6 @@ export class MentorProfessionEditController implements OnInit {
     public profession:Profession;
     public loading:boolean;
     private tags:string[] = [''];
-    public lLoading: boolean;
     public form: ControlGroup;
 
     constructor(private params:RouteParams, private professionService: ProfessionService,
