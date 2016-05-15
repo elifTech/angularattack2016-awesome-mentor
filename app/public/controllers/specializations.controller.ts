@@ -35,12 +35,16 @@ export class PublicSpecializationsController {
     public mentorUser:any;
     public repositoryUrl:string;
 
+    private tether: TetherService;
+
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
-                private tether: TetherService
+                tether: TetherService
     ) {
         this.loading = true;
+
+        this.tether = tether;
 
         this.repositoryUrl = GithubService.publicUrl;
         let repos = github.getCurrentRepository();
@@ -117,26 +121,27 @@ export class PublicSpecializationsController {
         github.getRepositoryUser(user => {
             this.mentorUser = user;
         });
+    }
 
-        tether.addStep('navbar', {
+    public startTour(){
+        this.tether.addStep('navbar', {
             text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
-            attachTo: '.navbar bottom',
+            attachTo: '.card bottom',
             classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
             buttons: [
                 {
                     text: 'Exit',
                     classes: 'shepherd-button-secondary',
-                    action: tether.cancel
+                    action: this.tether.cancel
                 }, {
                     text: 'Next',
-                    action: tether.next,
+                    action: this.tether.next,
                     classes: 'shepherd-button-example-primary'
                 }
             ]
         });
 
-        tether.startShepherd();
-
+        this.tether.startShepherd();
     }
 
     public filterByTag(tag:string) {
