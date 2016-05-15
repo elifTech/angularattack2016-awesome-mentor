@@ -7,6 +7,7 @@ import {ConfigService} from "./config.service";
 import {Level} from "../models/level.model";
 import {LevelItem} from "../models/level-item.model";
 import 'rxjs/add/operator/share';
+import {toArray} from 'lodash';
 
 declare var jQuery:any;
 
@@ -150,6 +151,66 @@ export class ProfessionService {
                 }
                 resolve(results);
             }, 'professions/' + profName, level + '.md');
+        });
+    }
+
+    getTree(next) {
+        let repos = this.github.getCurrentRepository();
+        repos.getTree(res => {
+            // console.info(res);
+
+            var nodes = {};
+
+            res = res.map(item => {
+                item.data.pathParts = item.data.path.replace(/\.md/g, '').split('/');
+
+                return item;
+            });
+
+            let plain = {};
+
+            res.map(item => {
+                let lvl = item.data.pathParts.length;
+
+                item.parent = lvl - 2 >= 0 ? item.data.pathParts[lvl - 2] : '';
+                item.id = item.data.pathParts[lvl - 1];
+
+                plain[item.data.pathParts[lvl - 1]] = item;
+            });
+
+            var plainToTree = (dic, node) => {
+                let children = [];
+
+                if (dic) {
+                    var k;
+                    for (k in dic) {
+                        let v = plain[k];
+
+                        if (v['parent'] === node['id']) {
+                            let child = plainToTree(dic, v);
+
+                            if (child)
+                                children.push(child);
+                        }
+                    }
+                }
+
+                if (children)
+                    node['children'] = children;
+
+                return node;
+            };
+
+            var k;
+            for (k in plain) {
+                let node = plain[k];
+
+                if (!node['parent'])
+                    nodes[node['id']] = plainToTree(plain, node);
+            }
+
+            next(toArray(nodes['professions']['children']));
+            // console.log(this.items);
         });
     }
 }
