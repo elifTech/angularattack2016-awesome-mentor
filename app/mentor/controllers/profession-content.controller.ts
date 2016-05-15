@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
+//import {MODAL_DIRECTIVES} from 'ng2-bs3-modal/dist/ng2-bs3-modal';
+
 
 import {CourseraService} from '../../services/coursera.service';
 import {YouTubeService} from '../../services/youtube.service';
@@ -19,6 +21,7 @@ import {LevelItem} from "../../models/level-item.model";
 @Component({
     templateUrl: 'views/mentor/profession-content.html',
     directives: [
+        //MODAL_DIRECTIVES,
         FORM_DIRECTIVES,
         ROUTER_DIRECTIVES,
         Select,
@@ -29,12 +32,14 @@ import {LevelItem} from "../../models/level-item.model";
         ProfessionService,
         CourseraService,
         YouTubeService,
+        ToastrService,
         AwesomeService
     ]
 })
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
     public level:Level;
+    public currItem:LevelItem;
     public professionName:string = '';
     public queryString:string = '';
 
@@ -95,6 +100,7 @@ export class MentorProfessionContentController {
         levelItem.parseFrom(item, type);
         this.level.items.push(levelItem);
         console.log(' addToProfession',  item, type);
+        this.currItem = levelItem;
     }
 
     public removeFromLevel(index:number)
