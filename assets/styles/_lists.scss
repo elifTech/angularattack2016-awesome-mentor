@@ -22,11 +22,14 @@
     & > a {
       display: inline-block
     }
+    &.nodot:before {
+      content: '';
+    }
 
     &:before {
       content: "•";
       position: absolute;
-      top: 0;
+      top: 3px;
       left: 6px;
       font-size: 12px;
       color: #959595;
@@ -34,6 +37,9 @@
 
     &:first-child:before {
       content: ""
+    }
+    &.active a {
+      font-weight: bold;
     }
   }
 }

@@ -5377,15 +5377,19 @@ body {
     position: relative; }
     .list-dots > li > a {
       display: inline-block; }
+    .list-dots > li.nodot:before {
+      content: ''; }
     .list-dots > li:before {
       content: "•";
       position: absolute;
-      top: 0;
+      top: 3px;
       left: 6px;
       font-size: 12px;
       color: #959595; }
     .list-dots > li:first-child:before {
       content: ""; }
+    .list-dots > li.active a {
+      font-weight: bold; }
 
 .list-dotted {
   margin-bottom: 12px; }

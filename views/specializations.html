@@ -21,7 +21,7 @@
                         <div *ngIf="mentorUser.location" class="icon-w"><i class="fa fa-map-marker" aria-hidden="true"></i> {{mentorUser.location}}</div>
                     </div>
                     <a [href]="repositoryUrl" target="_blank" class="btn btn-info-outline pull-right">
-                        View repository <span class="fa fa-github"></span>
+                        View repository <span class="fa fa-github fa-normal"></span>
                     </a>
                     <div class="clearfix"></div>
                 </div>
@@ -31,8 +31,9 @@
 
                 <h4 class="card-title">General Information</h4>
 
-                <ul *ngIf="items">
+                <ul class="list-dotted list-unstyled" *ngIf="items">
                     <li *ngFor="let result2 of items">
+                        <span class="fa fa-book"></span>
                         {{result2.id}}
 
                         <ul *ngIf="result2.children">
@@ -53,8 +54,9 @@
 
             <div *ngIf="selectedLevel">
 
-                <ul *ngIf="profession">
-                    <li><a (click)="filterByTag('')">All</a></li>
+                <ul class="list-dots" *ngIf="profession">
+                    <li><strong>Skills:</strong></li>
+                    <li class="nodot" [class.active]="currTag == ''"><a (click)="filterByTag('')">All</a></li>
                     <li [class.active]="tag == currTag" *ngFor="let tag of profession.tags"><a (click)="filterByTag(tag)">{{tag}}</a></li>
                 </ul>
 
