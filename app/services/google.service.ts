@@ -160,7 +160,7 @@ export class GoogleService {
             var onComplete = function (result) {
                 if (result && !result.error) {
                     if(result.items && result.items[0]) {
-                        self.getDocumentContent('http://138.201.29.152:804/drive/v2/files/'+result.items[0].id+'?alt=media')
+                        self.getDocumentContent('http://138.201.29.152:804/drive/v2/files/'+result.items[0].id+'?alt=media', result.items[0].id)
                             .then(resolve)
                             .catch(reject);
                         return;
@@ -181,12 +181,15 @@ export class GoogleService {
         });
     }
 
-    public getDocumentContent(fileUrl: string) {
+    public getDocumentContent(fileUrl: string, docId: string) {
         return new Promise((resolve, reject) => {
             let opts = this.getHttpOptions();
             this.http.get(fileUrl, opts).subscribe(res => {
-                console.log(res.text());
-                let result = JSON.parse(res.text());
+                
+                let result = {
+                    courses: JSON.parse(res.text()),
+                    documentId: docId
+                };
                 resolve(result);
             });
         });

@@ -208,7 +208,7 @@ export class PublicSpecializationsController {
                     }).map((item:any) => {
                         return new LevelItem(item);
                     });
-                    console.log(this.document.courses);
+
                     this.document.courses = this.selectedLevel.items.map(function (item:any) {
                         return new PublicLevelItem(item);
                     });
@@ -223,14 +223,23 @@ export class PublicSpecializationsController {
             .findDocument(this.professionName + '-' + this.levelName)
             .then((response:any) => {
                 if(!response) return;
+                this.document.id = response.documentId;
+                this.document.courses = response.courses;
 
-                this.document.id = response.id;
-                this.document.resource = response.downloadUrl;
-                console.log(this.document);
+                this.syncUserProgress();
             })
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    public syncUserProgress() {
+        this.document.courses.forEach((levelItem, index) => {
+            this.selectedLevel.items[index].checked = levelItem.checked;
+            this.selectedLevel.items[index].starred = levelItem.starred;
+            this.selectedLevel.items[index].blacklist = levelItem.blacklist;
+            console.log(this.selectedLevel.items[index]);
+        });
     }
     
     public markAsDone(item:any) {
@@ -249,6 +258,7 @@ export class PublicSpecializationsController {
     }
 
     public saveDoc() {
+        this.syncUserProgress();
         this.document.name = this.professionName + '-' + this.levelName;
         var service;
         if(this.document.id) {
