@@ -29,7 +29,7 @@
 
             <div class="card card-block">
 
-                <h4 class="card-title">General Information</h4>
+                <h4 class="card-title">Table Of Contents</h4>
 
                 <ul class="list-dotted list-unstyled" *ngIf="items">
                     <li *ngFor="let result2 of items">
@@ -52,6 +52,15 @@
 
             <div class="card card-block">
 
+                <div *ngIf="!selectedLevel">
+
+                    <h2>Welcome aboard</h2>
+
+                    <a (click)="startTour()" class="btn btn-danger-outline btn-tour">
+                        <span class="fa fa-play-circle fa-5x"></span>
+                        Start Tour
+                    </a>
+                </div>
             <div *ngIf="selectedLevel">
 
                 <ul class="list-dots" *ngIf="profession">

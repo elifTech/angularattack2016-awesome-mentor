@@ -33,16 +33,13 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
-    private tether: TetherService;
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
-                tether: TetherService
+                private tether: TetherService
     ) {
         this.loading = true;
-
-        this.tether = tether;
 
         this.repositoryUrl = GithubService.publicUrl;
         professionService.getTree((items) => {
