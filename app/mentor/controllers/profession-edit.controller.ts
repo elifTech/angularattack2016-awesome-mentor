@@ -9,6 +9,7 @@ import {Level} from '../../models/level.model';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
 import {LoadingContainerComponent} from '../../components/loading-container.component';
+import {ConfirmComponent} from '../../components/confirm.component';
 
 @Component({
     templateUrl: 'views/mentor/profession-edit.html',
@@ -16,6 +17,7 @@ import {LoadingContainerComponent} from '../../components/loading-container.comp
         FORM_DIRECTIVES,
         ROUTER_DIRECTIVES,
         Select,
+        ConfirmComponent,
         LoadingContainerComponent,
         SELECT_DIRECTIVES
     ],
@@ -61,22 +63,12 @@ export class MentorProfessionEditController implements OnInit {
         });
     }
 
-    public onLevelNameChanged(index:number, name:string) {
-        if(!this.profession.levels[index].isNew) {
-            this.profession.levels[index].isRenamed = true;
-        }
-        this.profession.levels[index].name = name;
-    }
-
-    public addLevel() {
-        var newLvl = new Level({});
-        newLvl.isNew = true;
-        newLvl.name = 'Level ' + this.profession.levels.length;
-        this.profession.levels.push(newLvl);
-    }
-
     public removeLevel(index:number) {
-        this.profession.levels[index].isDeleted = true;
+        this.loading = true;
+        this.professionService.removeLevel(this.profession.name, this.profession.levels[index].name).then(() => {
+            this.loading = false;
+            console.log('removed Level');
+        });
     }
 
     public setTags($event) {

@@ -74,14 +74,16 @@ export class MentorProfessionContentController {
 
 
         this.professionName = decodeURIComponent(params.get('name'));
+        var levelName = decodeURIComponent(params.get('level')) || 'New level';
         this.level = new Level({
-            name: decodeURIComponent(params.get('level'))
+            name: levelName
         });
+        this.level.isNew = true;
 
         this.professionService
             .getLevelItems(this.professionName, this.level.name)
             .then((levelItems) => {
-                console.log(levelItems);
+                console.log('levelItems', levelItems);
                 this.savedCourses = levelItems.map((item:any)=>{return item.source;});
                 this.level.items = levelItems.map(function(item:any){return new LevelItem(item)});
             });
@@ -89,7 +91,7 @@ export class MentorProfessionContentController {
         this.professionService
             .getByName(this.professionName)
             .then((profession) => {
-                this.profession = profession;
+                this.profession = profession;''
                 console.log('this.profession', this.profession);
             });
 
@@ -177,5 +179,12 @@ export class MentorProfessionContentController {
 
         console.log(' removeFromProfession(result:any)',  removed);
 
+    }
+
+    public onLevelNameChanged(name:string) {
+        if(!this.level.isNew) {
+            this.level.isRenamed = true;
+        }
+        this.level.name = name;
     }
 }

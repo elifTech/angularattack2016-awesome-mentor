@@ -13,7 +13,9 @@
 
                     <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
                         <label for="name">Name</label>
-                        <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required [(ngModel)]="level.name"/>
+                        <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
+                               (ngModelChange)="onLevelNameChanged($event)"
+                               [ngModel]="level.name"/>
                         <div class="help-block"
                              *ngIf="name.dirty && name.errors && name.errors.required">
                             Required field

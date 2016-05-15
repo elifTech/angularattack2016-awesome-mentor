@@ -82,7 +82,7 @@
 
                     </div>
 
-                    <a class="btn btn-primary" (click)="addLevel()">
+                    <a class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'New level'}]">
                         <span class="fa fa-plus"></span>
                         Add level
                     </a>
