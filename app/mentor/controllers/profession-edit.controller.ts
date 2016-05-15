@@ -6,6 +6,7 @@ import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
 import {Profession} from '../../models/profession.model';
 import {Level} from '../../models/level.model';
+import {UserModel} from '../../models/user.model';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
 import {LoadingContainerComponent} from '../../components/loading-container.component';
@@ -36,9 +37,11 @@ export class MentorProfessionEditController implements OnInit {
     private tags:string[] = [''];
 
     public form: ControlGroup;
+    
+    private user: UserModel;
 
     constructor(private params:RouteParams, private professionService: ProfessionService,
-                protected router:Router, private fb: FormBuilder) {
+                protected router:Router, private fb: FormBuilder, private authService:AuthService) {
 
         this.profession = new Profession({});
 
@@ -46,6 +49,11 @@ export class MentorProfessionEditController implements OnInit {
 
         this.form = fb.group({
             name: ['', Validators.pattern('[A-Za-z0-9\-\_\\s]+')]
+        });
+
+        this.authService.init();
+        AuthService.user$.subscribe(user => {
+            this.user = user;
         });
     }
 
