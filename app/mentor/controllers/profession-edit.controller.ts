@@ -54,7 +54,11 @@ export class MentorProfessionEditController implements OnInit {
     }
 
     public saveItem() {
-        this.professionService.save(this.profession);
+        this.loading = true;
+        this.professionService.save(this.profession).then(() => {
+            this.loading = false;
+            console.log('SAVED');
+        });
     }
 
     public onLevelNameChanged(index:number, name:string) {
