@@ -32,7 +32,6 @@ import {LevelItem} from "../../models/level-item.model";
         ProfessionService,
         CourseraService,
         YouTubeService,
-        ToastrService,
         AwesomeService
     ]
 })
