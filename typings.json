@@ -2,8 +2,7 @@
   "ambientDependencies": {
     "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
     "google-drive-realtime-api": "github:DefinitelyTyped/DefinitelyTyped/google-drive-realtime-api/google-drive-realtime-api.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
-    "js-git": "github:DefinitelyTyped/DefinitelyTyped/js-git/js-git.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
-    "toastr": "github:johnpapa/hottowel-angular-typescript/typings/toastr/toastr.d.ts#f0fba696a0dd7ae79517e86920bd6cb8f8ba43d8",
+    "gapi": "github:DefinitelyTyped/DefinitelyTyped/gapi/gapi.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
     "JQuery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts"
   },
   "dependencies": {
