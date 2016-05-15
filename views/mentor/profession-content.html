@@ -4,7 +4,11 @@
 <div>
 
 
-    <button (click)="saveItem()" class="btn btn-primary pull-right">
+    <button *ngIf="user && !user.is_owner" (click)="saveItemAsGist()" class="btn btn-primary pull-right">
+        <span *ngIf="!loading">Save as Gist</span>
+        <span *ngIf="loading">Saving <span class="spinner"></span></span>
+    </button>
+    <button *ngIf="user && user.is_owner" (click)="saveItem()" class="btn btn-primary pull-right">
         <span *ngIf="!loading">Save</span>
         <span *ngIf="loading">Saving <span class="spinner"></span></span>
     </button>
@@ -31,7 +35,7 @@
 
                 <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
                     <label for="name">Name</label>
-                    <input #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
+                    <input [disabled]="user && !user.is_owner" #name="ngForm"  ngControl="name" class="form-control" id="name" name="name" type="text" required
                            (ngModelChange)="onLevelNameChanged($event)"
                            [ngModel]="level.name"/>
                     <div class="help-block"
@@ -108,7 +112,7 @@
                         </h4>
                         {{result.snippet.description}}
 
-                        <a (click)="addToLevel(result, 'youtube')" class="btn btn-success-outline btn-xs pull-right">
+                        <a (click)="addToLevel(result, 'youtube'); modal.open('lg');" class="btn btn-success-outline btn-xs pull-right">
                             Approved <span class="fa fa-arrow-right"></span>
                         </a>
                         <div class="clearfix"></div>
@@ -131,7 +135,7 @@
                             </a>
                         </h4>
 
-                        <a (click)="addToLevel(result, 'coursera')" class="btn btn-success-outline btn-xs pull-right">
+                        <a (click)="addToLevel(result, 'coursera'); modal.open('lg');" class="btn btn-success-outline btn-xs pull-right">
                             Approved <span class="fa fa-arrow-right"></span>
                         </a>
                         <div class="clearfix"></div>
@@ -156,7 +160,7 @@
                         </h4>
                         Category: {{result.category }}
 
-                        <a (click)="addToLevel(result, 'awesome')" class="btn btn-success-outline btn-xs pull-right">
+                        <a (click)="addToLevel(result, 'awesome'); modal.open('lg');" class="btn btn-success-outline btn-xs pull-right">
                             Approved <span class="fa fa-arrow-right"></span>
                         </a>
                         <div class="clearfix"></div>
@@ -173,27 +177,31 @@
 
             <modal #modal class="modal-dialog modal-lg">
                 <modal-header [show-close]="true">
-                    <h4 class="modal-title">Add resource</h4>
+                    <h4 class="modal-title">Resource Additional Information</h4>
                 </modal-header>
                 <modal-body>
                     <form *ngIf="profession && currItemIndex >= 0" name="tagsForm" novalidate>
                         <div class="form-group">
-                            <label>Tags</label>
+                            <label>Skills</label>
                             <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
                                        [initData]="level.items[currItemIndex].tags" (data)="onSelectTag($event)"
                                        [items]="profession.tags" class="custom-ui-select-table"></ng-select>
+
+                            <small class="text-muted">
+                                Select skills that you can learn from this resource
+                            </small>
                         </div>
 
                         <div class="form-group">
                             <label for="description">Description</label>
                             <div>
-                                <textarea id="description" [(ngModel)]="level.items[currItemIndex].description"></textarea>
+                                <textarea rows="4" id="description" [(ngModel)]="level.items[currItemIndex].description" class="form-control"></textarea>
                             </div>
                         </div>
                     </form>
                 </modal-body>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">OK</button>
                 </div>
             </modal>
 
@@ -202,13 +210,16 @@
 
             <div>Approved resources</div>
 
-            <div class="media" *ngFor="let result of level.items">
+            <div class="media" *ngFor="let result of level.items; let i = index">
                 <a class="media-left" *ngIf="result.img && result.img != 'undefined'" href="{{result.source}}">
                     <img class="media-object" [src]="result.img">
                 </a>
                 <div class="media-body">
+                    <a (click)="showResourceInfo(i); modal.open('lg');" class="btn btn-secondary-outline btn-xs pull-right">
+                        <span class="fa fa-pencil"></span>
+                    </a>
                     <a (click)="removeFromLevel(result)" class="btn btn-danger-outline btn-xs pull-right">
-                        <span class="fa fa-times"></span> Remove
+                        <span class="fa fa-times"></span>
                     </a>
                     <h4 class="media-heading">
                         <a href="{{result.source}}" target="_blank">

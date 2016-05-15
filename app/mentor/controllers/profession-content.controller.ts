@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CORE_DIRECTIVES, Location, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
@@ -13,7 +13,10 @@ import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
+import {GithubService} from '../../services/github.service';
+import {ToastrService} from '../../services/toastr.service';
 import {Level} from '../../models/level.model';
+import {UserModel} from '../../models/user.model';
 import {Profession} from '../../models/profession.model';
 
 import {groupBy, find, filter, remove} from 'lodash';
@@ -38,7 +41,7 @@ import {LevelItem} from "../../models/level-item.model";
     ]
 })
 @CanActivate(AuthService.canComponentActivate)
-export class MentorProfessionContentController {
+export class MentorProfessionContentController implements OnInit {
     public level:Level;
 
     public currTabIndex:number = 1;
@@ -59,11 +62,14 @@ export class MentorProfessionContentController {
     public form:any;
     public loading:boolean;
 
+    private user:UserModel;
 
     constructor(protected router:Router, private _courseraService:CourseraService,
                 private _youTubeService:YouTubeService,
+                private githubService:GithubService,
                 private professionService:ProfessionService,
-                private params:RouteParams, private location:Location,
+                private toastr:ToastrService,
+                private params:RouteParams, private location:Location, private authService:AuthService,
                 private _awesomeService:AwesomeService, private fb:FormBuilder) {
 
 
@@ -79,7 +85,6 @@ export class MentorProfessionContentController {
                 this.makeAllRequests();
             });
 
-
         this.professionName = decodeURIComponent(params.get('name'));
         var levelName = decodeURIComponent(params.get('level')) || 'New level';
         this.level = new Level({
@@ -87,6 +92,13 @@ export class MentorProfessionContentController {
         });
         this.level.isNew = true;
 
+        this.user = this.authService.getUser();
+        AuthService.user$.subscribe(user => {
+            this.user = user;
+        });
+    }
+
+    ngOnInit() {
         this.loading = true;
         this.professionService
             .getLevelItems(this.professionName, this.level.name)
@@ -154,9 +166,11 @@ export class MentorProfessionContentController {
     }
 
     protected courseraFilter(items) {
-        return items.filter((result:any) => {return this.savedCourses.indexOf('https://www.coursera.org/learn/' + result.slug) === -1;});
-    }    
-    
+        return items.filter((result:any) => {
+            return this.savedCourses.indexOf('https://www.coursera.org/learn/' + result.slug) === -1;
+        });
+    }
+
     protected awesomeFilter(items) {
         return items.filter((result:any) => {
             return this.savedCourses.indexOf(result.href) === -1;
@@ -169,18 +183,37 @@ export class MentorProfessionContentController {
         this.loading = true;
         if (this.level.isRenamed) {
             this.professionService.saveLevel(this.professionName, this.level)
-            .then(() => {
-                return this.professionService.removeLevel(this.professionName, this.level.oldName);
-            }).then(() => {
-                this.loading = false;
-                console.log('SAVED2222');
+                .then(() => {
+                    return this.professionService.removeLevel(this.professionName, this.level.oldName);
+                }).then(() => {
+                this.ngOnInit();
+                // console.log('SAVED2222');
+                this.toastr.success('Degree saved');
             });
         } else {
             this.professionService.saveLevel(this.professionName, this.level).then(() => {
-                this.loading = false;
-                console.log('SAVED');
+                this.ngOnInit();
+                // console.log('SAVED');
+                this.toastr.success('Degree saved');
             });
         }
+    }
+
+    public saveItemAsGist() {
+        this.loading = true;
+        let params = {
+            files: {}
+        };
+        let fileName = this.professionName + ' - ' + this.level.name + '.md';
+        params.files[fileName] = {
+            content: this.level.toMd()
+        };
+
+        this.githubService.makeGist(params, () => {
+            this.loading = false;
+            // console.log('Gist SAVED');
+            this.toastr.success('Gist saved in Your profile');
+        });
     }
 
     public onSelectTag($event:any) {
@@ -207,6 +240,10 @@ export class MentorProfessionContentController {
 
         this.currItemIndex = this.level.items.length - 1;
     }
+    
+    public showResourceInfo(index: number) {
+        this.currItemIndex = index;
+    }
 
     public removeFromLevel(item:any) {
         var removed = remove(this.level.items, (levelItem) => {
@@ -216,7 +253,7 @@ export class MentorProfessionContentController {
         this.savedCourses = this.level.items.map((item:any)=> {
             return item.source;
         });
-        if(!this.level.items.length) this.savedCourses = [];
+        if (!this.level.items.length) this.savedCourses = [];
 
         this.makeAllRequests();
         this.currItemIndex = this.level.items.length - 1;

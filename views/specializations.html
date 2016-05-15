@@ -1,13 +1,19 @@
-<div class="container">
-   <ul *ngIf="items && items[0].children">
-       <li *ngFor="let result2 of items[0].children">
+
+<div loading-container [loading]="loading" class="container">
+   <ul *ngIf="items">
+       <li *ngFor="let result2 of items">
            {{result2.id}}
 
            <ul *ngIf="result2.children">
                <li *ngFor="let result3 of result2.children">
-                   {{result3.id}}
+                   <a (click)="getLevelItems(result2.id, result3.id)">{{result3.id}}</a>
                </li>
            </ul>
        </li>
    </ul>
+
+
+    <div *ngIf="selectedLevel">
+        {{selectedLevel|json}}
+    </div>
 </div>

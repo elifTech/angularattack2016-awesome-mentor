@@ -28,10 +28,10 @@ export class LevelItem {
         desc = img.next();
         link = source.find('a').attr('href');
 
-        this.name = head.text();
+        this.name = jQuery.trim(head.text());
         this.source = link;
         this.img = img.find('a').attr('href');
-        this.description = desc.find('strong').text();
+        this.description = jQuery.trim(desc.find('strong').text());
         this.domain = (link) ? link.match(/([\da-z\.-]+)\.([a-z\.]{2,6})/)[0].replace(/w{3}\./, '') : '';
     }
 
@@ -40,7 +40,8 @@ export class LevelItem {
         return '## ' + this.name + "\n\n" +
         '['+this.name+']'+'('+this.source+')' + "\n\n" +
         '![Image]'+'('+this.img+')' + "\n\n" +
-        '**'+this.description+'**' + "\n\n";
+        '-'+ this.tags.join(',')  + "\n\n" +
+        this.description + "\n\n";
     }
     
     public parseFrom(data: any, resource: string) {

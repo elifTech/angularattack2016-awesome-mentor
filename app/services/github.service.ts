@@ -47,8 +47,9 @@ export class RepositoryItem {
 
     getContent(next) {
         let apiUrl = this.url + this.data.path;
-        this.http.get(apiUrl)
-            .map(res => Base64Service.decode(res.json().content))
+        let opts = this.service.getHttpOptions();
+        this.http.get(apiUrl, opts)
+            .map(res => res.text())
             .subscribe(next);
     }
 
@@ -103,6 +104,8 @@ export class Repository {
         let opts = this.service.getHttpOptions();
         this.http.get(this.url + '/contents/' + path, opts).subscribe(res => {
             next(res.json().map((item) => new RepositoryItem(this.http, this, item, this.service)));
+        }, err => {
+            next([]);
         });
     }
 
@@ -199,6 +202,9 @@ export class GithubService {
     }
 
     fromMarkdown(text:string, next) {
+        if (!text) {
+            return next('');
+        }
         let params = {
             "text": text,
             "mode": "markdown"
@@ -219,12 +225,12 @@ export class GithubService {
         });
     }
 
-    makeGist(next) {
+    makeGist(params:any, next) {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
         }
         let opts = this.getHttpOptions();
-        this.http.get(GithubService.url + '/user', opts).subscribe(res => {
+        this.http.post(GithubService.url + '/gists', JSON.stringify(params), opts).subscribe(res => {
             next(res.json());
         });
     }

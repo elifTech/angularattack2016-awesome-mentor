@@ -12,14 +12,11 @@ declare var jQuery:any;
 
 const GITHUB_README_REGEX = /readme\.md/i;
 
+const MARKDOWN_PARSE_REGEXP = /##[\s]+(.*)[\r\n]+\[[^\]]+\]\(([^\)]+)\)[\r\n]+\!\[[^\]]+\]\(([^\)]+)\)[\r\n]+\-[\s]*(.*)[\r\n]+[\s]*(.*)/gi;
+
 @Injectable()
 export class ProfessionService {
     public repos:Repository;
-    private _dataObserver:Observer<Profession[]>;
-    files$:Observable<Profession[]>;
-    private _dataStore:{
-        files:Profession[]
-    }
 
     constructor(private github:GithubService) {
         this.repos = github.getCurrentRepository();
@@ -138,21 +135,20 @@ export class ProfessionService {
     getLevelItems(profName:string, level:string):Promise<Object[]> {
         return new Promise((resolve, reject) => {
             this.repos.getFileContent((content) => {
-                this.github.fromMarkdown(content, function (links) {
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(links, 'text/html');
+                let match: any,
+                    results:LevelItem[] = [];
 
-                    var headings = [].slice.call(doc.body.querySelectorAll('h2')),
-                        results:LevelItem[] = [], item;
-
-                    headings.forEach(element => {
-                        item = new LevelItem();
-                        item._parse(element);
-                        results.push(item);
+                while(match = MARKDOWN_PARSE_REGEXP.exec(content)) {
+                    let item = new LevelItem({
+                        name: match[1],
+                        source: match[2],
+                        img: match[3],
+                        description: match[5],
+                        tags: (match[4] || '').split(','),
                     });
-
-                    resolve(results);
-                });
+                    results.push(item);
+                }
+                resolve(results);
             }, 'professions/' + profName, level + '.md');
         });
     }
