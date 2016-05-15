@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class CourseraService {
-    private _apiUrl:string = 'http://138.201.29.152/';
+    private _apiUrl:string = 'https://p2.davintoo.com';
 
     constructor(private http:Http) {
         //console.log('constructor', http);
