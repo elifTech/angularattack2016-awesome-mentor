@@ -4,7 +4,7 @@ import {GithubService} from '../../services/github.service'
 import {toArray} from 'lodash';
 
 @Component({
-    templateUrl: '/views/spe.html',
+    templateUrl: '/views/specializations.html',
     directives: [CORE_DIRECTIVES],
     providers: [                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         GithubService
