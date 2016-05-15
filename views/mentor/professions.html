@@ -1,41 +1,37 @@
-<style>
-    .badge:hover {
-        background-color: orangered;
-    }
-    .list-options {
-        vertical-align: middle;
-        display: inline-block;
-    }
-    [hidden] {
-        display: none;
-    }
-    .ng-valid[required] {
-        border-left: 5px solid #42A948; /* green */
-    }
-    .ng-invalid {
-        border-left: 5px solid orange; /* orange */
-    }
-</style>
+<div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-list"></i>Professions</h3>
+    <div class="page-actions pull-right">
+        <a [routerLink]="['MentorProfessionCreate']" class="btn btn-primary">Add new</a>
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="actions">
-                    <a [routerLink]="['MentorProfessionCreate']" class="btn btn-primary">Add new</a>
+
+    <h1>Specializations</h1>
+
+</div>
+
+<div class="slats" loading-container [loading]="loading">
+    <ul>
+        <li class="pr" *ngFor="let doc of docs">
+
+            <div class="row">
+                <div class="col-xs-9 meta">
+                    <label class="c-input c-checkbox">
+                        <input type="checkbox">
+                        <span class="c-indicator"></span>
+                    </label>
+
+                    <h4><a [routerLink]="['MentorProfessionEdit', {name:doc.name}]">{{doc.name}}</a></h4>
                 </div>
-                <div loading-container [loading]="loading" class="form-group" *ngFor="let doc of docs">
-                    <form #todoForm="ngForm">
-                        <input required [(ngModel)]="doc.name" ngControl="name" #name="ngForm" id="doc" type="text" class="form-control" size="50">
-                        <div class="form-inline">
-                            <a [routerLink]="['MentorProfessionEdit', {name:doc.name}]" class="btn btn-primary">Edit</a>
-                        </div>
-                    </form>
+                <div class="col-xs-3 meta-actions">
+
+                    <a class="btn btn-secondary tooltipped tooltipped-nw" aria-label="Edit Specialization" [routerLink]="['MentorProfessionEdit', {name:doc.name}]">Edit</a>
+
+                    <a [href]="doc.htmlUrl" target="_blank" class="btn btn-secondary tooltipped tooltipped-nw" aria-label="Show on GitHub">
+                        <span class="fa fa-github fa-2x"></span>
+                    </a>
+
                 </div>
             </div>
-        </div>
-    </div>
+
+        </li>
+    </ul>
 </div>

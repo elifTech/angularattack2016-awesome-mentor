@@ -1,0 +1,245 @@
+.slats {
+
+  & > ul {
+    list-style: none;
+
+    & > li {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 17px 15px;
+
+      h4, p {
+        padding-left: 123px;
+      }
+      .c-input {
+        float: left;
+        margin: 3px 0 0;
+
+        .c-indicator {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+      .pe-va {
+        float: left;
+        margin-left: 30px;
+      }
+    }
+  }
+
+  .add-circle {
+    margin: 0
+  }
+
+  .meta-actions {
+    text-align: right;
+  }
+
+}
+
+.slats li .drop-target, .slats li .drop-target-last {
+  visibility: hidden;
+  height: 0;
+  opacity: 0;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  color: #484848
+}
+
+.slats li.dojoDndItemOver.dojoDndItemBefore, .slats li.dojoDndItemAfter + .dojoDndItem {
+  border-top: none
+}
+
+.slats li.dojoDndItemOver.dojoDndItemBefore .slat-dnd-display-container, .slats li.dojoDndItemAfter + .dojoDndItem .slat-dnd-display-container {
+  border-top: solid 1px #e0e0e0;
+  padding-top: 15px
+}
+
+.slats li.dojoDndItemOver.dojoDndItemBefore:before, .slats li.dojoDndItemAfter + .dojoDndItem:before {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  font-size: 18px;
+  background: #ffeebf;
+  border: 2px dashed #d6b250;
+  color: #d6b250;
+  content: "Drop here";
+  display: block !important;
+  opacity: 1;
+  min-height: 36px;
+  visibility: visible;
+  margin: 0 0 12px;
+  padding: 6px 12px
+}
+
+.slats li:last-of-type.dojoDndItemAfter:after {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  font-size: 18px;
+  background: #ffeebf;
+  border: 2px dashed #d6b250;
+  color: #d6b250;
+  content: "Drop here";
+  display: block !important;
+  opacity: 1;
+  min-height: 36px;
+  visibility: visible;
+  margin: 12px 0 0;
+  padding: 6px 12px
+}
+
+.action-bar .button, .action-bar .button-small, .action-bar .dijitSelect {
+  margin: 0 15px 0 0
+}
+
+.action-bar .dojoxTriStateCheckBox {
+  margin: 0 25px 0 0
+}
+
+@media screen and (max-width: 40em) {
+  .action-bar .dojoxTriStateCheckBox {
+    display: none
+  }
+}
+
+.action-bar .filter-btn, .action-bar .folders-btn {
+  display: inline-block
+}
+
+@media screen and (max-width: 40em) {
+  .action-bar .filter-btn, .action-bar .folders-btn {
+    width: 48%
+  }
+}
+
+@media screen and (max-width: 40em) {
+  .action-bar .filter-btn {
+    float: right
+  }
+}
+
+.slats {
+  -ms-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -ms-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden
+}
+
+.slats > ul {
+  -ms-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -ms-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  padding: 0;
+}
+
+
+.slats > ul > li:first-child {
+  border-top: 1px solid #e0e0e0
+}
+
+.inspection-tab .slats > ul > li:first-child {
+  border-top: 0 none
+}
+
+.slats.notopborder > ul > li:first-child {
+  border-top: none
+}
+
+.slats.with-hover > ul > li {
+  -ms-transition: background-color .2s ease-out 0s;
+  transition: background-color .2s ease-out 0s;
+  cursor: pointer
+}
+
+.slats.with-hover > ul > li:hover {
+  background-color: #ccebf3
+}
+
+.slats form {
+  padding-left: 54px
+}
+
+@media screen and (max-width: 40em) {
+  .slats form {
+    padding-left: 0
+  }
+}
+
+.slats form label {
+  line-height: 1.6em
+}
+
+.slats form .dijitCheckBox {
+  margin: 0 12px 0 0
+}
+
+.slats form .button {
+  margin-right: 11px
+}
+
+.slats form .feedback-block {
+  padding: 15px
+}
+
+.slats form > * {
+  font-size: inherit;
+  line-height: 1.6em
+}
+
+.slats .form-wrapper {
+  padding: 0
+}
+
+.slats .form-wrapper .dijitContentPane {
+  margin-top: 18px
+}
+
+.slats .form-wrapper h2 {
+  padding-left: 54px
+}
+
+@media screen and (max-width: 40em) {
+  .slats .form-wrapper h2 {
+    padding-left: 0
+  }
+}
+
+.slats .move-handle {
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  -ms-transition: all 0.2s cubic-bezier(0.7, 0, 0.175, 1) 0s;
+  transition: all 0.2s cubic-bezier(0.7, 0, 0.175, 1) 0s
+}
+
+.slats .drag-mode .move-handle {
+  opacity: 1;
+  visibility: visible;
+  width: 30px
+}
+
+.slats .drag-mode .move-handle + .dijitCheckBox {
+  margin-right: 18px
+}
+
+@media screen and (max-width: 40em) {
+  .slats .drag-mode .move-handle {
+    display: none
+  }
+}
+
+.slats .drag-mode .list-meta-container p, .slats .drag-mode .list-meta-container h4 {
+  padding-left: 72px
+}
+
+@media screen and (max-width: 40em) {
+  .slats .drag-mode .list-meta-container p, .slats .drag-mode .list-meta-container h4 {
+    padding-left: 0
+  }
+}

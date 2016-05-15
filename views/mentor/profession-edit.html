@@ -1,52 +1,93 @@
-<form name="formEdit" #formEdit="ngForm" novalidate>
+<div>
 
-    profession: {{profession|json}}
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
-                <label for="name">Name</label>
-                <input #name="ngForm" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
+    <h1>
+        <span *ngIf="profession.isNew">New Specialization</span>
+        <span *ngIf="!profession.isNew">Specialization</span>
+    </h1>
 
-                <div class="help-block"
-                     *ngIf="(name.dirty && !name.valid) || (errors && errors.name)">
-                    Required field
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <div class="form-group">
-        <div class="controls">
-            <label>Tags</label>
-            <ng-select [multiple]="true" [tagging]="true" [taggingTokens]="[',','SPACE','ENTER']"
-                       (data)="setTags($event)" [initData]="profession.tags"
-                       [items]="tags" class="custom-ui-select-table">
-            </ng-select>
-        </div>
-    </div>
+<div loading-container [loading]="loading" class="page-specialization">
 
-    <div class="form-group">
-        <div class="controls">
-            <label>Levels</label>
-            <a (click)="addLevel()">add</a>
-            <ul>
-                <li *ngFor="let level of profession.levels; let i = index;">
-                    <div *ngIf="!level.isDeleted">
-                        <input required  (ngModelChange)="onLevelNameChanged(i, $event)" [ngModel]="profession.levels[i].name" type="text" class="form-control" size="50">
-                        <a (click)="removeLevel(i)">x</a>
-                        <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
+    <form name="formEdit" #formEdit="ngForm" novalidate>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="card card-block">
+
+                    <h4 class="card-title">General Information</h4>
+
+                    <div class="form-group" [class.has-error]="(name.dirty && !name.valid) || (errors && errors.name)">
+                        <label for="name">Name</label>
+                        <input #name="ngForm" [disabled]="!profession.isNew" class="form-control" id="name" name="name" type="text" required [(ngModel)]="profession.name"/>
+
+                        <div class="help-block"
+                             *ngIf="(name.dirty && !name.valid) || (errors && errors.name)">
+                            Required field
+                        </div>
+
+                        <div class="help-block text-muted">
+                            Example: Javascript developer
+                        </div>
                     </div>
-                </li>
-            </ul>
+
+                    <div class="form-group">
+                        <div class="controls">
+                            <label>Skills</label>
+                            <ng-select [multiple]="true" [tagging]="true" [taggingTokens]="[',','SPACE','ENTER']"
+                                       (data)="setTags($event)" [initData]="profession.tags"
+                                       [items]="tags" class="custom-ui-select-table">
+                            </ng-select>
+
+                            <div class="help-block text-muted">
+                                Write skills that people gain in this specialization. Example: angular2, lodash, momentjs
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button ng-disabled="!profession.title" (click)="saveItem()" class="btn btn-primary pull-right">
+                        <span *ngIf="!saveLoading">Save</span>
+                        <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
+                    </button>
+
+                    <a class="btn btn-default btn-cancel pull-right" [routerLink]="['MentorProfessions']">
+                        Cancel
+                    </a>
+
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+
+                <div class="card card-block">
+
+                    <h4 class="card-title">Levels</h4>
+
+                    <div class="form-group">
+
+                        <div *ngFor="let level of profession.levels; let i = index;">
+                            <div *ngIf="!level.isDeleted">
+                                <input required  (ngModelChange)="onLevelNameChanged(i, $event)" [ngModel]="profession.levels[i].name" type="text" class="form-control" size="50">
+                                <a (click)="removeLevel(i)">x</a>
+                                <a [routerLink]="['MentorProfessionContent', {name: profession.name, level: level.name}]" class="btn btn-primary">Content</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <a class="btn btn-primary" (click)="addLevel()">
+                        <span class="fa fa-plus"></span>
+                        Add level
+                    </a>
+                </div>
+
+            </div>
+
         </div>
-    </div>
+    </form>
 
-    <button ng-disabled="!profession.title" (click)="saveItem()" class="btn btn-primary">
-        <span *ngIf="!saveLoading">Save</span>
-        <span *ngIf="saveLoading">Saving <span class="spinner"></span></span>
-    </button>
-
-    <a class="btn btn-default btn-cancel" [routerLink]="['MentorProfessions']">
-        Cancel
-    </a>
-</form>
+</div>

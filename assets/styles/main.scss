@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300);
+
 @import "variables";
 @import '../../node_modules/bootstrap/scss/bootstrap';
 @import '../../node_modules/bootstrap/scss/bootstrap-grid';
@@ -8,6 +10,7 @@
 @import "loading";
 @import "lists";
 @import "tooltips";
+@import "slats";
 
 @import "navbar";
 @import "buttons";

@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300);
 /*!
  * Bootstrap v4.0.0-alpha.2 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -5210,11 +5211,12 @@ strong, .strong {
   font-weight: 600; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
-  font-weight: 600; }
+  font-weight: 100; }
 
 h1, .h1 {
   letter-spacing: -.1rem;
-  text-transform: capitalize; }
+  text-transform: capitalize;
+  margin-bottom: 25px; }
   h1.navbar-brand, .h1.navbar-brand {
     margin-bottom: 0; }
 
@@ -5265,6 +5267,20 @@ h3, .h3 {
 .form-control-label {
   padding-left: 0;
   padding-right: 0; }
+
+.ui-select-search {
+  border: none;
+  outline: none; }
+
+.btn.ui-select-match-item {
+  padding: 0 .4rem;
+  margin-bottom: 4px;
+  line-height: 1.5rem; }
+  .btn.ui-select-match-item .close {
+    line-height: 1.5rem; }
+
+.page-specialization .ui-select-choices {
+  display: none; }
 
 html {
   position: relative;
@@ -5500,6 +5516,194 @@ body {
 .tooltipped-sticky.tooltipped-multiline:after {
   display: table-cell; }
 
+.slats > ul {
+  list-style: none; }
+  .slats > ul > li {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 17px 15px; }
+    .slats > ul > li h4, .slats > ul > li p {
+      padding-left: 123px; }
+    .slats > ul > li .c-input {
+      float: left;
+      margin: 3px 0 0; }
+      .slats > ul > li .c-input .c-indicator {
+        width: 1.5rem;
+        height: 1.5rem; }
+    .slats > ul > li .pe-va {
+      float: left;
+      margin-left: 30px; }
+
+.slats .add-circle {
+  margin: 0; }
+
+.slats .meta-actions {
+  text-align: right; }
+
+.slats li .drop-target, .slats li .drop-target-last {
+  visibility: hidden;
+  height: 0;
+  opacity: 0;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  color: #484848; }
+
+.slats li.dojoDndItemOver.dojoDndItemBefore, .slats li.dojoDndItemAfter + .dojoDndItem {
+  border-top: none; }
+
+.slats li.dojoDndItemOver.dojoDndItemBefore .slat-dnd-display-container, .slats li.dojoDndItemAfter + .dojoDndItem .slat-dnd-display-container {
+  border-top: solid 1px #e0e0e0;
+  padding-top: 15px; }
+
+.slats li.dojoDndItemOver.dojoDndItemBefore:before, .slats li.dojoDndItemAfter + .dojoDndItem:before {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  font-size: 18px;
+  background: #ffeebf;
+  border: 2px dashed #d6b250;
+  color: #d6b250;
+  content: "Drop here";
+  display: block !important;
+  opacity: 1;
+  min-height: 36px;
+  visibility: visible;
+  margin: 0 0 12px;
+  padding: 6px 12px; }
+
+.slats li:last-of-type.dojoDndItemAfter:after {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  font-size: 18px;
+  background: #ffeebf;
+  border: 2px dashed #d6b250;
+  color: #d6b250;
+  content: "Drop here";
+  display: block !important;
+  opacity: 1;
+  min-height: 36px;
+  visibility: visible;
+  margin: 12px 0 0;
+  padding: 6px 12px; }
+
+.action-bar .button, .action-bar .button-small, .action-bar .dijitSelect {
+  margin: 0 15px 0 0; }
+
+.action-bar .dojoxTriStateCheckBox {
+  margin: 0 25px 0 0; }
+
+@media screen and (max-width: 40em) {
+  .action-bar .dojoxTriStateCheckBox {
+    display: none; } }
+
+.action-bar .filter-btn, .action-bar .folders-btn {
+  display: inline-block; }
+
+@media screen and (max-width: 40em) {
+  .action-bar .filter-btn, .action-bar .folders-btn {
+    width: 48%; } }
+
+@media screen and (max-width: 40em) {
+  .action-bar .filter-btn {
+    float: right; } }
+
+.slats {
+  -ms-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -ms-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden; }
+
+.slats > ul {
+  -ms-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -ms-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  padding: 0; }
+
+.slats > ul > li:first-child {
+  border-top: 1px solid #e0e0e0; }
+
+.inspection-tab .slats > ul > li:first-child {
+  border-top: 0 none; }
+
+.slats.notopborder > ul > li:first-child {
+  border-top: none; }
+
+.slats.with-hover > ul > li {
+  -ms-transition: background-color .2s ease-out 0s;
+  transition: background-color .2s ease-out 0s;
+  cursor: pointer; }
+
+.slats.with-hover > ul > li:hover {
+  background-color: #ccebf3; }
+
+.slats form {
+  padding-left: 54px; }
+
+@media screen and (max-width: 40em) {
+  .slats form {
+    padding-left: 0; } }
+
+.slats form label {
+  line-height: 1.6em; }
+
+.slats form .dijitCheckBox {
+  margin: 0 12px 0 0; }
+
+.slats form .button {
+  margin-right: 11px; }
+
+.slats form .feedback-block {
+  padding: 15px; }
+
+.slats form > * {
+  font-size: inherit;
+  line-height: 1.6em; }
+
+.slats .form-wrapper {
+  padding: 0; }
+
+.slats .form-wrapper .dijitContentPane {
+  margin-top: 18px; }
+
+.slats .form-wrapper h2 {
+  padding-left: 54px; }
+
+@media screen and (max-width: 40em) {
+  .slats .form-wrapper h2 {
+    padding-left: 0; } }
+
+.slats .move-handle {
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  -ms-transition: all 0.2s cubic-bezier(0.7, 0, 0.175, 1) 0s;
+  transition: all 0.2s cubic-bezier(0.7, 0, 0.175, 1) 0s; }
+
+.slats .drag-mode .move-handle {
+  opacity: 1;
+  visibility: visible;
+  width: 30px; }
+
+.slats .drag-mode .move-handle + .dijitCheckBox {
+  margin-right: 18px; }
+
+@media screen and (max-width: 40em) {
+  .slats .drag-mode .move-handle {
+    display: none; } }
+
+.slats .drag-mode .list-meta-container p, .slats .drag-mode .list-meta-container h4 {
+  padding-left: 72px; }
+
+@media screen and (max-width: 40em) {
+  .slats .drag-mode .list-meta-container p, .slats .drag-mode .list-meta-container h4 {
+    padding-left: 0; } }
+
 .navbar-brand {
   background-image: url("../img/logo_small.png");
   background-size: 126px 39px;
@@ -5518,7 +5722,8 @@ body {
   background-color: #ccebf3; }
 
 .navbar.navbar-light {
-  padding: 0; }
+  padding: 0;
+  margin-bottom: 20px; }
   .navbar.navbar-light .navbar-brand {
     padding: 0.75rem; }
   .navbar.navbar-light .nav-link {
@@ -5603,6 +5808,8 @@ body {
   .btn.btn-primary:hover, .btn.btn-primary:focus {
     color: #fff;
     background-color: #666; }
+  .btn .fa {
+    margin: 2px 0; }
 
 .btn-loading {
   position: relative;
@@ -5891,189 +6098,16 @@ button.toast-close-button {
   opacity: 0;
   transform: translate(0, 200%); }
 
-.form-builder-preview {
-  float: left;
-  width: 100%;
-  margin-bottom: 30px; }
-  .form-builder-preview .header {
-    float: left;
-    border: 2px solid #e3e3e3;
-    border-radius: 6px 6px 0 0;
-    width: 100%;
-    padding: 15px 15px 15px 15px;
-    background: #fff; }
-    .form-builder-preview .header .header-dots {
-      float: left;
-      width: auto;
-      list-style: none;
-      margin: 0 15px 0 0;
-      padding-left: 0; }
-      .form-builder-preview .header .header-dots li {
-        float: left;
-        display: inline;
-        margin-right: 10px;
-        height: 12px;
-        width: 12px;
-        border-radius: 12px;
-        background: #e3e3e3; }
+[hidden] {
+  display: none; }
 
-.form-builder-container {
-  position: relative;
-  float: left;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  border: 2px solid #eaedf1;
-  border-width: 0 2px 2px 2px; }
-  .form-builder-container > .row > [class*="col-"] {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-left: 2px solid #eaedf1;
-    border-right: 2px solid #eaedf1;
-    margin-left: -2px; }
-  .form-builder-container > .row > [class*="col-"]:first-child {
-    border-left: 0 none;
-    padding-left: 2rem;
-    margin-left: 0; }
-  .form-builder-container > .row > [class*="col-"]:last-child {
-    border-right: 0 none; }
+.ng-valid[required] {
+  border-left: 5px solid #42A948;
+  /* green */ }
 
-.fb-builder {
-  min-height: 250px; }
-
-.fb-component {
-  padding: 10px;
-  cursor: move; }
-  .fb-component::after {
-    content: "";
-    display: table;
-    clear: both; }
-  .fb-component.sortable-ghost, .sortable-ghost > .fb-component {
-    opacity: .5; }
-  .fb-component.sortable-fallback, .sortable-fallback > .fb-component {
-    opacity: .5;
-    background: #fff;
-    -webkit-box-shadow: #666 0 0 20px;
-    -moz-box-shadow: #666 0 0 20px;
-    box-shadow: #666 0 0 20px; }
-  .fb-component input, .fb-component label, .fb-component select, .fb-component textarea {
-    cursor: move; }
-  .fb-component.fb-component-editable {
-    border: 3px solid transparent; }
-    .fb-component.fb-component-editable:hover {
-      border: 3px dashed #eaedf1; }
-  .fb-component.fb-selected {
-    position: relative;
-    background: #eaedf1;
-    margin-left: -16px;
-    margin-right: -16px;
-    padding-left: 26px;
-    padding-right: 26px; }
-    .fb-component.fb-selected > div:after {
-      content: ' ';
-      border-left: 6px solid #eaedf1;
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-      position: absolute;
-      right: -9px;
-      top: 50%;
-      margin-top: -3px; }
-
-.fb-sidebar {
-  overflow: hidden; }
-
-.fb-settings-container {
-  overflow: hidden;
-  position: relative;
-  margin-right: 8px; }
-
-.fb-settings-block {
-  position: relative;
-  min-height: 300px;
-  padding-right: 10px;
-  width: 200%;
-  white-space: nowrap;
-  transform: translate(-50%, 0); }
-  .fb-settings-block > div {
-    width: 50%;
-    margin-right: 5px;
-    white-space: normal;
-    display: inline-block;
-    vertical-align: top; }
-  .fb-settings-block.ng-hide:not(.ng-hide-animate) {
-    /* this is just another form of hiding an element */
-    display: block !important;
-    transform: translate(0, 0); }
-  .fb-settings-block.ng-hide-remove {
-    -webkit-animation: open-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards;
-    -moz-animation: open-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards;
-    -o-animation: open-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards;
-    animation: open-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards; }
-  .fb-settings-block.ng-hide-add {
-    -webkit-animation: close-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards;
-    -moz-animation: close-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards;
-    -o-animation: close-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards;
-    animation: close-settings-animation 0.25s cubic-bezier(.14, .25, .52, 1.56) forwards; }
-
-.fb-settings {
-  z-index: 6;
-  background-color: #fff; }
-
-@-webkit-keyframes open-settings-animation {
-  from {
-    transform: translate(0, 0); }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0); } }
-
-@-moz-keyframes open-settings-animation {
-  from {
-    transform: translate(0, 0); }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0); } }
-
-@-o-keyframes open-settings-animation {
-  from {
-    transform: translate(0, 0); }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0); } }
-
-@keyframes open-settings-animation {
-  from {
-    transform: translate(0, 0); }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0); } }
-
-@-webkit-keyframes close-settings-animation {
-  from {
-    opacity: 1;
-    transform: translate(-50%, 0); }
-  to {
-    transform: translate(0, 0); } }
-
-@-moz-keyframes close-settings-animation {
-  from {
-    opacity: 1;
-    transform: translate(-50%, 0); }
-  to {
-    transform: translate(0, 0); } }
-
-@-o-keyframes close-settings-animation {
-  from {
-    opacity: 1;
-    transform: translate(-50%, 0); }
-  to {
-    transform: translate(0, 0); } }
-
-@keyframes close-settings-animation {
-  from {
-    opacity: 1;
-    transform: translate(-50%, 0); }
-  to {
-    transform: translate(0, 0); } }
+.ng-invalid {
+  border-left: 5px solid orange;
+  /* orange */ }
 
 .extra-preloader {
   width: 50px;
