@@ -5211,7 +5211,7 @@ strong, .strong {
   font-weight: 600; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
-  font-weight: 100; }
+  font-weight: 300; }
 
 a {
   cursor: pointer; }
@@ -5749,12 +5749,13 @@ h3, .h3 {
 
 .navbar-brand {
   background-image: url("/assets/img/logo_small.png");
+  color: transparent;
   background-size: 126px 39px;
   background-repeat: no-repeat;
   width: 8.4rem;
   height: 2.6rem;
   margin-top: .5rem;
-  text-indent: -100%;
+  text-indent: -1000px;
   overflow: hidden; }
 
 .nav-pills .nav-link.active, .nav-pills .nav-link.active:focus, .nav-pills .nav-link.active:hover,

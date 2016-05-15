@@ -14,7 +14,7 @@ import {NG2_UI_AUTH_PROVIDERS} from 'ng2-ui-auth';
 
 const GOOGLE_CLIENT_ID = '616075536950-pauau0e7u0c980llqh99ftvg3sd32c61.apps.googleusercontent.com';
 const GITHUB_CLIENT_ID = '54c368d51bca18a17397';
-const API_SERVER = 'http://52.26.114.209:8080';
+const API_SERVER = 'https://p.davintoo.com';
 
 enableProdMode();
 bootstrap(AppComponent, [
