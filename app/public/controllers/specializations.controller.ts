@@ -5,6 +5,7 @@ import {ROUTER_DIRECTIVES, RouteParams} from '@angular/router-deprecated';
 import {LoadingContainerComponent} from '../../components/loading-container.component';
 import {GithubService} from '../../services/github.service';
 import {ProfessionService} from '../../services/profession.service';
+import {GoogleService} from '../../services/google.service';
 import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
 import {LevelItem} from '../../models/level-item.model';
@@ -38,7 +39,8 @@ export class PublicSpecializationsController {
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
-                private tether: TetherService
+                private tether: TetherService,
+                private google: GoogleService
     ) {
         this.loading = true;
 
@@ -137,6 +139,42 @@ export class PublicSpecializationsController {
 
         tether.startShepherd();
 
+        var self = this;
+        gapi.load('auth:client,drive-realtime,drive-share', function() {
+            google.driveAuth()
+                .then(function(response) {
+                    self.start();
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        });
+    }
+
+    public start() {
+        this.google
+            .findDocument(this.levelName)
+            .then((response:any) => {
+                if(!response) return;
+
+                // this.google
+                //     .getDocument(response.id)
+                //     .then((response:any) => {
+                //             if(!response) return;
+                //             console.log(response);
+                //         }
+                //     );
+
+                // this.document.id = response.id;
+                // this.document.resource = response.downloadUrl;
+                // console.log(this.document);
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     public filterByTag(tag:string) {
