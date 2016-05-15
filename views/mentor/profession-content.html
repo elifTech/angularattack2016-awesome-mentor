@@ -9,6 +9,7 @@
     </button>
 
 
+    level: {{level|json}}
     queryString: {{queryString}}
 
     <input class="form-control" type="text" ngControl="queryStringInput" required [(ngModel)]="queryString"/>
@@ -24,7 +25,7 @@
                 <img [src]="result.img" style="width: 100%; max-width: 90px" />
             </li>
 
-            <li *ngFor="let result of youTubeResults$ | async">
+            <li *ngFor="let result of youTubeResults">
                 <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
                     <h3>{{result.snippet.title}}</h3>
                 </a>
@@ -64,17 +65,24 @@
             <h4 class="modal-title">Add resource</h4>
         </modal-header>
         <modal-body>
-            <form name="tagsForm" novalidate>
+            <form *ngIf="profession && currItemIndex" name="tagsForm" novalidate>
                 <div class="form-group">
                     <label>Tags</label>
-                    <ng-select *ngIf="profession && currItem" [multiple]="true" [data]="currItem.tags" [initData]="currItem.tags" (data)="onSelectTag($event)"
+                    <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
+                               [initData]="level.items[currItemIndex].tags" (data)="onSelectTag($event)"
                                [items]="profession.tags" class="custom-ui-select-table"></ng-select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <div>
+                        <textarea id="description" [(ngModel)]="level.items[currItemIndex].description"></textarea>
+                    </div>
                 </div>
             </form>
         </modal-body>
         <div class="modal-footer">
-            <!--<button type="button" class="btn btn-primary" (click)="setMassTags(item);modal.dismiss()" [hidden]="!showDefaultButtons">{{'Сохранить'|translate}}</button>-->
-            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">Cancel</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">OK</button>
         </div>
     </modal>
 </form>

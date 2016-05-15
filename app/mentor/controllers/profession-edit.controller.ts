@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
+import {FormBuilder, Control, ControlGroup, Validators} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
 
@@ -27,11 +28,18 @@ export class MentorProfessionEditController implements OnInit {
     public profession:Profession;
     public loading:boolean;
     private tags:string[] = [''];
+    public lLoading: boolean;
+    public form: ControlGroup;
 
-    constructor(private params:RouteParams, private professionService: ProfessionService, protected router:Router) {
+    constructor(private params:RouteParams, private professionService: ProfessionService,
+                protected router:Router, private fb: FormBuilder) {
         console.log('MentorProfessionEditController');
         this.profession = new Profession({});
         this.profession.isNew = true;
+
+        this.form = fb.group({
+            name: ['', Validators.pattern('[A-Za-z0-9\-\_\\s]+')]
+        });
     }
 
     ngOnInit() {

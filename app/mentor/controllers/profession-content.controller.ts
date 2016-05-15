@@ -39,13 +39,13 @@ import {LevelItem} from "../../models/level-item.model";
 @CanActivate(AuthService.canComponentActivate)
 export class MentorProfessionContentController {
     public level:Level;
-    public currItem:LevelItem;
+    public currItemIndex:number;
     public professionName:string = '';
     public profession:Profession;
     public queryString:string = '';
 
     professionForm: any;
-    youTubeResults$: Observable<any>;
+    youTubeResults: any[];
     courseraResults$: Observable<any>;
     awesomeResults$: Observable<any>;
 
@@ -61,10 +61,12 @@ export class MentorProfessionContentController {
             'queryStringInput': ['', Validators.required]
         });
 
-        this.youTubeResults$ = this.professionForm.controls.queryStringInput.valueChanges
+        this.professionForm.controls.queryStringInput.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
-            .switchMap(term => this._youTubeService.search(term));
+            .subscribe(term => {
+                this.searchYoutube();
+            });
 
         this.courseraResults$ = this.professionForm.controls.queryStringInput.valueChanges
             .debounceTime(400)
@@ -97,23 +99,39 @@ export class MentorProfessionContentController {
             });
     }
     
+    protected searchYoutube()
+    {
+        if(this.queryString.length > 0) {
+            console.log('this.queryString', this.queryString);
+            this._youTubeService.search(this.queryString).then(res => {
+                console.log('youTubeResults', res.json().items);
+                this.youTubeResults = res.json().items;
+            });
+        }
+    }
+    
     public saveItem()
     {
         this.professionService.saveLevel(this.professionName, this.level);
     }
 
-    public onSelectTag(tag:string)
+    public onSelectTag($event:any)
     {
-        
-
+        this.level.items[this.currItemIndex].tags = [];
+        $event.forEach(tagObj => {
+            if(tagObj.id.length > 0) {
+                this.level.items[this.currItemIndex].tags.push(tagObj.id);
+            }
+        });
     }
+
     public addToLevel(item:any, type:string)
     {
         var levelItem = new LevelItem();
         levelItem.parseFrom(item, type);
         this.level.items.push(levelItem);
         console.log(' addToProfession',  item, type);
-        this.currItem = levelItem;
+        this.currItemIndex = this.level.items.length - 1;
     }
 
     public removeFromLevel(index:number)
