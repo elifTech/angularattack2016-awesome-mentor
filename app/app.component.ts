@@ -37,6 +37,15 @@ export class AppComponent {
         });
     }
 
+    authenticate(provider: string) {
+        this.auth.authenticate(provider)
+            .subscribe((res) => {
+                AuthService.setProvider(provider);
+                this.authService.loadUserInfo();
+                this.goToMain();
+            });
+    }
+    
     goToMain() {
         this.router.navigate(['PublicSpecializations']);
     }

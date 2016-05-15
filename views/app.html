@@ -19,7 +19,7 @@
 				{{user.name}}
 			</span>
 
-			<a [routerLink]="['MentorLogin']" *ngIf="!auth.isAuthenticated()" class="btn btn-danger-outline tooltipped tooltipped-sw" aria-label="Sign in for track education"><span class="fa fa-google-plus fa-noraml"></span> Sign in</a>
+			<a (click)="authenticate('google')" *ngIf="!auth.isAuthenticated()" class="btn btn-danger-outline tooltipped tooltipped-sw" aria-label="Sign in for track education"><span class="fa fa-google-plus fa-noraml"></span> Sign in</a>
 
 			<a (click)="logout()" *ngIf="auth.isAuthenticated()" class="btn btn-secondary-outline">Logout</a>
 		</div>

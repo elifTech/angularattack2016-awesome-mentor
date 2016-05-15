@@ -10,7 +10,7 @@ import {AuthService} from '../../services/auth.service';
 })
 export class MentorLoginController {
     constructor(private auth: Auth, private authService: AuthService, private router: Router){
-        if (this.auth.isAuthenticated()) {
+        if (this.auth.isAuthenticated() && AuthService.provider == 'github') {
             this.goToMain();
         }
     }
