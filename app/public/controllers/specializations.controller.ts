@@ -6,6 +6,7 @@ import {LoadingContainerComponent} from '../../components/loading-container.comp
 import {GithubService} from '../../services/github.service';
 import {ProfessionService} from '../../services/profession.service';
 import {Level} from '../../models/level.model';
+import {Profession} from '../../models/profession.model';
 import {LevelItem} from '../../models/level-item.model';
 import {toArray} from 'lodash';
 
@@ -26,7 +27,8 @@ export class PublicSpecializationsController {
     public selectedLevel:Level;
     public professionName:string = '';
     public levelName:string = '';
-    public tag:string = '';
+    public currTag:string = '';
+    public profession:Profession;
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
@@ -100,15 +102,19 @@ export class PublicSpecializationsController {
             this.levelName = decodeURIComponent(this.params.get('degree'));
         }
         if (this.params.get('tag')) {
-            this.tag = decodeURIComponent(this.params.get('tag'));
+            this.currTag = decodeURIComponent(this.params.get('tag'));
         }
         this.loadLevelItems();
     }
 
     public filterByTag(tag:string) {
-        this.tag = tag;
-        this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName +
-            '&tag=' + this.tag);
+        this.currTag = tag;
+        if (tag.length > 0) {
+            this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName +
+                '&tag=' + this.currTag);
+        } else {
+            this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName);
+        }
         this.loadLevelItems();
     }
 
@@ -124,6 +130,14 @@ export class PublicSpecializationsController {
         console.log('getLevelItems', this.professionName, this.levelName);
 
         if (this.professionName.length > 0 && this.levelName.length > 0) {
+            this.professionService
+                .getByName(this.professionName)
+                .then((profession) => {
+                    this.profession = profession;
+                    this.loading = false;
+                    // console.log('this.profession', this.profession);
+                });
+
             this.selectedLevel = new Level({
                 name: this.levelName
             });
@@ -134,9 +148,9 @@ export class PublicSpecializationsController {
                 .then((levelItems) => {
                     console.log('levelItems', levelItems);
                     this.selectedLevel.items = levelItems.filter((item) => {
-                        if(this.tag.length > 0) {
+                        if (this.currTag.length > 0) {
                             item.tags = item.tags || [];
-                            return item.tags.indexOf(this.tag) != -1;
+                            return item.tags.indexOf(this.currTag) != -1;
                             // console.log('tag', this.tag, item);
                         }
                         return true;
