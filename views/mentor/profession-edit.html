@@ -103,7 +103,7 @@
 
                     </div>
 
-                    <a class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'New level'}]">
+                    <a class="btn btn-primary" [routerLink]="['MentorProfessionContent', {name: profession.name, level: 'Level ' + (profession.levels.length + 1)}]">
                         <span class="fa fa-plus"></span>
                         Add level
                     </a>

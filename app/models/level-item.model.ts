@@ -61,7 +61,7 @@ export class LevelItem {
     
     private parseCoursera(data: any) {
         this.name = data.name;
-        this.source = 'https://www.coursera.org/course/' + data.slug;
+        this.source = 'https://www.coursera.org/learn/' + data.slug;
     }
 
     private parseGithub(data: any) {

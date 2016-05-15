@@ -9,7 +9,9 @@ const API_KEY = 'AIzaSyDbnGLGNfwf5OcfzC5UJpv59MC78Ityu2k';
 
 @Injectable()
 export class YouTubeService {
+    private limit: number;
     constructor (private _http: Http) {
+        this.limit = 5;
     }
 
     // search(query: string) {
@@ -22,9 +24,11 @@ export class YouTubeService {
     //         .map(res => res.items);
     // }
     
-    search(query: string) {
+    search(query: string, addToLimit?: number) {
+        var limit = this.limit;
+        if(addToLimit) limit += addToLimit;
         return this._http
-            .get(`${API_URL}?q=${query}&key=${API_KEY}&part=snippet`)
+            .get(`${API_URL}?q=${query}&key=${API_KEY}&part=snippet&limit=${limit}`)
             .toPromise();
     }
 }

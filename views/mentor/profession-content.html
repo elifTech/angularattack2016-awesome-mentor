@@ -35,6 +35,7 @@
 
                     <h1>{{professionName}}</h1>
                     <h2>{{level.name}}</h2>
+                    <pre>{{level|json}}</pre>
 
                     <button (click)="saveItem()" class="btn btn-primary">
                         <span *ngIf="!loading">Save</span>
@@ -44,22 +45,11 @@
 
                     queryString: {{queryString}}
 
-                    <input class="form-control" type="text" ngControl="queryStringInput" required [(ngModel)]="queryString"/>
+                    <input class="form-control" type="text" ngControl="queryStringInput" [(ngModel)]="queryString"/>
 
                     <div>
                         <div>Youtube</div>
                         <ul>
-
-                            <li *ngFor="let result of level.items">
-                                <a href="{{result.source}}" target="_blank">
-                                    <h3>{{result.name}}</h3>
-                                </a>
-                                <p>{{result.description}}</p>
-                                <img *ngIf="result.img" [src]="result.img" style="width: 100%; max-width: 90px" />
-
-                                <a (click)="removeFromLevel(result)">-</a>
-                            </li>
-
                             <li *ngFor="let result of youTubeResults">
                                 <a href="https://www.youtube.com/watch?v={{result.id.videoId}}" target="_blank">
                                     <h3>{{result.snippet.title}}</h3>
@@ -97,7 +87,7 @@
                             <h4 class="modal-title">Add resource</h4>
                         </modal-header>
                         <modal-body>
-                            <form *ngIf="profession && currItemIndex" name="tagsForm" novalidate>
+                            <form *ngIf="profession && currItemIndex >= 0" name="tagsForm" novalidate>
                                 <div class="form-group">
                                     <label>Tags</label>
                                     <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
@@ -123,6 +113,25 @@
 
                     <div class="clearfix"></div>
                 </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card card-block">
+                    <div>Saved resources</div>
+                    <ul>
+                        <li *ngFor="let result of level.items">
+                            <a href="{{result.source}}" target="_blank">
+                                <h3>{{result.name}}</h3>
+                            </a>
+                            <p>{{result.description}}</p>
+                            <img *ngIf="result.img" [src]="result.img" style="width: 100%; max-width: 90px" />
+
+                            <a (click)="removeFromLevel(result)">-</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
 
             </div>
 
