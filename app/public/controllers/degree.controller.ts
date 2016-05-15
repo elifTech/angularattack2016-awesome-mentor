@@ -67,6 +67,7 @@ export class PublicDegreeController {
         this.wireTextBoxes(collaborativeString);
         document.getElementById('json_button').addEventListener('click', function(){
             console.log(model.toJson());
+            
             //document.getElementById('json_textarea').value = model.toJson();
         });
     }
