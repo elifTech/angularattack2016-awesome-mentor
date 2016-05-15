@@ -38,6 +38,6 @@ export class AppComponent {
     }
 
     goToMain() {
-        this.router.navigate(['MentorLogin']);
+        this.router.navigate(['PublicSpecializations']);
     }
 }

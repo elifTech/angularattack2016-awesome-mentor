@@ -272,9 +272,11 @@ export class PublicSpecializationsController {
         this.document.name = this.professionName + '-' + this.levelName;
         var service;
         if(this.document.id) {
+            console.info('update')
             service = this.google
                 .updateDocument(this.document);
         } else {
+            console.info('create')
             service = this.google
                 .createDocument(this.document);
         }

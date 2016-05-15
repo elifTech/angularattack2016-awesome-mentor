@@ -6,8 +6,8 @@
 			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['PublicSpecializations']))">
 				<a class="nav-link" [routerLink]="['PublicSpecializations']">Specializations</a>
 			</li>
-			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['MentorProfessions']))">
-				<a class="nav-link" [routerLink]="['MentorProfessions']">Manage</a>
+			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['MentorLogin']))">
+				<a class="nav-link" [routerLink]="['MentorLogin']">Manage</a>
 			</li>
 			<li class="nav-item" [class.active]="router.isRouteActive(router.generate(['About']))">
 				<a class="nav-link" [routerLink]="['About']">About</a>
@@ -19,7 +19,7 @@
 				{{user.name}}
 			</span>
 
-			<a [routerLink]="['MentorLogin']" *ngIf="!auth.isAuthenticated()" class="btn btn-success-outline">Become a Mentor</a>
+			<a [routerLink]="['MentorLogin']" *ngIf="!auth.isAuthenticated()" class="btn btn-danger-outline tooltipped tooltipped-sw" aria-label="Sign in for track education"><span class="fa fa-google-plus fa-noraml"></span> Sign in</a>
 
 			<a (click)="logout()" *ngIf="auth.isAuthenticated()" class="btn btn-secondary-outline">Logout</a>
 		</div>

@@ -25,6 +25,6 @@ export class MentorLoginController {
     }
 
     goToMain() {
-        this.router.navigate([AuthService.provider == 'github' ? 'MentorProfessions' : 'Public']);
+        this.router.navigate([AuthService.provider == 'github' ? 'MentorProfessions' : 'PublicSpecializations']);
     }
 }
