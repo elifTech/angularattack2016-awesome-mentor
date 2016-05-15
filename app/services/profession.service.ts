@@ -106,7 +106,7 @@ export class ProfessionService {
                 //console.log('files', files);
                 resolve(files);
             }, 'professions/' + name);
-        });
+        }); 
 
         var p2 = new Promise((resolve, reject) => {
             this.repos.getReadmeContent((file) => {

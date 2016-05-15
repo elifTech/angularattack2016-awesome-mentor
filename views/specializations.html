@@ -11,6 +11,21 @@
 
         <div class="col-md-4">
 
+            <div class="card" *ngIf="mentorUser">
+                <div class="card-block">
+                    <h4 class="card-title">About Mentor</h4>
+                    <div class="card-text">
+                        <strong>{{mentorUser.name}}</strong>
+                        <div *ngIf="mentorUser.email" class="icon-w"><i class="fa fa-envelope-o" aria-hidden="true"></i> <a [href]="'mailto:' + mentorUser.email">{{mentorUser.email}}</a></div>
+                        <div *ngIf="mentorUser.company" class="icon-w"><i class="fa fa-users" aria-hidden="true"></i> {{mentorUser.company}}</div>
+                        <div *ngIf="mentorUser.location" class="icon-w"><i class="fa fa-map-marker" aria-hidden="true"></i> {{mentorUser.location}}</div>
+                    </div>
+                    <a [href]="repositoryUrl" target="_blank" class="btn btn-info-outline pull-right">
+                        View repository <span class="fa fa-github"></span>
+                    </a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
 
             <div class="card card-block">
 

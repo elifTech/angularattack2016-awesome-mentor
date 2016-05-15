@@ -5308,6 +5308,11 @@ h3, .h3 {
     color: #555;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
 
+.icon-w .fa {
+  display: inline-block;
+  width: 18px;
+  text-align: center; }
+
 html {
   position: relative;
   min-height: 100%; }

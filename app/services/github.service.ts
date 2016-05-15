@@ -172,6 +172,10 @@ export class GithubService {
     static get url() {
         return 'https://api.github.com';
     }
+    
+    static get publicUrl() {
+        return 'https://github.com/' + ConfigService.repOwner + '/' + ConfigService.repName;
+    }
 
     getCurrentRepository() {
         return this.getRepository(ConfigService.repOwner, ConfigService.repName);

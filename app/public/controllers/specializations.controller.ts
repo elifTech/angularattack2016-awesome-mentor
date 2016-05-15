@@ -23,11 +23,15 @@ export class PublicSpecializationsController {
     public items:any[];
     public loading:boolean;
     public selectedLevel:Level;
+    public mentorUser:any;
+    public repositoryUrl:string;
 
     constructor(private github:GithubService, private professionService:ProfessionService) {
         this.loading = true;
 
-        github.getCurrentRepository().getTree(res => {
+        this.repositoryUrl = GithubService.publicUrl;
+        let repos = github.getCurrentRepository();
+        repos.getTree(res => {
             // console.info(res);
 
             var nodes = {};
@@ -86,6 +90,9 @@ export class PublicSpecializationsController {
             this.loading = false;
         });
 
+        github.getRepositoryUser(user => {
+            this.mentorUser = user;
+        })
     }
 
     getLevelItems(professionName:string, levelName:string) {
