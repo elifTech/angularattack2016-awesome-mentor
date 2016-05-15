@@ -87,7 +87,7 @@
                             <h4 class="modal-title">Add resource</h4>
                         </modal-header>
                         <modal-body>
-                            <form *ngIf="profession && currItemIndex" name="tagsForm" novalidate>
+                            <form *ngIf="profession && currItemIndex >= 0" name="tagsForm" novalidate>
                                 <div class="form-group">
                                     <label>Tags</label>
                                     <ng-select [multiple]="true" [data]="level.items[currItemIndex].tags"
