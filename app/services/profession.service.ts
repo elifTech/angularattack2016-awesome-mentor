@@ -163,22 +163,27 @@ export class ProfessionService {
 
             res = res.map(item => {
                 item.data.pathParts = item.data.path.replace(/\.md/g, '').split('/');
-
                 return item;
-            }).filter(item => item !== 'README');
+            });
 
             console.log(res);
 
             let plain = {};
 
-            res.map(item => {
-                let lvl = item.data.pathParts.length;
-
-                item.parent = lvl - 2 >= 0 ? item.data.pathParts[lvl - 2] : '';
-                item.id = item.data.pathParts[lvl - 1];
-
-                plain[item.data.pathParts[lvl - 1]] = item;
-            });
+            res
+                .map(item => {
+                    let lvl = item.data.pathParts.length;
+    
+                    item.parent = lvl - 2 >= 0 ? item.data.pathParts[lvl - 2] : '';
+                    item.id = item.data.pathParts[lvl - 1];
+                    
+                    return item;
+                }).filter((item: any) => item.id !== "README")
+                    .map(item => {
+                    let lvl = item.data.pathParts.length;
+    
+                    plain[item.data.pathParts[lvl - 1]] = item;
+                });
 
             var plainToTree = (dic, node) => {
                 let children = [];
