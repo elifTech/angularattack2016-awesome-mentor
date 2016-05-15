@@ -3,6 +3,8 @@
 @import "variables";
 @import '../../node_modules/bootstrap/scss/bootstrap';
 @import '../../node_modules/bootstrap/scss/bootstrap-grid';
+@import '../../node_modules/tether/dist/css/tether.min.css';
+@import '../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css';
 
 @import "mixins";
 @import "theme";
