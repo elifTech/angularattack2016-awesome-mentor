@@ -13,7 +13,9 @@ import {FORM_PROVIDERS, FormBuilder, Validators} from '@angular/common';
 import {Observable} from 'rxjs/Observable';
 import {ProfessionService} from '../../services/profession.service';
 import {AuthService} from '../../services/auth.service';
+import {GithubService} from '../../services/github.service';
 import {Level} from '../../models/level.model';
+import {UserModel} from '../../models/user.model';
 import {Profession} from '../../models/profession.model';
 
 import {groupBy, find, filter, remove} from 'lodash';
@@ -59,11 +61,13 @@ export class MentorProfessionContentController {
     public form:any;
     public loading:boolean;
 
+    private user: UserModel;
 
     constructor(protected router:Router, private _courseraService:CourseraService,
                 private _youTubeService:YouTubeService,
+                private githubService:GithubService,
                 private professionService:ProfessionService,
-                private params:RouteParams, private location:Location,
+                private params:RouteParams, private location:Location, private authService:AuthService,
                 private _awesomeService:AwesomeService, private fb:FormBuilder) {
 
 
@@ -110,6 +114,9 @@ export class MentorProfessionContentController {
                 console.log('this.profession', this.profession);
             });
 
+        AuthService.user$.subscribe(user => {
+            this.user = user;
+        });
     }
 
     public setTab(index) {
@@ -181,6 +188,22 @@ export class MentorProfessionContentController {
                 console.log('SAVED');
             });
         }
+    }
+
+    public saveItemAsGist() {
+        this.loading = true;
+        let params = {
+            files: {}
+        };
+        let fileName = this.professionName + ' - ' + this.level.name + '.md';
+        params.files[fileName] = {
+            content: this.level.toMd()
+        };
+
+        this.githubService.makeGist(params, () => {
+            this.loading = false;
+            console.log('Gist SAVED');
+        });
     }
 
     public onSelectTag($event:any) {

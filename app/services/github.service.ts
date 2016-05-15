@@ -219,12 +219,12 @@ export class GithubService {
         });
     }
 
-    makeGist(next) {
+    makeGist(params:any, next) {
         if (this.auth.isAuthenticated()) {
             this._token = this.auth.getToken();
         }
         let opts = this.getHttpOptions();
-        this.http.get(GithubService.url + '/user', opts).subscribe(res => {
+        this.http.post(GithubService.url + '/gists', JSON.stringify(params), opts).subscribe(res => {
             next(res.json());
         });
     }
