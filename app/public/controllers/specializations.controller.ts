@@ -9,6 +9,7 @@ import {Level} from '../../models/level.model';
 import {Profession} from '../../models/profession.model';
 import {LevelItem} from '../../models/level-item.model';
 import {toArray} from 'lodash';
+import {TetherService} from "../../services/tether.service";
 
 @Component({
     templateUrl: '/views/specializations.html',
@@ -18,7 +19,8 @@ import {toArray} from 'lodash';
     ],
     providers: [
         GithubService,
-        ProfessionService
+        ProfessionService,
+        TetherService
     ]
 })
 export class PublicSpecializationsController {
@@ -28,14 +30,21 @@ export class PublicSpecializationsController {
     public professionName:string = '';
     public levelName:string = '';
     public currTag:string = '';
+    public currLevelIems:LevelItem[];
     public profession:Profession;
+    public mentorUser:any;
+    public repositoryUrl:string;
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
-                private params:RouteParams) {
+                private params:RouteParams,
+                private tether: TetherService
+    ) {
         this.loading = true;
 
-        github.getCurrentRepository().getTree(res => {
+        this.repositoryUrl = GithubService.publicUrl;
+        let repos = github.getCurrentRepository();
+        repos.getTree(res => {
             // console.info(res);
 
             var nodes = {};
@@ -105,6 +114,29 @@ export class PublicSpecializationsController {
             this.currTag = decodeURIComponent(this.params.get('tag'));
         }
         this.loadLevelItems();
+        github.getRepositoryUser(user => {
+            this.mentorUser = user;
+        });
+
+        tether.addStep('navbar', {
+            text: ['Shepherd is a javascript library for guiding users through your app. It uses <a href="http://github.hubspot.com/tether/">Tether</a>, another open source library, to position all of its steps.', 'Tether makes sure your steps never end up off screen or cropped by an overflow. Try resizing your browser to see what we mean.'],
+            attachTo: '.navbar bottom',
+            classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
+            buttons: [
+                {
+                    text: 'Exit',
+                    classes: 'shepherd-button-secondary',
+                    action: tether.cancel
+                }, {
+                    text: 'Next',
+                    action: tether.next,
+                    classes: 'shepherd-button-example-primary'
+                }
+            ]
+        });
+
+        tether.startShepherd();
+
     }
 
     public filterByTag(tag:string) {
@@ -115,7 +147,18 @@ export class PublicSpecializationsController {
         } else {
             this.location.replaceState('/', '?specialization=' + this.professionName + '&degree=' + this.levelName);
         }
-        this.loadLevelItems();
+        // this.loadLevelItems();
+
+        this.selectedLevel.items = this.currLevelIems.filter((item) => {
+            if (this.currTag.length > 0) {
+                item.tags = item.tags || [];
+                return item.tags.indexOf(this.currTag) != -1;
+                // console.log('tag', this.tag, item);
+            }
+            return true;
+        }).map((item:any) => {
+            return new LevelItem(item);
+        });
     }
 
     public getLevelItems(professionName:string, levelName:string) {
@@ -147,7 +190,8 @@ export class PublicSpecializationsController {
                 .getLevelItems(this.professionName, this.levelName)
                 .then((levelItems) => {
                     console.log('levelItems', levelItems);
-                    this.selectedLevel.items = levelItems.filter((item: any) => {
+                    this.currLevelIems = levelItems;
+                    this.selectedLevel.items = levelItems.filter((item) => {
                         if (this.currTag.length > 0) {
                             item.tags = item.tags || [];
                             return item.tags.indexOf(this.currTag) != -1;

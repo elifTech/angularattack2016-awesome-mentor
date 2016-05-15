@@ -25,6 +25,8 @@
 		</div>
 	</nav>
 
+	<div *ngIf="githubService.getRateLimitRemaining() < 10">Overflow Github rate limit</div>
+
 	<div class="wrapper" *ngIf="router && router.navigating"></div>
 	<router-outlet></router-outlet>
 </div>
