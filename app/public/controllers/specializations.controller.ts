@@ -39,14 +39,12 @@ export class PublicSpecializationsController {
     public profession:Profession;
     public mentorUser:any;
     public repositoryUrl:string;
-    private tether: TetherService;
     public document: DocumentModel = new DocumentModel();
 
     constructor(private github:GithubService, private location:Location,
                 private professionService:ProfessionService,
                 private params:RouteParams,
                 private google: GoogleService,
-                tether: TetherService
                 private tether: TetherService
     ) {
         this.loading = true;
@@ -85,21 +83,6 @@ export class PublicSpecializationsController {
                 });
 
         });
-    }
-
-    public start() {
-        this.google
-            .findDocument(this.levelName)
-            .then((response:any) => {
-                console.log('response', response);
-                if(!response) return;
-
-                // this.document.resource = response.downloadUrl;
-                // console.log(this.document);
-            })
-            .catch(error => {
-                console.log('error', error);
-            });
     }
 
     public startTour(){
@@ -230,10 +213,6 @@ export class PublicSpecializationsController {
                         return new PublicLevelItem(item);
                     });
 
-                    this.document.courses = this.selectedLevel.map(function (item:any) {
-                        return new PublicLevelItem(item);
-                    });
-
                     this.loading = false;
                 });
         }
@@ -241,7 +220,7 @@ export class PublicSpecializationsController {
 
     public start() {
         this.google
-            .findDocument(this.levelName)
+            .findDocument(this.professionName + '-' + this.levelName)
             .then((response:any) => {
                 if(!response) return;
 

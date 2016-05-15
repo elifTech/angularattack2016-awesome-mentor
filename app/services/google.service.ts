@@ -72,7 +72,7 @@ export class GoogleService {
                     'https://www.googleapis.com/auth/drive.file',
                     'https://www.googleapis.com/auth/drive.install'
                 ],
-                'immediate': false,
+                'immediate': true
                 //'user_id': userId
             };
 
@@ -175,7 +175,7 @@ export class GoogleService {
                 'path': '/drive/v2/files/',
                 'method': 'GET',
                 'params': {
-                    'q': "title = '" + prefix+name + "'"
+                    'q': "title='" + prefix+name + "' and trashed!=true",
                 }
             }).execute(onComplete);
         });
@@ -185,14 +185,15 @@ export class GoogleService {
         return new Promise((resolve, reject) => {
             let opts = this.getHttpOptions();
             this.http.get(fileUrl, opts).subscribe(res => {
-                let result = res.json();
+                console.log(res.text());
+                let result = JSON.parse(res.text());
                 resolve(result);
             });
         });
     }
 
     public buildMetaData(document: any, prefix?:string) {
-        var jsonData = document.courses.map(course => {return course.toJson();}).join(',');
+        var jsonData = JSON.stringify(document.courses);
         if(!prefix) prefix = "AwesomeMentor: ";
         const boundary = '-------314159265358979323846';
         const delimiter = "\r\n--" + boundary + "\r\n";
