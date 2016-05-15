@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgForm, NgClass, NgIf} from '@angular/common';
 import {ROUTER_DIRECTIVES, CanActivate, Router, RouteParams} from '@angular/router-deprecated';
 import {Select, SELECT_DIRECTIVES} from 'ng2-select';
-//import {MODAL_DIRECTIVES} from 'ng2-bs3-modal/dist/ng2-bs3-modal';
+//import {MODAL_DIRECTIVES} from 'ng2-bs3-modal';
 
 
 import {CourseraService} from '../../services/coursera.service';

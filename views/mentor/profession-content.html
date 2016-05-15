@@ -30,7 +30,7 @@
                 </a>
                 <p>{{result.snippet.description}}</p>
                 <img [src]="result.snippet.thumbnails.default.url" style="width: 100%; max-width: 90px" />
-                <a (click)="addToLevel(result, 'youtube')">+</a> /
+                <a (click)="addToLevel(result, 'youtube'); modal.open('lg');">+</a> /
                 <a (click)="removeFromLevel(result)">-</a>
             </li>
         </ul>
@@ -59,11 +59,11 @@
     </div>
 
 
-    <!--<modal #modal class="modal-dialog modal-lg">-->
-        <!--<modal-header [show-close]="true">-->
-            <!--<h4 class="modal-title">Add resource</h4>-->
-        <!--</modal-header>-->
-        <!--<modal-body>-->
+    <modal #modal class="modal-dialog modal-lg">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">Add resource</h4>
+        </modal-header>
+        <modal-body>
             <!--<form name="tagsForm" novalidate>-->
                 <!--<div class="form-group">-->
                     <!--<label>Tags</label>-->
@@ -71,10 +71,12 @@
                                <!--[items]="items" class="custom-ui-select-table"></ng-select>-->
                 <!--</div>-->
             <!--</form>-->
-        <!--</modal-body>-->
-        <!--<div class="modal-footer">-->
+
+            321132132121321321
+        </modal-body>
+        <div class="modal-footer">
             <!--<button type="button" class="btn btn-primary" (click)="setMassTags(item);modal.dismiss()" [hidden]="!showDefaultButtons">{{'Сохранить'|translate}}</button>-->
-            <!--<button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">{{'Отмена'|translate}}</button>-->
-        <!--</div>-->
-    <!--</modal>-->
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()" [hidden]="!showDefaultButtons">Cancel</button>
+        </div>
+    </modal>
 </form>

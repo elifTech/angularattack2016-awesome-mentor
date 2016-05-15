@@ -59,7 +59,7 @@
 
     packages['ng2-ui-auth'] = { main: 'dist/ng2-ui-auth.js', defaultExtension: 'js' };
     packages['ng2-select'] = { main: 'ng2-select.js', defaultExtension: 'js' };
-    packages['ng2-bs3-modal'] = { main: 'dist/ng2-bs3-modal.js', defaultExtension: 'js' };
+    packages['ng2-bs3-modal'] = { main: 'ng2-bs3-modal.js', defaultExtension: 'js' };
     packages['jquery'] = { main: 'dist/jquery.js', defaultExtension: 'js' };
     packages['toastr'] = { main: 'toastr.js', defaultExtension: 'js' };
 
