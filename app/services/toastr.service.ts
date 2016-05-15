@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class ToastrService {
 
     constructor() {
-         console.log('ToastrService constructor', (<any>window).toastr);
+         // console.log('ToastrService constructor', (<any>window).toastr);
         (<any>window).toastr.options = {
             "closeButton": true,
             "debug": false,
